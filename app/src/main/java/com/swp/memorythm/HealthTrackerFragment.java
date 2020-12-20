@@ -18,12 +18,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class GridMemoFragment extends Fragment {
+public class HealthTrackerFragment extends Fragment {
     private TextView textViewDate;
-    private EditText editTextContent;
 
-    public static GridMemoFragment newInstance() {
-        return new GridMemoFragment();
+
+    public static HealthTrackerFragment newInstance() {
+        return new HealthTrackerFragment();
     }
 
     // 캘린더 객체 생성
@@ -51,10 +51,10 @@ public class GridMemoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.template_gridmemo, container, false);
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.template_healthtracker, container, false);
 
         textViewDate = viewGroup.findViewById(R.id.write_date);
-        editTextContent = viewGroup.findViewById(R.id.memo_content);
+
 
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
         Date currentTime = Calendar.getInstance().getTime();
