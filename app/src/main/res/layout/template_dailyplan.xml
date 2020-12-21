@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/template_border_style"
+    android:paddingStart="20dp"
+    android:paddingTop="30dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="30dp"
+    android:visibility="visible">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sdkukdetopokki_b"
+        android:text="DAILY PLAN"
+        android:textAlignment="center"
+        android:textColor="@color/text_color"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/write_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:fontFamily="@font/sdkukdetopokki_b"
+        android:text="2020-11-30"
+        android:textAlignment="center"
+        android:textColor="@color/text_color"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <RadioGroup
+        android:id="@+id/weather_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/layout_border_top"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:theme="@style/RadioTheme"
+        app:layout_constraintBottom_toTopOf="@id/memo_content_am"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/write_date">
+
+        <RadioButton
+            android:id="@+id/sun"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/sun_selector"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/cloudy"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/cloudy_selector"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/cloud"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/cloud_selector"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/rain"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/rain_selector"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/snow"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/snow_selector"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/storm"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/storm_selector"
+            android:button="@null" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/memo_content_am"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/layout_border_top"
+        android:fontFamily="@font/nanumsquare_acr"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:paddingTop="10dp"
+        android:textSize="16sp"
+        android:autofillHints="AM"
+        app:layout_constraintBottom_toTopOf="@id/memo_content_pm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weather_group" />
+
+    <EditText
+        android:id="@+id/memo_content_pm"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/layout_border_top"
+        android:fontFamily="@font/nanumsquare_acr"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:paddingTop="10dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/memo_content_am" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

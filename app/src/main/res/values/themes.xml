@@ -14,4 +14,13 @@
          Customize your theme here.
         -->
     </style>
+
+    <!-- 날씨 선택하는거 색깔 땜에 필요해요 -->
+    <style name="RadioTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+        <item name="colorAccent">@android:color/transparent</item>
+    </style>
+
 </resources>
