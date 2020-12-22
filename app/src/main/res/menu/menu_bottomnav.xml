@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/folderItem"
+        android:enabled="true"
+        android:icon="@drawable/folder"
+        android:title="폴더" />
+    <item
+        android:id="@+id/templateItem"
+        android:enabled="true"
+        android:icon="@drawable/template"
+        android:title="템플릿"/>
+    <item
+        android:id="@+id/writeItem"
+        android:enabled="true"
+        android:icon="@drawable/write"
+        android:title="작성"/>
+    <item
+        android:id="@+id/trashItem"
+        android:enabled="true"
+        android:icon="@drawable/trash"
+        android:title="휴지통"/>
+    <item
+        android:id="@+id/setItem"
+        android:enabled="true"
+        android:icon="@drawable/set"
+        android:title="설정"/>
+
+</menu>
