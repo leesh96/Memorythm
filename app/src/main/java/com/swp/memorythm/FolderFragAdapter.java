@@ -1,6 +1,5 @@
 package com.swp.memorythm;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +14,11 @@ import java.util.ArrayList;
 public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.ViewHolder> {
 
     Context mContext;
-    private ArrayList<Folder> listFolder;
+    private ArrayList<Folder> dataFolder;
 
     public FolderFragAdapter(Context mContext, ArrayList<Folder> listFolder) {
         this.mContext = mContext;
-        this.listFolder = listFolder;
+        this.dataFolder = listFolder;
     }
 
     @Override
@@ -38,7 +37,7 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
     //getItemCount() : 전체 데이터 갯수 리턴.
     @Override
     public int getItemCount() {
-        return (null != listFolder ? listFolder.size():0);
+        return (null != dataFolder ? dataFolder.size():0);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
