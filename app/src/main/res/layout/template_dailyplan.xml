@@ -48,7 +48,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:theme="@style/RadioTheme"
-        app:layout_constraintBottom_toTopOf="@id/memo_content_am"
+        app:layout_constraintBottom_toTopOf="@id/am_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/write_date">
@@ -114,34 +114,78 @@
             android:button="@null" />
     </RadioGroup>
 
-    <EditText
-        android:id="@+id/memo_content_am"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/am_container"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/layout_border_top"
-        android:fontFamily="@font/nanumsquare_acr"
-        android:gravity="top"
-        android:inputType="textMultiLine"
-        android:paddingTop="10dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/memo_content_pm"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/pm_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weather_group" />
+        app:layout_constraintTop_toBottomOf="@id/weather_group">
 
-    <EditText
-        android:id="@+id/memo_content_pm"
-        android:layout_width="0dp"
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sdkukdetopokki_b"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="0dp"
+            android:text="AM"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/memo_content_am"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/nanumsquare_acr"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/pm_container"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:orientation="vertical"
         android:background="@drawable/layout_border_top"
-        android:fontFamily="@font/nanumsquare_acr"
-        android:gravity="top"
-        android:inputType="textMultiLine"
-        android:paddingTop="10dp"
-        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/memo_content_am" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/am_container">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sdkukdetopokki_b"
+            android:paddingTop="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="0dp"
+            android:textSize="14sp"
+            android:textColor="#000"
+            android:text="PM" />
+
+        <EditText
+            android:id="@+id/memo_content_pm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/nanumsquare_acr"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:textSize="14sp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

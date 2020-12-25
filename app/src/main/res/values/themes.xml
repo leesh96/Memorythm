@@ -23,4 +23,8 @@
         <item name="colorAccent">@android:color/transparent</item>
     </style>
 
+    <style name="CheckTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/black</item>
+    </style>
 </resources>
