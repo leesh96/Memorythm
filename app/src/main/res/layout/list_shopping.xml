@@ -26,7 +26,7 @@
             android:background="@drawable/custom_checkbox"/>
 
         <TextView
-            android:id="@+id/tv_item"
+            android:id="@+id/item_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -50,7 +50,7 @@
         android:layout_marginLeft="10dp">
 
         <TextView
-            android:id="@+id/tv_amount"
+            android:id="@+id/item_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

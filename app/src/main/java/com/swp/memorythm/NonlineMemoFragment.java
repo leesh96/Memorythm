@@ -54,7 +54,7 @@ public class NonlineMemoFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_nonlinememo, container, false);
 
         textViewDate = rootView.findViewById(R.id.write_date);
-        editTextContent = rootView.findViewById(R.id.memo_content);
+        editTextContent = rootView.findViewById(R.id.nonlinememo_content);
 
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
         textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));

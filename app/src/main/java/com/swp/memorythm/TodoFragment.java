@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class TodoFragment extends Fragment {
     private TextView textViewDate;
     private RecyclerView todoRecyclerView;
-    private ImageButton btn_add;
+    private ImageButton btnAdd;
     private ArrayList<TodoData> mArrayList;
     private TodoAdapter mAdapter;
 
@@ -32,9 +32,9 @@ public class TodoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_todo, container, false);
 
-        textViewDate = rootView.findViewById(R.id.write_date);
+        textViewDate = rootView.findViewById(R.id.tv_date);
         todoRecyclerView = rootView.findViewById(R.id.todo_rcview);
-        btn_add = rootView.findViewById(R.id.btn_add);
+        btnAdd = rootView.findViewById(R.id.btn_add);
 
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
         textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
@@ -48,7 +48,7 @@ public class TodoFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
 
         // todolist 항목 추가
-        btn_add.setOnClickListener(new View.OnClickListener() {
+        btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

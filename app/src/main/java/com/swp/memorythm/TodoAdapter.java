@@ -43,7 +43,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
             mView = view;
 
             this.todoCheckBox = (CheckBox) view.findViewById(R.id.item_checkbox);
-            this.textViewTodo = (TextView) view.findViewById(R.id.tv_item);
+            this.textViewTodo = (TextView) view.findViewById(R.id.item_content);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

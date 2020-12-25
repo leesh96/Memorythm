@@ -23,7 +23,7 @@ public class WishFragment extends Fragment {
     private TextView activityCategory, concertCategory, productCategory, bookCategory, foodCategory, tripCategory, clothCategory, movieCategory;
     private EditText customCategory;
     private RecyclerView wishRecyclerView;
-    private ImageButton btn_add;
+    private ImageButton btnAdd;
     private ArrayList<WishData> mArrayList;
     private WishAdapter mAdapter;
     private int category;
@@ -35,7 +35,7 @@ public class WishFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_wish, container, false);
 
-        textViewDate = rootView.findViewById(R.id.write_date);
+        textViewDate = rootView.findViewById(R.id.tv_date);
         activityCategory = rootView.findViewById(R.id.tv_activity);
         concertCategory = rootView.findViewById(R.id.tv_concert);
         productCategory = rootView.findViewById(R.id.tv_product);
@@ -46,7 +46,7 @@ public class WishFragment extends Fragment {
         movieCategory = rootView.findViewById(R.id.tv_movie);
         customCategory = rootView.findViewById(R.id.et_customcate);
         wishRecyclerView = rootView.findViewById(R.id.wish_rcview);
-        btn_add = rootView.findViewById(R.id.btn_add);
+        btnAdd = rootView.findViewById(R.id.btn_add);
 
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
         textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
@@ -117,7 +117,7 @@ public class WishFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
 
         // wishlist 항목 추가
-        btn_add.setOnClickListener(new View.OnClickListener() {
+        btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

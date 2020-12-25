@@ -43,7 +43,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.ViewHolder> {
             mView = view;
 
             this.wishCheckBox = (CheckBox) view.findViewById(R.id.item_checkbox);
-            this.textViewWish = (TextView) view.findViewById(R.id.tv_item);
+            this.textViewWish = (TextView) view.findViewById(R.id.item_content);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
