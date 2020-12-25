@@ -57,18 +57,16 @@ public class NonlineMemoFragment extends Fragment {
         editTextContent = rootView.findViewById(R.id.memo_content);
 
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
-        Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy - MM - dd", Locale.KOREA);
-        textViewDate.setText(simpleDateFormat.format(currentTime));
+        textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
 
-        textViewDate.setOnClickListener(new View.OnClickListener() {
+        textViewDate.setOnClickListener(new View.OnClickListener() { // 데이트픽커 띄우기
             @Override
-            public void onClick(View v) { // 데이트픽커 띄우기
+            public void onClick(View v) {
                 new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
-        // TODO: 2020-11-20 파이어베이스 연동
+        // TODO : 저장, 로드 방법 생각
 
         return rootView;
     }
