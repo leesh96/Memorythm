@@ -1,13 +1,17 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +23,13 @@ import java.util.Date;
 import java.util.Locale;
 
 public class HealthTrackerFragment extends Fragment {
-    private TextView textViewDate;
+    private TextView textViewDate, tv_upperbody, tv_lowerbody, tv_chest, tv_aerobic;
+    private ImageView iv_health;
     private ImageButton ibtn_cup1,ibtn_cup2,ibtn_cup3,ibtn_cup4,ibtn_cup5,ibtn_cup6,ibtn_cup7,ibtn_cup8;
-
+    private boolean upperbody, lowerbody, chest, aerobic;
     private int cup1, cup2, cup3, cup4, cup5, cup6, cup7, cup8;
+    //시계
+    private TextView tv_breakfast, tv_lunch, tv_dinner;
     public static HealthTrackerFragment newInstance() {
         return new HealthTrackerFragment();
     }
@@ -63,7 +70,14 @@ public class HealthTrackerFragment extends Fragment {
         ibtn_cup6 = viewGroup.findViewById(R.id.ibtn_cup6);
         ibtn_cup7 = viewGroup.findViewById(R.id.ibtn_cup7);
         ibtn_cup8 = viewGroup.findViewById(R.id.ibtn_cup8);
-
+        tv_upperbody = viewGroup.findViewById(R.id.tv_upperbody);
+        tv_lowerbody = viewGroup.findViewById(R.id.tv_lowerbody);
+        tv_chest = viewGroup.findViewById(R.id.tv_chest);
+        tv_aerobic = viewGroup.findViewById(R.id.tv_aerobic);
+        iv_health = viewGroup.findViewById(R.id.iv_health);
+        tv_breakfast = viewGroup.findViewById(R.id.tv_breakfast);
+        tv_lunch = viewGroup.findViewById(R.id.tv_lunch);
+        tv_dinner = viewGroup.findViewById(R.id.tv_dinner);
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
         Date currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy - MM - dd", Locale.KOREA);
@@ -71,6 +85,83 @@ public class HealthTrackerFragment extends Fragment {
 
         textViewDate.setOnClickListener(v -> { // 데이트픽커 띄우기
             new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        });
+        // 시계
+        tv_breakfast.setOnClickListener(v -> {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog,
+                    new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    String hour = changeTime(hourOfDay);
+                    String min = changeTime(minute);
+                    tv_breakfast.setText(hour+":"+min);
+                }
+            },8,0,true); timePickerDialog.show();
+        });
+        tv_lunch.setOnClickListener(v -> {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog,
+                    new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            String hour = changeTime(hourOfDay);
+                            String min = changeTime(minute);
+                            tv_lunch.setText(hour+":"+min);
+                        }
+                    },12,0,true); timePickerDialog.show();
+        });
+        tv_dinner.setOnClickListener(v -> {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog,
+                    new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            String hour = changeTime(hourOfDay);
+                            String min = changeTime(minute);
+                            tv_dinner.setText(hour+":"+min);
+                        }
+                    },18,0,true); timePickerDialog.show();
+        });
+        // 운동
+        tv_upperbody.setOnClickListener(v -> {
+            if(!upperbody){
+                upperbody = true;
+                tv_upperbody.setBackgroundColor(Color.parseColor("#FAED7D"));
+                setHealth(iv_health);
+            }else{
+                upperbody = false;
+                tv_upperbody.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+                setHealth(iv_health);
+            }
+        });
+        tv_lowerbody.setOnClickListener(v -> {
+            if(!lowerbody){
+                lowerbody = true;
+                tv_lowerbody.setBackgroundColor(Color.parseColor("#FAED7D"));
+                setHealth(iv_health);
+            }else{
+                lowerbody = false;
+                tv_lowerbody.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+                setHealth(iv_health);
+            }
+        });
+        tv_chest.setOnClickListener(v -> {
+            if(!chest){
+                chest = true;
+                tv_chest.setBackgroundColor(Color.parseColor("#FAED7D"));
+                setHealth(iv_health);
+            }else{
+                chest = false;
+                tv_chest.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+                setHealth(iv_health);
+            }
+        });
+        tv_aerobic.setOnClickListener(v -> {
+            if(!aerobic){
+                aerobic = true;
+                tv_aerobic.setBackgroundColor(Color.parseColor("#FAED7D"));
+            }else{
+                aerobic = false;
+                tv_aerobic.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+            }
         });
 
         // 물컵
@@ -193,5 +284,19 @@ public class HealthTrackerFragment extends Fragment {
     public void setCup(ImageButton imageButton, int n){
         if(n==1) imageButton.setImageResource(R.drawable.icon_fillcup);
         else imageButton.setImageResource(R.drawable.icon_blankcup);
+    }
+    public void setHealth(ImageView imageView){
+        if(upperbody&&lowerbody&&chest) imageView.setImageResource(R.drawable.icon_exerciseall);
+        else if(upperbody&&lowerbody) imageView.setImageResource(R.drawable.icon_uplower);
+        else if(upperbody&&chest) imageView.setImageResource(R.drawable.icon_upchest);
+        else if(lowerbody&&chest) imageView.setImageResource(R.drawable.icon_lowchest);
+        else if(upperbody) imageView.setImageResource(R.drawable.icon_upper);
+        else if(lowerbody) imageView.setImageResource(R.drawable.icon_lower);
+        else if(chest) imageView.setImageResource(R.drawable.icon_chest);
+        else imageView.setImageResource(R.drawable.icon_exerciseblank);
+    }
+    public String changeTime(int n){
+        if(n<10) return "0"+Integer.toString(n);
+        else return Integer.toString(n);
     }
 }

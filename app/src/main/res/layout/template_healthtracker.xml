@@ -53,6 +53,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:text="Water"
+                android:textColor="@color/text_color"
                 android:fontFamily="@font/sdkukdetopokki_b"
                 android:gravity="center"/>
             <ImageButton
@@ -115,6 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:padding="5dp"
+                    android:textColor="@color/text_color"
                     android:fontFamily="@font/sdkukdetopokki_b"
                     android:gravity="center"
                     android:text="Time"
@@ -124,6 +126,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:padding="5dp"
+                    android:textColor="@color/text_color"
                     android:fontFamily="@font/sdkukdetopokki_b"
                     android:gravity="center"
                     android:text="Food"
@@ -138,12 +141,14 @@
             <TableRow>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
+                    android:layout_height="60dp"
                     android:layout_weight="2"
-                    android:padding="5dp">
+                    android:padding="2dp">
 
                     <TextView
+                        android:textColor="@color/text_color"
                         android:id="@+id/textView2"
+                        android:layout_margin="3dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sdkukdetopokki_l"
@@ -151,6 +156,19 @@
                         android:textSize="15dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_breakfast"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/icon_digitalclock"
+                        android:fontFamily="@font/digital"
+                        android:padding="8dp"
+                        android:text="08:00"
+                        android:textColor="@color/text_color"
+                        android:textSize="18dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -162,7 +180,7 @@
 
                 <EditText
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
+                    android:layout_height="60dp"
                     android:layout_weight="3"
                     android:padding="5dp"
                     android:inputType="textMultiLine"
@@ -181,11 +199,24 @@
             <TableRow>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
+                    android:layout_height="60dp"
                     android:layout_weight="2"
-                    android:padding="5dp">
-
+                    android:padding="2dp">
                     <TextView
+                        android:id="@+id/tv_lunch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/digital"
+                        android:padding="8dp"
+                        android:text="12:00"
+                        android:textColor="@color/text_color"
+                        android:textSize="18dp"
+                        android:background="@drawable/icon_digitalclock"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                    <TextView
+                        android:layout_margin="3dp"
+                        android:textColor="@color/text_color"
                         android:id="@+id/textView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -205,7 +236,7 @@
 
                 <EditText
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
+                    android:layout_height="60dp"
                     android:layout_weight="3"
                     android:padding="5dp"
                     android:inputType="textMultiLine"
@@ -224,12 +255,18 @@
             <TableRow>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
+                    android:layout_height="50dp"
                     android:layout_weight="2"
                     android:padding="5dp">
-
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/tv_snack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:textColor="@color/text_color"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sdkukdetopokki_l"
@@ -248,7 +285,63 @@
 
                 <EditText
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="3"
+                    android:padding="5dp"
+                    android:inputType="textMultiLine"
+                    android:gravity="top"
+                    android:textSize="14dp"
+                    android:lineSpacingMultiplier="1"
+                    android:fontFamily="@font/nanumsquare_acl"
+                    android:background="@drawable/edittext_border_style"
+                    />
+            </TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:background="#000000"
+                android:layout_height="1dp"
+                />
+            <TableRow>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="2"
+                    android:padding="2dp">
+                    <TextView
+                        android:id="@+id/tv_dinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/icon_digitalclock"
+                        android:fontFamily="@font/digital"
+                        android:padding="8dp"
+                        android:text="18:00"
+                        android:textColor="@color/text_color"
+                        android:textSize="18dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                    <TextView
+                        android:layout_margin="3dp"
+                        android:textColor="@color/text_color"
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sdkukdetopokki_l"
+                        android:text="Dinner"
+                        android:textSize="15dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.03"
+                    android:layout_height="match_parent"
+                    android:background="#000000" />
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
                     android:layout_weight="3"
                     android:padding="5dp"
                     android:inputType="textMultiLine"
@@ -271,6 +364,7 @@
                     android:layout_span="3">
 
                     <TextView
+                        android:textColor="@color/text_color"
                         android:id="@+id/textView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -282,7 +376,51 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintStart_toEndOf="@+id/textView5"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tv_upperbody"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="상체"
+                            android:textSize="10dp"
+                            android:fontFamily="@font/sdkukdetopokki_l" />
+                        <TextView
+                            android:id="@+id/tv_lowerbody"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="하체"
+                            android:textSize="10dp"
+                            android:fontFamily="@font/sdkukdetopokki_l"/>
+                        <TextView
+                            android:id="@+id/tv_chest"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="가슴"
+                            android:textSize="10dp"
+                            android:fontFamily="@font/sdkukdetopokki_l"/>
+                        <TextView
+                            android:id="@+id/tv_aerobic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="유산소"
+                            android:textSize="10dp"
+                            android:fontFamily="@font/sdkukdetopokki_l"/>
+
+                    </LinearLayout>
+
                     <ImageView
+                        android:id="@+id/iv_health"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
@@ -318,6 +456,7 @@
                     android:layout_span="3">
 
                     <TextView
+                        android:textColor="@color/text_color"
                         android:id="@+id/textView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
