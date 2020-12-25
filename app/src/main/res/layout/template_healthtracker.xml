@@ -169,6 +169,7 @@
                     android:gravity="top"
                     android:textSize="14dp"
                     android:lineSpacingMultiplier="1"
+                    android:fontFamily="@font/nanumsquare_acl"
                     android:background="@drawable/edittext_border_style"
                     />
             </TableRow>
@@ -211,6 +212,7 @@
                     android:gravity="top"
                     android:textSize="14dp"
                     android:lineSpacingMultiplier="1"
+                    android:fontFamily="@font/nanumsquare_acl"
                     android:background="@drawable/edittext_border_style"
                     />
             </TableRow>
@@ -253,6 +255,7 @@
                     android:gravity="top"
                     android:textSize="14dp"
                     android:lineSpacingMultiplier="1"
+                    android:fontFamily="@font/nanumsquare_acl"
                     android:background="@drawable/edittext_border_style"
                     />
             </TableRow>
@@ -293,6 +296,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/edittext_border_style"
+                        android:fontFamily="@font/nanumsquare_acl"
                         android:gravity="top"
                         android:inputType="textMultiLine"
                         android:lineSpacingMultiplier="1"
@@ -330,6 +334,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/edittext_border_style"
+                        android:fontFamily="@font/nanumsquare_acl"
                         android:gravity="top"
                         android:inputType="textMultiLine"
                         android:lineSpacingMultiplier="1"
