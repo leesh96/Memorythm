@@ -46,7 +46,7 @@ public class StudyTrackerFragment extends Fragment {
             num_pm10_1=0, num_pm10_2=0, num_pm10_3=0, num_pm10_4=0, num_pm10_5=0, num_pm10_6=0,num_pm11_1=0, num_pm11_2=0, num_pm11_3=0, num_pm11_4=0, num_pm11_5=0, num_pm11_6=0,
             num_am12_1=0, num_am12_2=0, num_am12_3=0, num_am12_4=0, num_am12_5=0, num_am12_6=0,num_am01_1=0, num_am01_2=0, num_am01_3=0, num_am01_4=0, num_am01_5=0, num_am01_6=0,
             num_am02_1=0, num_am02_2=0, num_am02_3=0, num_am02_4=0, num_am02_5=0, num_am02_6=0,num_am03_1=0, num_am03_2=0, num_am03_3=0, num_am03_4=0, num_am03_5=0, num_am03_6=0,
-            num_am04_1=0, num_am04_2=0, num_am04_3=0, num_am04_4=0, num_am04_5=0, num_am04_6=0,num_am05_1=0, num_am05_2=0, num_am05_3=0, num_am05_4=0, num_am05_5=0, num_am05_6;
+            num_am04_1=0, num_am04_2=0, num_am04_3=0, num_am04_4=0, num_am04_5=0, num_am04_6=0,num_am05_1=0, num_am05_2=0, num_am05_3=0, num_am05_4=0, num_am05_5=0, num_am05_6=0;
     public static StudyTrackerFragment newInstance() {
         return new StudyTrackerFragment();
     }
