@@ -38,7 +38,7 @@ public class WriteActivity extends AppCompatActivity {
         gradientDrawable.setColor(ContextCompat.getColor(getBaseContext(), R.color.template_background));
         template_frame.setBackground(gradientDrawable);
 
-        // TODO: 2020-11-20 어떤 템플릿 선택했는지 받아올 방법
+        // TODO: 2020-11-23 어떤 템플릿 선택했는지 받아올 방법
         templateCase = 0;
 
         btn_back.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +51,7 @@ public class WriteActivity extends AppCompatActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: 2020-11-20 템플릿 저장 방법
+                // TODO: 2020-11-23 템플릿 저장 방법
             }
         });
 

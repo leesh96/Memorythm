@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="350dp"
     android:layout_height="620dp"
     android:background="@drawable/template_border_style">
@@ -11,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:fontFamily="@font/sdkukdetopokki_b"
-        android:text="MEMO"
+        android:text="SHOPPING LIST"
         android:textAlignment="center"
         android:textColor="@color/text_color"
         android:textSize="20dp"
@@ -20,11 +22,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/write_date"
+        android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        android:clickable="true"
         android:fontFamily="@font/sdkukdetopokki_b"
         android:text="2020-11-30"
         android:textAlignment="center"
@@ -33,19 +34,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <EditText
-        android:id="@+id/memo_content"
-        android:layout_width="310dp"
-        android:layout_height="500dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/todo_rcview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/edittext_border_style"
-        android:fontFamily="@font/nanumsquare_acr"
-        android:gravity="top"
-        android:inputType="textMultiLine"
-        android:lineSpacingMultiplier="1.5"
-        android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/write_date" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_date" />
+
+    <ImageButton
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_add"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
