@@ -181,7 +181,7 @@
                     android:layout_margin="7dp"
                     android:background="@drawable/icon_circle"/>
                 <Button
-                    android:id="@+id/btn_day13 "
+                    android:id="@+id/btn_day13"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
