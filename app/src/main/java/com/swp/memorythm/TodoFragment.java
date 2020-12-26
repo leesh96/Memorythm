@@ -59,9 +59,9 @@ public class TodoFragment extends Fragment {
                 EditText editTextTodo;
                 Button btnApply, btnCancel;
 
-                editTextTodo = (EditText) dialogView.findViewById(R.id.et_todo);
-                btnApply = (Button) dialogView.findViewById(R.id.btn_apply);
-                btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
+                editTextTodo = dialogView.findViewById(R.id.et_todo);
+                btnApply = dialogView.findViewById(R.id.btn_apply);
+                btnCancel = dialogView.findViewById(R.id.btn_cancel);
 
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();

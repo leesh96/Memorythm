@@ -9,8 +9,8 @@
 
     <CheckBox
         android:id="@+id/item_checkbox"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_gravity="center_vertical"
         android:checked="false"
         android:button="@android:color/transparent"
@@ -24,7 +24,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:clickable="true"
-        android:textSize="14dp"
+        android:textSize="12dp"
         android:textColor="@color/text_color"
         android:padding="2dp"
         android:fontFamily="@font/nanumsquare_acr"

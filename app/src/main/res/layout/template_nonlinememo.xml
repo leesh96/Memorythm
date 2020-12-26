@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="350dp"
-    android:layout_height="620dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/template_border_style">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/sdkukdetopokki_b"
         android:text="MEMO"
         android:textAlignment="center"
@@ -35,15 +36,16 @@
 
     <EditText
         android:id="@+id/nonlinememo_content"
-        android:layout_width="310dp"
-        android:layout_height="500dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
         android:background="@drawable/edittext_border_style"
         android:fontFamily="@font/nanumsquare_acr"
         android:gravity="top"
         android:inputType="textMultiLine"
         android:lineSpacingMultiplier="1.5"
         android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/write_date" />

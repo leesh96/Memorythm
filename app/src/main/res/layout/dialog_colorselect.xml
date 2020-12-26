@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="5dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btn_bgpink"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_color_selector"
+            android:backgroundTint="@color/template_bgpink" />
+
+        <ImageButton
+            android:id="@+id/btn_bgyellow"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/btn_bgpink"
+            android:background="@drawable/ic_color_selector"
+            android:backgroundTint="@color/template_bgyellow" />
+
+        <ImageButton
+            android:id="@+id/btn_bgmint"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/btn_bgyellow"
+            android:background="@drawable/ic_color_selector"
+            android:backgroundTint="@color/template_bgmint" />
+
+        <ImageButton
+            android:id="@+id/btn_bgsky"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/btn_bgmint"
+            android:background="@drawable/ic_color_selector"
+            android:backgroundTint="@color/template_bgsky" />
+
+        <ImageButton
+            android:id="@+id/btn_bggray"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/btn_bgsky"
+            android:background="@drawable/ic_color_selector"
+            android:backgroundTint="@color/template_bggray" />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

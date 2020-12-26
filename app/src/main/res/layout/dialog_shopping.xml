@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/nanumsquare_acr"
-        android:text="위시리스트 추가"
+        android:text="쇼핑 리스트 추가"
         android:textColor="@color/text_color"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,12 +22,12 @@
 
 
     <EditText
-        android:id="@+id/et_wish"
+        android:id="@+id/et_shopping"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/nanumsquare_acr"
-        android:hint="위시리스트를 입력하세요"
+        android:hint="사야하는 물건을 입력하세요"
         android:inputType="text"
         android:textColor="@color/text_color"
         android:textSize="14dp"
@@ -35,14 +35,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/nanumsquare_acr"
+        android:text="개수"
+        android:textColor="@color/text_color"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_shopping" />
+
+
+    <EditText
+        android:id="@+id/et_amount"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/nanumsquare_acr"
+        android:hint="수량을 입력하세요"
+        android:inputType="number"
+        android:textColor="@color/text_color"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/et_wish"
-        app:layout_constraintStart_toStartOf="@+id/et_wish"
-        app:layout_constraintTop_toBottomOf="@+id/et_wish"
+        app:layout_constraintEnd_toEndOf="@+id/et_amount"
+        app:layout_constraintStart_toStartOf="@+id/et_amount"
+        app:layout_constraintTop_toBottomOf="@+id/et_amount"
         android:padding="5dp">
 
         <Button
