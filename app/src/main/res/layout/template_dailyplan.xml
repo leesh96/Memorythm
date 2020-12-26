@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frame"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="350dp"
+    android:layout_height="620dp"
     android:background="@drawable/template_border_style"
     android:paddingStart="20dp"
     android:paddingTop="30dp"
@@ -34,7 +34,7 @@
         android:text="2020-11-30"
         android:textAlignment="center"
         android:textColor="@color/text_color"
-        android:textSize="12sp"
+        android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -155,11 +155,11 @@
         android:id="@+id/pm_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
         android:background="@drawable/layout_border_top"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/am_container">
 
         <TextView
@@ -167,12 +167,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sdkukdetopokki_b"
-            android:paddingTop="10dp"
             android:paddingStart="10dp"
+            android:paddingTop="10dp"
             android:paddingEnd="0dp"
-            android:textSize="14sp"
+            android:text="PM"
             android:textColor="#000"
-            android:text="PM" />
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/memo_content_pm"
