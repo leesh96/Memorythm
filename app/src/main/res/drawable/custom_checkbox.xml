@@ -3,9 +3,9 @@
     <!-- Unchecked -->
     <item android:state_checked="false">
         <shape>
-            <stroke android:color="@color/black" android:width="1dp" />
+            <stroke android:color="@color/black" android:width="2dp" />
             <corners android:radius="5dp" />
-            <solid android:color="@android:color/transparent" />
+            <solid android:color="@color/white" />
         </shape>
     </item>
     <!-- Checked -->
@@ -14,9 +14,9 @@
             <!-- 배경 -->
             <item>
                 <shape>
-                    <stroke android:color="@color/black" android:width="1dp" />
+                    <stroke android:color="@color/black" android:width="2dp" />
                     <corners android:radius="5dp" />
-                    <solid android:color="@android:color/transparent" />
+                    <solid android:color="@color/white" />
                 </shape>
             </item>
             <!-- 이미지 영역 -->

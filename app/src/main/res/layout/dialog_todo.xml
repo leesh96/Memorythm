@@ -29,6 +29,7 @@
         android:fontFamily="@font/nanumsquare_acr"
         android:hint="할 일을 입력하세요"
         android:inputType="text"
+        android:maxLength="10"
         android:textColor="@color/text_color"
         android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,8 +48,8 @@
 
         <Button
             android:id="@+id/btn_cancel"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
+            android:layout_width="90dp"
+            android:layout_height="30dp"
             android:background="@color/white"
             android:fontFamily="@font/nanumsquare_acr"
             android:text="취소"
@@ -58,8 +59,8 @@
 
         <Button
             android:id="@+id/btn_apply"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
+            android:layout_width="90dp"
+            android:layout_height="30dp"
             android:background="@color/white"
             android:fontFamily="@font/nanumsquare_acr"
             android:text="추가"

@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class WriteActivity extends AppCompatActivity {
+public class MemoViewActivity extends AppCompatActivity {
     private FragmentManager fm;
     private FragmentTransaction ft;
 
@@ -35,6 +35,13 @@ public class WriteActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btn_save);
         btnSelcolor = findViewById(R.id.btn_selColor);
         template_frame = findViewById(R.id.template_frame);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         // 템플릿 종류 intent로 넘겨서 받아오기
         TemplateCase = "shoppinglist";
@@ -63,36 +70,22 @@ public class WriteActivity extends AppCompatActivity {
                 break;
         }
 
-        GradientDrawable gradientDrawable = (GradientDrawable) ContextCompat.getDrawable(getBaseContext(), R.drawable.template_border_style);
+        btnSelcolor.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_bgyellow));
+        GradientDrawable gradientDrawable = (GradientDrawable) ContextCompat.getDrawable(getBaseContext(), R.drawable.template_style);
         gradientDrawable.setColor(ContextCompat.getColor(getBaseContext(), R.color.template_bgyellow));
-        btnSelcolor.setBackgroundColor(this.getResources().getColor(R.color.template_bgyellow));
-
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO: 2020-11-23 템플릿 저장 방법
-            }
-        });
 
         // 색상변경 다이얼로그
         btnSelcolor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(WriteActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MemoViewActivity.this);
 
-                View dialogView = LayoutInflater.from(WriteActivity.this).inflate(R.layout.dialog_colorselect, null, false);
+                View dialogView = LayoutInflater.from(MemoViewActivity.this).inflate(R.layout.dialog_colorselect, null, false);
                 builder.setView(dialogView);
 
                 ImageButton btnPink, btnYellow, btnMint, btnSky, btnGray;
 
-                btnPink = dialogView.findViewById(R.id.btn_bgpink);
+                btnPink = dialogView.findViewById(R.id.btn_bgyellow);
                 btnYellow = dialogView.findViewById(R.id.btn_bgyellow);
                 btnMint = dialogView.findViewById(R.id.btn_bgmint);
                 btnSky = dialogView.findViewById(R.id.btn_bgsky);
@@ -104,48 +97,44 @@ public class WriteActivity extends AppCompatActivity {
                 btnPink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        gradientDrawable.setColor(ContextCompat.getColor(getBaseContext(), R.color.template_bgpink));
-                        template_frame.setBackground(gradientDrawable);
-                        btnSelcolor.setBackgroundColor(WriteActivity.this.getResources().getColor(R.color.template_bgpink));
-                        alertDialog.dismiss();
+
                     }
                 });
+
                 btnYellow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        gradientDrawable.setColor(ContextCompat.getColor(getBaseContext(), R.color.template_bgyellow));
-                        template_frame.setBackground(gradientDrawable);
-                        btnSelcolor.setBackgroundColor(WriteActivity.this.getResources().getColor(R.color.template_bgyellow));
-                        alertDialog.dismiss();
+
                     }
                 });
+
                 btnMint.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        gradientDrawable.setColor(ContextCompat.getColor(getBaseContext(), R.color.template_bgmint));
-                        template_frame.setBackground(gradientDrawable);
-                        btnSelcolor.setBackgroundColor(WriteActivity.this.getResources().getColor(R.color.template_bgmint));
-                        alertDialog.dismiss();
+
                     }
                 });
+
                 btnSky.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        gradientDrawable.setColor(ContextCompat.getColor(getBaseContext(), R.color.template_bgsky));
-                        template_frame.setBackground(gradientDrawable);
-                        btnSelcolor.setBackgroundColor(WriteActivity.this.getResources().getColor(R.color.template_bgsky));
-                        alertDialog.dismiss();
+
                     }
                 });
+
                 btnGray.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        gradientDrawable.setColor(ContextCompat.getColor(getBaseContext(), R.color.template_bggray));
-                        template_frame.setBackground(gradientDrawable);
-                        btnSelcolor.setBackgroundColor(WriteActivity.this.getResources().getColor(R.color.template_bggray));
-                        alertDialog.dismiss();
+
                     }
                 });
+            }
+        });
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: 2020-11-23 템플릿 저장 방법
             }
         });
     }

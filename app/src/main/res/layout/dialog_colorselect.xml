@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:padding="5dp">
+    android:padding="10dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -16,48 +16,59 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/btn_bgpink"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/ic_color_selector"
-            android:backgroundTint="@color/template_bgpink" />
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanumsquare_acr"
+            android:text="메모지 배경색을 선택하세요"
+            android:textColor="@color/text_color"
+            android:textSize="18dp" />
+
 
         <ImageButton
             android:id="@+id/btn_bgyellow"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_below="@+id/textView17"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_bgyellow" />
+
+        <ImageButton
+            android:id="@+id/btn_bgpink"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@+id/btn_bgyellow"
             android:layout_marginStart="20dp"
-            android:layout_toEndOf="@+id/btn_bgpink"
-            android:background="@drawable/ic_color_selector"
-            android:backgroundTint="@color/template_bgyellow" />
+            android:layout_toEndOf="@+id/btn_bgyellow"
+            android:background="@drawable/ic_bgpink"/>
 
         <ImageButton
             android:id="@+id/btn_bgmint"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_alignTop="@+id/btn_bgyellow"
             android:layout_marginStart="20dp"
-            android:layout_toEndOf="@+id/btn_bgyellow"
-            android:background="@drawable/ic_color_selector"
-            android:backgroundTint="@color/template_bgmint" />
+            android:layout_toEndOf="@+id/btn_bgpink"
+            android:background="@drawable/ic_bgmint"/>
 
         <ImageButton
             android:id="@+id/btn_bgsky"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_alignTop="@+id/btn_bgyellow"
             android:layout_marginStart="20dp"
             android:layout_toEndOf="@+id/btn_bgmint"
-            android:background="@drawable/ic_color_selector"
-            android:backgroundTint="@color/template_bgsky" />
+            android:background="@drawable/ic_bgsky"/>
 
         <ImageButton
             android:id="@+id/btn_bggray"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_alignTop="@+id/btn_bgyellow"
             android:layout_marginStart="20dp"
             android:layout_toEndOf="@+id/btn_bgsky"
-            android:background="@drawable/ic_color_selector"
-            android:backgroundTint="@color/template_bggray" />
+            android:background="@drawable/ic_bggray"/>
 
     </RelativeLayout>
 

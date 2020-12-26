@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/template_border_style">
+    android:background="@drawable/template_style">
 
     <TextView
         android:id="@+id/textView"
@@ -25,6 +25,7 @@
         android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:fontFamily="@font/sdkukdetopokki_b"
         android:text="2020-11-30"
@@ -38,7 +39,7 @@
         android:id="@+id/todo_rcview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

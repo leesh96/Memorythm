@@ -18,7 +18,7 @@
             android:id="@+id/btn_back"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="20dp"
             android:background="@drawable/left"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,20 +28,40 @@
             android:id="@+id/btn_save"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginEnd="40dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/save"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_delete"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btn_delete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/delete"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btn_fixed"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/fixed_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_save"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/btn_selColor"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginEnd="40dp"
-            android:background="@drawable/ic_color_selector"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/ic_bgyellow"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_save"
+            app:layout_constraintEnd_toStartOf="@+id/btn_fixed"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -54,7 +74,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout1"
-        android:layout_margin="10dp">
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
 
     </FrameLayout>
 

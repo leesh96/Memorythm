@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="350dp"
     android:layout_height="620dp"
-    android:background="@drawable/template_border_style"
+    android:background="@drawable/template_style"
     android:padding="2dp">
 
     <TextView
@@ -61,7 +61,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edittext_border_style"
+                android:background="@drawable/edittext_style"
                 android:hint="목표를 입력해주세요!"
                 android:textSize="15dp"
                 android:layout_gravity="center"
@@ -418,7 +418,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edittext_border_style"
+                android:background="@drawable/edittext_style"
                 android:fontFamily="@font/nanumsquare_acl"
                 android:gravity="top"
                 android:inputType="textMultiLine"

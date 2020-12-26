@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"></activity>
-        <activity android:name=".WriteActivity"></activity> <!-- WriteActivity 추가 -->
+        <activity android:name=".MemoViewActivity"></activity> <!-- MemoViewActivity 추가 -->
     </application>
 
 </manifest>

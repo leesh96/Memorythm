@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="350dp"
     android:layout_height="620dp"
-    android:background="@drawable/template_border_style"
+    android:background="@drawable/template_style"
     android:padding="2dp">
 
     <TextView
@@ -188,7 +188,7 @@
                     android:textSize="14dp"
                     android:lineSpacingMultiplier="1"
                     android:fontFamily="@font/nanumsquare_acl"
-                    android:background="@drawable/edittext_border_style"
+                    android:background="@drawable/edittext_style"
                     />
             </TableRow>
             <TextView
@@ -244,7 +244,7 @@
                     android:textSize="14dp"
                     android:lineSpacingMultiplier="1"
                     android:fontFamily="@font/nanumsquare_acl"
-                    android:background="@drawable/edittext_border_style"
+                    android:background="@drawable/edittext_style"
                     />
             </TableRow>
             <TextView
@@ -293,7 +293,7 @@
                     android:textSize="14dp"
                     android:lineSpacingMultiplier="1"
                     android:fontFamily="@font/nanumsquare_acl"
-                    android:background="@drawable/edittext_border_style"
+                    android:background="@drawable/edittext_style"
                     />
             </TableRow>
             <TextView
@@ -349,7 +349,7 @@
                     android:textSize="14dp"
                     android:lineSpacingMultiplier="1"
                     android:fontFamily="@font/nanumsquare_acl"
-                    android:background="@drawable/edittext_border_style"
+                    android:background="@drawable/edittext_style"
                     />
             </TableRow>
             <TextView
@@ -433,7 +433,7 @@
                         android:layout_width="220dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/edittext_border_style"
+                        android:background="@drawable/edittext_style"
                         android:fontFamily="@font/nanumsquare_acl"
                         android:gravity="top"
                         android:inputType="textMultiLine"
@@ -472,7 +472,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/edittext_border_style"
+                        android:background="@drawable/edittext_style"
                         android:fontFamily="@font/nanumsquare_acl"
                         android:gravity="top"
                         android:inputType="textMultiLine"

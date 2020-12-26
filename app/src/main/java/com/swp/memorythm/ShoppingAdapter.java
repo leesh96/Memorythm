@@ -42,7 +42,7 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
             super(view);
             mView = view;
 
-            this.shoppingCheckBox = (CheckBox) view.findViewById(R.id.item_checkbox);
+            this.shoppingCheckBox = view.findViewById(R.id.item_checkbox);
             this.textViewShopping = view.findViewById(R.id.item_content);
             this.textViewAmount = view.findViewById(R.id.item_amount);
 
@@ -72,7 +72,7 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         viewHolder.shoppingCheckBox.setChecked(mArrayList.get(position).isBought());
         viewHolder.textViewShopping.setText(mArrayList.get(position).getContent());
-        viewHolder.textViewAmount.setText(mArrayList.get(position).getAmount());
+        viewHolder.textViewAmount.setText(Integer.toString(mArrayList.get(position).getAmount()));
 
         viewHolder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
