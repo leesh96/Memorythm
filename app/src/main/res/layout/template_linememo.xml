@@ -10,7 +10,7 @@
     android:paddingBottom="30dp">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/sdkukdetopokki_b"
@@ -33,7 +33,7 @@
         android:textColor="@color/text_color"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
     <com.swp.memorythm.LinedEditText
         android:id="@+id/memo_content"

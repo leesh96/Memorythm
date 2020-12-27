@@ -1,7 +1,6 @@
 package com.swp.memorythm;
 
 import android.Manifest;
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,7 +64,7 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
-                intent = new Intent(LoadingActivity.this, MainActivity.class);
+                intent = new Intent(LoadingActivity.this, MemoViewActivity.class);
                 startActivity(intent);
                 finish();
             }

@@ -110,6 +110,7 @@ public class WishFragment extends Fragment {
 
         // 리사이클러뷰 설정
         wishRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        wishRecyclerView.setHasFixedSize(true);
         mArrayList = new ArrayList<>();
         mAdapter = new WishAdapter(getActivity(), mArrayList);
         wishRecyclerView.setAdapter(mAdapter);

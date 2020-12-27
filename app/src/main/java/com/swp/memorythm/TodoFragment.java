@@ -41,6 +41,7 @@ public class TodoFragment extends Fragment {
 
         // 리사이클러뷰 설정
         todoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        todoRecyclerView.setHasFixedSize(true);
         mArrayList = new ArrayList<>();
         mAdapter = new TodoAdapter(getActivity(), mArrayList);
         todoRecyclerView.setAdapter(mAdapter);

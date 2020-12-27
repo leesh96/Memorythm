@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
@@ -11,23 +13,28 @@
         android:id="@+id/item_checkbox"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_gravity="center_vertical"
-        android:checked="false"
+        android:background="@drawable/custom_checkbox"
         android:button="@android:color/transparent"
-        android:background="@drawable/custom_checkbox"/>
+        android:checked="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/item_content"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:clickable="true"
-        android:textSize="12dp"
-        android:textColor="@color/text_color"
+        android:background="@android:color/transparent"
         android:padding="2dp"
+        android:clickable="true"
         android:fontFamily="@font/nanumsquare_acr"
-        android:background="@android:color/transparent"/>
+        android:textColor="@color/text_color"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/item_checkbox"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
