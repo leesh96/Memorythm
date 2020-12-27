@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "151915700519",
+    "project_id": "memorythm",
+    "storage_bucket": "memorythm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:151915700519:android:e0a4503e185d21b313c902",
+        "android_client_info": {
+          "package_name": "com.swp.memorythm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "151915700519-97cqd9o5qml39nhgm4rin5h3tg2vl4qt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.swp.memorythm",
+            "certificate_hash": "7937c493bcf62fda3dbc1bdb19f3265fcaec4fbe"
+          }
+        },
+        {
+          "client_id": "151915700519-79ssc5l833vrrnvqf31mer653hn40483.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGjcmuc3dl9fADhPo2iaWpdVN1YIAwwO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "151915700519-79ssc5l833vrrnvqf31mer653hn40483.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
