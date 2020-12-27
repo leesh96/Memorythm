@@ -1,16 +1,16 @@
 package com.swp.memorythm;
 
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -18,22 +18,26 @@ public class MemoViewActivity extends AppCompatActivity {
     private FragmentManager fm;
     private FragmentTransaction ft;
 
-    private ImageButton btnBack, btnSave, btnSelcolor;
+    private ImageButton btnBack, btnSelcolor, btnSave, btnDelete;
+    private CheckBox checkBoxFixed;
     private FrameLayout template_frame;
 
     private String TemplateCase;
+    private boolean isMemoFixed;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_write);
+        setContentView(R.layout.activity_memoview);
 
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
 
         btnBack = findViewById(R.id.btn_back);
-        btnSave = findViewById(R.id.btn_save);
         btnSelcolor = findViewById(R.id.btn_selColor);
+        btnSave = findViewById(R.id.btn_save);
+        btnDelete = findViewById(R.id.btn_delete);
+        checkBoxFixed = findViewById(R.id.checkbox_fixed);
         template_frame = findViewById(R.id.template_frame);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -43,7 +47,7 @@ public class MemoViewActivity extends AppCompatActivity {
             }
         });
 
-        // 템플릿 종류 intent로 넘겨서 받아오기
+        // 메모지 템플릿 종류 intent로 넘겨서 받아오기
         TemplateCase = "shoppinglist";
 
         switch (TemplateCase) {
@@ -70,9 +74,8 @@ public class MemoViewActivity extends AppCompatActivity {
                 break;
         }
 
-        btnSelcolor.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_bgyellow));
-        GradientDrawable gradientDrawable = (GradientDrawable) ContextCompat.getDrawable(getBaseContext(), R.drawable.template_style);
-        gradientDrawable.setColor(ContextCompat.getColor(getBaseContext(), R.color.template_bgyellow));
+        btnSelcolor.setBackgroundResource(R.drawable.ic_bgyellow);
+        template_frame.setBackgroundResource(R.drawable.template_style_bgyellow);
 
         // 색상변경 다이얼로그
         btnSelcolor.setOnClickListener(new View.OnClickListener() {
@@ -85,8 +88,8 @@ public class MemoViewActivity extends AppCompatActivity {
 
                 ImageButton btnPink, btnYellow, btnMint, btnSky, btnGray;
 
-                btnPink = dialogView.findViewById(R.id.btn_bgyellow);
                 btnYellow = dialogView.findViewById(R.id.btn_bgyellow);
+                btnPink = dialogView.findViewById(R.id.btn_bgpink);
                 btnMint = dialogView.findViewById(R.id.btn_bgmint);
                 btnSky = dialogView.findViewById(R.id.btn_bgsky);
                 btnGray = dialogView.findViewById(R.id.btn_bggray);
@@ -94,47 +97,79 @@ public class MemoViewActivity extends AppCompatActivity {
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
 
-                btnPink.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                });
-
                 btnYellow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        btnSelcolor.setBackgroundResource(R.drawable.ic_bgyellow);
+                        template_frame.setBackgroundResource(R.drawable.template_style_bgyellow);
 
+                        alertDialog.dismiss();
+                    }
+                });
+
+                btnPink.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        btnSelcolor.setBackgroundResource(R.drawable.ic_bgpink);
+                        template_frame.setBackgroundResource(R.drawable.template_style_bgpink);
+
+                        alertDialog.dismiss();
                     }
                 });
 
                 btnMint.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        btnSelcolor.setBackgroundResource(R.drawable.ic_bgmint);
+                        template_frame.setBackgroundResource(R.drawable.template_style_bgmint);
 
+                        alertDialog.dismiss();
                     }
                 });
 
                 btnSky.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        btnSelcolor.setBackgroundResource(R.drawable.ic_bgsky);
+                        template_frame.setBackgroundResource(R.drawable.template_style_bgsky);
 
+                        alertDialog.dismiss();
                     }
                 });
 
                 btnGray.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        btnSelcolor.setBackgroundResource(R.drawable.ic_bggray);
+                        template_frame.setBackgroundResource(R.drawable.template_style_bggray);
 
+                        alertDialog.dismiss();
                     }
                 });
+            }
+        });
+
+        // 메모지 고정 여부 DB에서 받아오기
+        isMemoFixed = false;
+        checkBoxFixed.setChecked(isMemoFixed);
+        checkBoxFixed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                isMemoFixed = b;
             }
         });
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: 2020-11-23 템플릿 저장 방법
+                // TODO: 2020-11-23 메모지 저장 방법
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: 2020-12-27 메모지 삭제 방법
             }
         });
     }
