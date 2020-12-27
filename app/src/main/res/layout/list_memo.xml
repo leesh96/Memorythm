@@ -9,14 +9,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <TextView
-            android:id="@+id/memoTopName"
+        <CheckBox
+            android:id="@+id/memoCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_gravity="center_vertical"
+            android:checked="false"
+            android:visibility="visible"/>
+        <TextView
+            android:id="@+id/memoName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:text="메모"
             android:layout_gravity="center"
-            android:textSize="18dp"
+            android:textSize="16dp"
             android:fontFamily="@font/nanumsquare_acl"
             android:textColor="@color/black"/>
         <TextView
@@ -24,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2020-11-30"
-            android:layout_marginLeft="250dp"
+            android:layout_marginLeft="220dp"
             android:layout_gravity="center"
             android:fontFamily="@font/nanumsquare_acl"
             android:textColor="@color/black"/>

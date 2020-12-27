@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +21,7 @@ public class MemoListFragment extends Fragment {
     private ArrayList<TopMemoData> listTopMemo;
     private MemoListAdapter memoListAdapter;
     private MemoTopListAdapter memoTopListAdapter;
+    private ImageButton btnDelete;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,13 +36,25 @@ public class MemoListFragment extends Fragment {
         topRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         memoTopListAdapter = new MemoTopListAdapter(getContext(),listTopMemo);
         topRecyclerView.setAdapter(memoTopListAdapter);
+        //삭제버튼
+        btnDelete = (ImageButton)view.findViewById(R.id.memoDelBtn);
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if((memoListAdapter.removeItems() || memoTopListAdapter.removeItems())&&(memoTopListAdapter.removeItems() || memoListAdapter.removeItems())){
+                    Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         return view;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //위에 3개 부분
+        //가운데 부분
         listMemo = new ArrayList<>();
         listMemo.add(new MemoData("메모1","2020-11-30"));
         listMemo.add(new MemoData("메모2","2020-11-30"));
@@ -52,19 +67,4 @@ public class MemoListFragment extends Fragment {
         listTopMemo.add(new TopMemoData("무지메모3"));
     }
 }
-// 위에 3개 부분 데이터 클래스
-class TopMemoData{
-    String topMemoTitle;
 
-    public TopMemoData(String topMemoTitle) {
-        this.topMemoTitle = topMemoTitle;
-    }
-
-    public String getTopMemoTitle() {
-        return topMemoTitle;
-    }
-
-    public void setTopMemoTitle(String topMemoTitle) {
-        this.topMemoTitle = topMemoTitle;
-    }
-}

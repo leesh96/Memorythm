@@ -1,7 +1,5 @@
 package com.swp.memorythm;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -12,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
     private ArrayList<Folder> listFolder;
     private FolderFragAdapter folderFragAdapter;
 
-    private ImageButton addBtn, deletBtn;
+    private ImageButton addBtn, deleteBtn;
 
 
     @Override
@@ -43,9 +43,12 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
         addBtn = (ImageButton)view.findViewById(R.id.addFolderBtn);
         addBtn.setOnClickListener(this);
         //삭제 버튼
-        deletBtn = (ImageButton)view.findViewById(R.id.deleteFolderBtn);
-        deletBtn.setOnClickListener(this);
+        deleteBtn = (ImageButton)view.findViewById(R.id.deleteFolderBtn);
+        deleteBtn.setOnClickListener(this);
 
+        //아이템 갱신
+        folderFragAdapter.setItems(listFolder);
+        folderFragAdapter.notifyDataSetChanged();
         return view;
     }
 
@@ -81,6 +84,14 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
                 break;
             //삭제 기능 구현하기
             case R.id.deleteFolderBtn:
+
+                if(folderFragAdapter.removeItems()){
+                    Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
 //                int btnPosition = (int)view.getTag();
 //                listFolder.remove(btnPosition);
 

@@ -28,6 +28,14 @@
             android:textSize="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="70dp"/>
+        <CheckBox
+            android:id="@+id/folderCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="110dp"
+            android:checked="false"
+            android:visibility="visible"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,5 +63,7 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="6dp"/>
         </RelativeLayout>
+
+
     </androidx.cardview.widget.CardView>
 </LinearLayout>

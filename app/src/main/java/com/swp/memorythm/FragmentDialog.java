@@ -14,14 +14,14 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // 프레그먼트 위에 다이얼로그 띄우기
 public class FragmentDialog extends DialogFragment implements View.OnClickListener {
     FolderDialogResult folderDialogResult;
     private Fragment fragment;
     private EditText editTextFolderName;
-    private ArrayList<Folder> listFolder;
-    private FolderFragAdapter folderFragAdapter;
+
 
     public FragmentDialog() {
     }
@@ -33,7 +33,6 @@ public class FragmentDialog extends DialogFragment implements View.OnClickListen
         Bundle args = getArguments();
         String value = args.getString("key");
         fragment = getActivity().getSupportFragmentManager().findFragmentByTag("tag");
-        listFolder = new ArrayList<>();
         Button addButton = (Button)view.findViewById(R.id.folderAddBtn);
         addButton.setOnClickListener(this);
         Button cancelButton = (Button)view.findViewById(R.id.folderCancelBtn);
