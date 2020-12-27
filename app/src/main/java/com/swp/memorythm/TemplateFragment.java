@@ -42,10 +42,15 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 
         listTemplate = new ArrayList<>();
-        listTemplate.add(new Template("무지 메모",1));
-        listTemplate.add(new Template("메모 (줄)",0));
-        listTemplate.add(new Template("메모 (방안)",1));
-        listTemplate.add(new Template("TODO LIST",0));
+        listTemplate.add(new Template("무지 메모","0"));
+        listTemplate.add(new Template("메모 (줄)","0"));
+        listTemplate.add(new Template("메모 (방안)","0"));
+        listTemplate.add(new Template("TODO LIST","0"));
+        listTemplate.add(new Template("WISH LIST","0"));
+        listTemplate.add(new Template("SHOPPING LIST","0"));
+        listTemplate.add(new Template("Review LIST","0"));
+        listTemplate.add(new Template("Health Tracker","0"));
+        listTemplate.add(new Template("Study Tracker","0"));
     }
 
     @Override

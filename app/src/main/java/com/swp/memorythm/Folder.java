@@ -2,12 +2,12 @@ package com.swp.memorythm;
 
 public class Folder {
     private String title;
-    private int num;
+    private String num;
 
     public Folder() {
     }
 
-    public Folder(String title, int num) {
+    public Folder(String title, String num) {
         this.title = title;
         this.num = num;
     }
@@ -16,7 +16,7 @@ public class Folder {
         return title;
     }
 
-    public int getNum() {
+    public String getNum() {
         return num;
     }
 
@@ -24,7 +24,7 @@ public class Folder {
         this.title = title;
     }
 
-    public void setNum(int num) {
+    public void setNum(String num) {
         this.num = num;
     }
 }

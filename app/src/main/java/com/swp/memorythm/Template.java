@@ -2,12 +2,9 @@ package com.swp.memorythm;
 
 public class Template {
     private String title;
-    private int num;
+    private String num;
 
-    public Template() {
-    }
-
-    public Template(String title, int num) {
+    public Template(String title, String num) {
         this.title = title;
         this.num = num;
     }
@@ -20,11 +17,11 @@ public class Template {
         this.title = title;
     }
 
-    public int getNum() {
+    public String getNum() {
         return num;
     }
 
-    public void setNum(int num) {
+    public void setNum(String num) {
         this.num = num;
     }
 }
