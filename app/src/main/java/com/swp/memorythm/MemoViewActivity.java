@@ -1,5 +1,8 @@
 package com.swp.memorythm;
 
+import androidx.fragment.app.Fragment;
+
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,13 +28,14 @@ public class MemoViewActivity extends AppCompatActivity {
     private String TemplateCase;
     private boolean isMemoFixed;
 
+    // 메모 보는거면 intent에 ViewMode로, 메모 새로만들기면 intent에 WriteMode로 넘기기
+    private boolean isViewMode;
+    private boolean isWriteMode;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memoview);
-
-        fm = getSupportFragmentManager();
-        ft = fm.beginTransaction();
 
         btnBack = findViewById(R.id.btn_back);
         btnSelcolor = findViewById(R.id.btn_selColor);
@@ -40,6 +44,7 @@ public class MemoViewActivity extends AppCompatActivity {
         checkBoxFixed = findViewById(R.id.checkbox_fixed);
         template_frame = findViewById(R.id.template_frame);
 
+        // 뒤로가기
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,9 +52,11 @@ public class MemoViewActivity extends AppCompatActivity {
             }
         });
 
+        fm = getSupportFragmentManager();
+        ft = fm.beginTransaction();
+
         // 메모지 템플릿 종류 intent로 넘겨서 받아오기
         TemplateCase = "shoppinglist";
-
         switch (TemplateCase) {
             // TODO: 2020-11-20 템플릿 케이스 별로 프래그먼트 다르게 띄우기
             case "nonlinememo":
@@ -162,14 +169,44 @@ public class MemoViewActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: 2020-11-23 메모지 저장 방법
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.template_frame);      // 현재 보여지는 프래그먼트 가져오기
+                // 프래그먼트 구분
+                // 각 프래그먼트마다 파이어베이스에 저장하는 함수 만들어놓고 아래 처럼 호출
+                if (fragment instanceof ShoppingFragment) {
+                    ((ShoppingFragment) fragment).testSome();
+                }
+
+                if (isViewMode) {
+                    // 메모 수정 내용 저장
+                }
+                if (isWriteMode) {
+                    // 새 메모 저장
+                }
             }
         });
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: 2020-12-27 메모지 삭제 방법
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.template_frame);      // 현재 보여지는 프래그먼트 가져오기
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                alert.setMessage("이 메모를 삭제하시겠습니까?");
+                alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        // 서버에 메모 삭제 여부 on으로 표시 (휴지통으로 옮겨짐) 프래그먼트에서 removeitem 다이얼로그 끄고 액티비티 종료
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+                alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
             }
         });
     }

@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -129,13 +130,11 @@ public class ShoppingFragment extends Fragment {
                             alert.setMessage("수량을 입력하세요!");
                             alert.show();
                         } else {
-                            int amount = Integer.parseInt(ShoppingAmount);
-
                             ShoppingData shoppingData = new ShoppingData();
 
                             shoppingData.setBought(false);
                             shoppingData.setContent(ShoppingContent);
-                            shoppingData.setAmount(amount);
+                            shoppingData.setAmount(ShoppingAmount);
 
                             mArrayList.add(shoppingData);
                             mAdapter.notifyDataSetChanged();
@@ -155,5 +154,9 @@ public class ShoppingFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    void testSome() {
+        Toast.makeText(getContext(), "성공", Toast.LENGTH_SHORT).show();
     }
 }

@@ -3,7 +3,7 @@ package com.swp.memorythm;
 public class ShoppingData {
     private boolean isBought;
     private String content;
-    private int amount;
+    private String amount;
 
     public boolean isBought() {
         return isBought;
@@ -21,11 +21,11 @@ public class ShoppingData {
         this.content = content;
     }
 
-    public int getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 }
