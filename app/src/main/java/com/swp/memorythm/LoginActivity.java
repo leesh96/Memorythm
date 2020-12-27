@@ -62,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
 
     //로그인하는 함수?
     private void signIn() {
+        mGoogleSignInClient.signOut();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
