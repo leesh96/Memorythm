@@ -2,6 +2,7 @@ package com.swp.memorythm;
 
 import androidx.appcompat.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +75,7 @@ public class ShoppingFragment extends Fragment {
 
         // 리사이클러뷰 설정
         shoppingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        shoppingRecyclerView.setHasFixedSize(true);
         mArrayList = new ArrayList<>();
         mAdapter = new ShoppingAdapter(getActivity(), mArrayList);
         shoppingRecyclerView.setAdapter(mAdapter);
@@ -104,18 +106,42 @@ public class ShoppingFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         String ShoppingContent = editTextShopping.getText().toString();
-                        int amount = Integer.parseInt(editTextAmount.getText().toString());
+                        String ShoppingAmount = editTextAmount.getText().toString();
 
-                        ShoppingData shoppingData = new ShoppingData();
+                        if (ShoppingContent.equals("") | ShoppingContent == null) {
+                            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                            alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int i) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            alert.setMessage("사야할 물건을 입력하세요!");
+                            alert.show();
+                        } else if (ShoppingAmount.equals("") | ShoppingAmount == null) {
+                            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                            alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int i) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            alert.setMessage("수량을 입력하세요!");
+                            alert.show();
+                        } else {
+                            int amount = Integer.parseInt(ShoppingAmount);
 
-                        shoppingData.setBought(false);
-                        shoppingData.setContent(ShoppingContent);
-                        shoppingData.setAmount(amount);
+                            ShoppingData shoppingData = new ShoppingData();
 
-                        mArrayList.add(shoppingData);
-                        mAdapter.notifyDataSetChanged();
+                            shoppingData.setBought(false);
+                            shoppingData.setContent(ShoppingContent);
+                            shoppingData.setAmount(amount);
 
-                        alertDialog.dismiss();
+                            mArrayList.add(shoppingData);
+                            mAdapter.notifyDataSetChanged();
+
+                            alertDialog.dismiss();
+                        }
                     }
                 });
 

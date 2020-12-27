@@ -1,5 +1,6 @@
 package com.swp.memorythm;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,7 @@ public class WishFragment extends Fragment {
     private ImageButton btnAdd;
     private ArrayList<WishData> mArrayList;
     private WishAdapter mAdapter;
-    private int category;
+    private int category = 0;
 
     public static WishFragment newInstance() { return new WishFragment(); }
 
@@ -52,7 +53,7 @@ public class WishFragment extends Fragment {
         textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
 
         // 카테고리 설정
-        changeCategory(0);
+        changeCategory(category);
         activityCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,9 +130,9 @@ public class WishFragment extends Fragment {
                 EditText editTextWish;
                 Button btnApply, btnCancel;
 
-                editTextWish = (EditText) dialogView.findViewById(R.id.et_wish);
-                btnApply = (Button) dialogView.findViewById(R.id.btn_apply);
-                btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
+                editTextWish = dialogView.findViewById(R.id.et_wish);
+                btnApply = dialogView.findViewById(R.id.btn_apply);
+                btnCancel = dialogView.findViewById(R.id.btn_cancel);
 
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
@@ -141,15 +142,27 @@ public class WishFragment extends Fragment {
                     public void onClick(View view) {
                         String WishContent = editTextWish.getText().toString();
 
-                        WishData wishData = new WishData();
+                        if (WishContent.equals("") | WishContent == null) {
+                            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                            alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int i) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            alert.setMessage("위시리스트를 입력하세요!");
+                            alert.show();
+                        } else {
+                            WishData wishData = new WishData();
 
-                        wishData.setWished(false);
-                        wishData.setContent(WishContent);
+                            wishData.setWished(false);
+                            wishData.setContent(WishContent);
 
-                        mArrayList.add(wishData);
-                        mAdapter.notifyDataSetChanged();
+                            mArrayList.add(wishData);
+                            mAdapter.notifyDataSetChanged();
 
-                        alertDialog.dismiss();
+                            alertDialog.dismiss();
+                        }
                     }
                 });
 

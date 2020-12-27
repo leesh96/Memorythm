@@ -16,16 +16,6 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
     private ArrayList<ShoppingData> mArrayList = null;
     private Activity context = null;
 
-    public interface OnItemClickListener {
-        void onItemClick(View v, int pos);
-    }
-
-    private ShoppingAdapter.OnItemClickListener mListener = null;
-
-    public void setOnItemClickListener (ShoppingAdapter.OnItemClickListener listener) {
-        this.mListener = listener;
-    }
-
     public ShoppingAdapter(Activity context, ArrayList<ShoppingData> list) {
         this.context = context;
         this.mArrayList = list;
@@ -45,16 +35,6 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
             this.shoppingCheckBox = view.findViewById(R.id.item_checkbox);
             this.textViewShopping = view.findViewById(R.id.item_content);
             this.textViewAmount = view.findViewById(R.id.item_amount);
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int pos = getAdapterPosition();
-                    if (pos != RecyclerView.NO_POSITION) {
-                        if (mListener != null) mListener.onItemClick(view, pos);
-                    }
-                }
-            });
         }
     }
 
@@ -72,14 +52,7 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         viewHolder.shoppingCheckBox.setChecked(mArrayList.get(position).isBought());
         viewHolder.textViewShopping.setText(mArrayList.get(position).getContent());
-        viewHolder.textViewAmount.setText(Integer.toString(mArrayList.get(position).getAmount()));
-
-        viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        viewHolder.textViewAmount.setText(mArrayList.get(position).getAmount());
     }
 
     @Override

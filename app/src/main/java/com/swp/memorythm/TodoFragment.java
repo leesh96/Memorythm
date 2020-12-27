@@ -1,5 +1,6 @@
 package com.swp.memorythm;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,15 +73,28 @@ public class TodoFragment extends Fragment {
                     public void onClick(View view) {
                         String TodoContent = editTextTodo.getText().toString();
 
-                        TodoData todoData = new TodoData();
+                        // 빈 입력 예외처리
+                       if (TodoContent.equals("") | TodoContent == null) {
+                            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                            alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int i) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            alert.setMessage("할 일을 입력하세요!");
+                            alert.show();
+                        } else {
+                            TodoData todoData = new TodoData();
 
-                        todoData.setDone(false);
-                        todoData.setContent(TodoContent);
+                            todoData.setDone(false);
+                            todoData.setContent(TodoContent);
 
-                        mArrayList.add(todoData);
-                        mAdapter.notifyDataSetChanged();
+                            mArrayList.add(todoData);
+                            mAdapter.notifyDataSetChanged();
 
-                        alertDialog.dismiss();
+                            alertDialog.dismiss();
+                        }
                     }
                 });
 

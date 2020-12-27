@@ -16,16 +16,6 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.ViewHolder> {
     private ArrayList<WishData> mArrayList = null;
     private Activity context = null;
 
-    public interface OnItemClickListener {
-        void onItemClick(View v, int pos);
-    }
-
-    private WishAdapter.OnItemClickListener mListener = null;
-
-    public void setOnItemClickListener (WishAdapter.OnItemClickListener listener) {
-        this.mListener = listener;
-    }
-
     public WishAdapter(Activity context, ArrayList<WishData> list) {
         this.context = context;
         this.mArrayList = list;
@@ -42,18 +32,8 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.ViewHolder> {
             super(view);
             mView = view;
 
-            this.wishCheckBox = (CheckBox) view.findViewById(R.id.item_checkbox);
-            this.textViewWish = (TextView) view.findViewById(R.id.item_content);
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int pos = getAdapterPosition();
-                    if (pos != RecyclerView.NO_POSITION) {
-                        if (mListener != null) mListener.onItemClick(view, pos);
-                    }
-                }
-            });
+            this.wishCheckBox = view.findViewById(R.id.item_checkbox);
+            this.textViewWish = view.findViewById(R.id.item_content);
         }
     }
 
@@ -70,13 +50,6 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         viewHolder.wishCheckBox.setChecked(mArrayList.get(position).isWished());
         viewHolder.textViewWish.setText(mArrayList.get(position).getContent());
-
-        viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
     }
 
     @Override

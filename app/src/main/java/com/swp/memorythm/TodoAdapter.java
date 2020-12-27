@@ -1,7 +1,6 @@
 package com.swp.memorythm;
 
 import android.app.Activity;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +15,6 @@ import java.util.ArrayList;
 public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
     private ArrayList<TodoData> mArrayList = null;
     private Activity context = null;
-
-    public interface OnItemClickListener {
-        void onItemClick(View v, int pos);
-    }
-
-    private OnItemClickListener mListener = null;
-
-    public void setOnItemClickListener (OnItemClickListener listener) {
-        this.mListener = listener;
-    }
 
     public TodoAdapter(Activity context, ArrayList<TodoData> list) {
         this.context = context;
@@ -43,18 +32,8 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
             super(view);
             mView = view;
 
-            this.todoCheckBox = (CheckBox) view.findViewById(R.id.item_checkbox);
-            this.textViewTodo = (TextView) view.findViewById(R.id.item_content);
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int pos = getAdapterPosition();
-                    if (pos != RecyclerView.NO_POSITION) {
-                        if (mListener != null) mListener.onItemClick(view, pos);
-                    }
-                }
-            });
+            this.todoCheckBox = view.findViewById(R.id.item_checkbox);
+            this.textViewTodo = view.findViewById(R.id.item_content);
         }
     }
 
@@ -72,13 +51,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         viewHolder.todoCheckBox.setChecked(mArrayList.get(position).isDone());
         viewHolder.textViewTodo.setText(mArrayList.get(position).getContent());
-
-        viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
     }
 
     @Override
