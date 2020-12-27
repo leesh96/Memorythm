@@ -48,6 +48,9 @@ dependencies {
     //파이어베이스 연동
     implementation platform('com.google.firebase:firebase-bom:26.2.0')
     implementation 'com.google.firebase:firebase-analytics'
+    //로그인 인증
+    implementation 'com.google.firebase:firebase-auth:20.0.1'
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
 }
 //파이어 베이스 연동
 apply plugin: 'com.google.gms.google-services'
