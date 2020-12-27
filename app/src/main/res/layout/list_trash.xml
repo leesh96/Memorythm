@@ -1,29 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
-    android:background="@drawable/border_d">
-    <TextView
-        android:id="@+id/trashMemoN"
-        android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:padding="3dp">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="메모"
-        android:layout_gravity="center"
-        android:textSize="20dp"
-        android:fontFamily="@font/nanumsquare_acl"
-        android:textColor="@color/black"/>
-    <TextView
-        android:id="@+id/trashDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="2020-11-30"
-        android:layout_marginLeft="250dp"
-        android:layout_gravity="center"
-        android:fontFamily="@font/nanumsquare_acl"
-        android:textColor="@color/black"/>
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/memoTopName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="메모"
+            android:layout_gravity="center"
+            android:textSize="18dp"
+            android:fontFamily="@font/nanumsquare_acl"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/memoDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2020-11-30"
+            android:layout_marginLeft="250dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/nanumsquare_acl"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:background="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="2px" />
+    </LinearLayout>
 
 </LinearLayout>

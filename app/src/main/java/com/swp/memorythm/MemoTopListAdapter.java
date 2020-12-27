@@ -11,40 +11,40 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHolder> {
-    ArrayList<MemoData> listMemo;
-    Context memoContext;
+public class MemoTopListAdapter extends RecyclerView.Adapter<MemoTopListAdapter.ViewHolder> {
 
-    public MemoListAdapter(Context memoContext,ArrayList<MemoData> listMemo) {
-        this.listMemo = listMemo;
-        this.memoContext = memoContext;
+    Context mContext;
+    private ArrayList<TopMemoData> listTopMemo;
+
+    public MemoTopListAdapter(Context mContext, ArrayList<TopMemoData> listTopMemo) {
+        this.mContext = mContext;
+        this.listTopMemo = listTopMemo;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(memoContext).inflate(R.layout.list_memo,parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.list_memo_top,parent, false);
         ViewHolder vHolder = new ViewHolder(view);
         return vHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.titleTV.setText(listMemo.get(position).getMemoTitle());
-        holder.DateTV.setText(listMemo.get(position).getMemoDate());
+        holder.titleTV.setText(listTopMemo.get(position).getTopMemoTitle());
     }
 
     @Override
     public int getItemCount() {
-        return (null != listMemo ? listMemo.size():0);
+        return (null != listTopMemo ? listTopMemo.size():0);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTV, DateTV;
+        TextView titleTV;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.titleTV = (TextView)itemView.findViewById(R.id.memoTopName);
-            this.DateTV = (TextView)itemView.findViewById(R.id.memoDate);
         }
     }
 }

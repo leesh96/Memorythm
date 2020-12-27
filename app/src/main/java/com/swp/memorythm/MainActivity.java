@@ -4,17 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity {
+    private ViewPager viewPager;
+    private ViewPagerAdapter pagerAdapter;
     private BottomNavigationView bottomNavigationView; // 바텀네비게이션 뷰
     private FragmentManager fm;
     private FragmentTransaction ft;
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private WriteFragment writeFragment; // 작성 프레그먼트
     private TrashFragment trashFragment; // 휴지통 프레그먼트
     private SetFragment setFragment; // 설정 프레그먼트
+    private ImageButton homeBtn;
 
 
     public MainActivity() {
@@ -32,7 +36,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // 홈버튼 누르면 메인화면으로 돌아가기
+        homeBtn = (ImageButton)findViewById(R.id.homeButton);
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
+        //뷰페이저에 페이저어댑터 지정
+        viewPager = (ViewPager)findViewById(R.id.pager);
+        viewPager.setOffscreenPageLimit(3);
+        pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+/*
+        테스트
+        NonlineMemoFragment f1 = new NonlineMemoFragment();
+        pagerAdapter.addItem(f1);
+        MonthlyPlanFragment f2 = new MonthlyPlanFragment();
+        pagerAdapter.addItem(f2);
+        MonthTrackerFragment f3 = new MonthTrackerFragment();
+        pagerAdapter.addItem(f3);
+        viewPager.setAdapter(pagerAdapter);
+*/
+        //바닥네비게이션 사용
         bottomNavigationView  = findViewById(R.id.bottomNavi);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

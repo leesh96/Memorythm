@@ -46,8 +46,8 @@ public class TrashFragAdapter extends RecyclerView.Adapter<TrashFragAdapter.View
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.titleTV = (TextView)itemView.findViewById(R.id.trashMemoN);
-            this.DateTV = (TextView)itemView.findViewById(R.id.trashDate);
+            this.titleTV = (TextView)itemView.findViewById(R.id.memoTopName);
+            this.DateTV = (TextView)itemView.findViewById(R.id.memoDate);
         }
     }
 }
