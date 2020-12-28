@@ -262,4 +262,12 @@ public class MemoViewActivity extends AppCompatActivity {
             }
         });
     }
+
+    //휴대폰 버튼으로 뒤로 가기
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        finish();
+    }
 }

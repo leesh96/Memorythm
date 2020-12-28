@@ -38,253 +38,268 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
-    <androidx.core.widget.NestedScrollView
+    <TableLayout
         android:id="@+id/container_week"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="15dp"
-        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/write_date">
 
-        <LinearLayout
+        <TableRow
+            android:id="@+id/container_mon"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/layout_border_top"
+            android:orientation="vertical"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
 
-            <LinearLayout
-                android:id="@+id/container_mon"
-                android:layout_width="match_parent"
+            <CheckBox
+                android:id="@+id/checkBox_mon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/layout_border_top"
-                android:orientation="vertical"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp">
+                android:button="@null"
+                android:buttonTint="#000000"
+                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:text="월"
+                android:theme="@style/CheckTheme" />
 
-                <CheckBox
-                    android:id="@+id/checkBox_mon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:buttonTint="#000000"
-                    android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-                    android:fontFamily="@font/sdkukdetopokki_l"
-                    android:text="월"
-                    android:theme="@style/CheckTheme" />
-
-                <EditText
-                    android:id="@+id/memo_content_mon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:fontFamily="@font/nanumsquare_acr"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/container_tue"
+            <EditText
+                android:id="@+id/memo_content_mon"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:background="@drawable/layout_border_top"
-                android:orientation="vertical"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp">
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:fontFamily="@font/nanumsquare_acr"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:textSize="14sp" />
+        </TableRow>
 
-                <CheckBox
-                    android:id="@+id/checkBox_tue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:buttonTint="#000000"
-                    android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-                    android:fontFamily="@font/sdkukdetopokki_l"
-                    android:text="화"
-                    android:theme="@style/CheckTheme" />
+        <TableRow
+            android:id="@+id/container_tue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/layout_border_top"
+            android:orientation="vertical"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
 
-                <EditText
-                    android:id="@+id/memo_content_tue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:fontFamily="@font/nanumsquare_acr"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:textSize="14sp" />
-            </LinearLayout>
+            <CheckBox
+                android:id="@+id/checkBox_tue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:buttonTint="#000000"
+                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:text="화"
+                android:theme="@style/CheckTheme" />
 
-            <LinearLayout
-                android:id="@+id/container_wed"
+            <EditText
+                android:id="@+id/memo_content_tue"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:background="@drawable/layout_border_top"
-                android:orientation="vertical"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp">
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:fontFamily="@font/nanumsquare_acr"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:textSize="14sp" />
+        </TableRow>
 
-                <CheckBox
-                    android:id="@+id/checkBox_wed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:buttonTint="#000000"
-                    android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-                    android:fontFamily="@font/sdkukdetopokki_l"
-                    android:text="수"
-                    android:theme="@style/CheckTheme" />
+        <TableRow
+            android:id="@+id/container_wed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/layout_border_top"
+            android:orientation="vertical"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
 
-                <EditText
-                    android:id="@+id/memo_content_wed"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:fontFamily="@font/nanumsquare_acr"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:textSize="14sp" />
-            </LinearLayout>
+            <CheckBox
+                android:id="@+id/checkBox_wed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:buttonTint="#000000"
+                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:text="수"
+                android:theme="@style/CheckTheme" />
 
-            <LinearLayout
-                android:id="@+id/container_thu"
+            <EditText
+                android:id="@+id/memo_content_wed"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:background="@drawable/layout_border_top"
-                android:orientation="vertical"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp">
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:fontFamily="@font/nanumsquare_acr"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:textSize="14sp" />
+        </TableRow>
 
-                <CheckBox
-                    android:id="@+id/checkBox_thu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:buttonTint="#000000"
-                    android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-                    android:fontFamily="@font/sdkukdetopokki_l"
-                    android:text="목"
-                    android:theme="@style/CheckTheme" />
+        <TableRow
+            android:id="@+id/container_thu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/layout_border_top"
+            android:orientation="vertical"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
 
-                <EditText
-                    android:id="@+id/memo_content_thu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:fontFamily="@font/nanumsquare_acr"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:textSize="14sp" />
-            </LinearLayout>
+            <CheckBox
+                android:id="@+id/checkBox_thu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:buttonTint="#000000"
+                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:text="목"
+                android:theme="@style/CheckTheme" />
 
-            <LinearLayout
-                android:id="@+id/container_fri"
+            <EditText
+                android:id="@+id/memo_content_thu"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:background="@drawable/layout_border_top"
-                android:orientation="vertical"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp">
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:fontFamily="@font/nanumsquare_acr"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:textSize="14sp" />
+        </TableRow>
 
-                <CheckBox
-                    android:id="@+id/checkBox_fri"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:buttonTint="#000000"
-                    android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-                    android:fontFamily="@font/sdkukdetopokki_l"
-                    android:text="금"
-                    android:theme="@style/CheckTheme" />
+        <TableRow
+            android:id="@+id/container_fri"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/layout_border_top"
+            android:orientation="vertical"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
 
-                <EditText
-                    android:id="@+id/memo_content_fri"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:fontFamily="@font/nanumsquare_acr"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:textSize="14sp" />
-            </LinearLayout>
+            <CheckBox
+                android:id="@+id/checkBox_fri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:buttonTint="#000000"
+                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:text="금"
+                android:theme="@style/CheckTheme" />
 
-            <LinearLayout
-                android:id="@+id/container_sat"
+            <EditText
+                android:id="@+id/memo_content_fri"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:background="@drawable/layout_border_top"
-                android:orientation="vertical"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp">
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:fontFamily="@font/nanumsquare_acr"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:textSize="14sp" />
+        </TableRow>
 
-                <CheckBox
-                    android:id="@+id/checkBox_sat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:buttonTint="#000000"
-                    android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-                    android:fontFamily="@font/sdkukdetopokki_l"
-                    android:text="토"
-                    android:theme="@style/CheckTheme" />
+        <TableRow
+            android:id="@+id/container_sat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/layout_border_top"
+            android:orientation="vertical"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
 
-                <EditText
-                    android:id="@+id/memo_content_sat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:fontFamily="@font/nanumsquare_acr"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:textSize="14sp" />
-            </LinearLayout>
+            <CheckBox
+                android:id="@+id/checkBox_sat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:buttonTint="#000000"
+                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:text="토"
+                android:theme="@style/CheckTheme" />
 
-            <LinearLayout
-                android:id="@+id/container_sun"
+            <EditText
+                android:id="@+id/memo_content_sat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:background="@drawable/layout_border_top_bottom"
-                android:orientation="vertical"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp">
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:fontFamily="@font/nanumsquare_acr"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:textSize="14sp" />
+        </TableRow>
 
-                <CheckBox
-                    android:id="@+id/checkBox_sun"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:buttonTint="#000000"
-                    android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-                    android:fontFamily="@font/sdkukdetopokki_l"
-                    android:text="일"
-                    android:theme="@style/CheckTheme" />
+        <TableRow
+            android:id="@+id/container_sun"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/layout_border_top_bottom"
+            android:orientation="vertical"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
 
-                <EditText
-                    android:id="@+id/memo_content_sun"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:fontFamily="@font/nanumsquare_acr"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+            <CheckBox
+                android:id="@+id/checkBox_sun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:buttonTint="#000000"
+                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:text="일"
+                android:theme="@style/CheckTheme" />
+
+            <EditText
+                android:id="@+id/memo_content_sun"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:fontFamily="@font/nanumsquare_acr"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:textSize="14sp" />
+        </TableRow>
+
+    </TableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
