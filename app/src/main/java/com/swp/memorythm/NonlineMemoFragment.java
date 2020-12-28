@@ -13,6 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -68,5 +72,14 @@ public class NonlineMemoFragment extends Fragment {
         // TODO : 저장, 로드 방법 생각
 
         return rootView;
+    }
+
+    public void save() {
+        String Content = editTextContent.getText().toString();
+
+        String uid = FirebaseAuth.getInstance().getUid();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(uid);
+
+        databaseReference.child("nonline").child("content").push().setValue(Content);
     }
 }

@@ -56,7 +56,7 @@ public class MemoViewActivity extends AppCompatActivity {
         ft = fm.beginTransaction();
 
         // 메모지 템플릿 종류 intent로 넘겨서 받아오기
-        TemplateCase = "shoppinglist";
+        TemplateCase = "nonlinememo";
         switch (TemplateCase) {
             // TODO: 2020-11-20 템플릿 케이스 별로 프래그먼트 다르게 띄우기
             case "nonlinememo":
@@ -172,8 +172,8 @@ public class MemoViewActivity extends AppCompatActivity {
                 Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.template_frame);      // 현재 보여지는 프래그먼트 가져오기
                 // 프래그먼트 구분
                 // 각 프래그먼트마다 파이어베이스에 저장하는 함수 만들어놓고 아래 처럼 호출
-                if (fragment instanceof ShoppingFragment) {
-                    ((ShoppingFragment) fragment).testSome();
+                if (fragment instanceof NonlineMemoFragment) {
+                    ((NonlineMemoFragment) fragment).save();
                 }
 
                 if (isViewMode) {
