@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="350dp"
-    android:layout_height="620dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:padding="2dp">
 
@@ -36,8 +36,8 @@
         app:layout_constraintTop_toBottomOf="@+id/StudyTracker" />
 
     <TableLayout
-        android:layout_width="310dp"
-        android:layout_height="540dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -1810,7 +1810,7 @@
             android:layout_weight="3"
             android:padding="5dp"
             android:inputType="textMultiLine"
-            android:hint="                                Comment를 달아주세요!"
+            android:hint="Comment를 달아주세요!"
             android:gravity="top"
             android:textSize="10dp"
             android:lineSpacingMultiplier="1"

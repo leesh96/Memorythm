@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="350dp"
-    android:layout_height="620dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:padding="2dp">
 
@@ -38,8 +38,9 @@
 
     <LinearLayout
         android:id="@+id/memo_content"
-        android:layout_width="310dp"
-        android:layout_height="500dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -357,138 +358,147 @@
                 android:background="#000000"
                 android:layout_height="1dp"
                 />
-            <TableRow>
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_span="3">
-
-                    <TextView
-                        android:textColor="@color/text_color"
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/sdkukdetopokki_l"
-                        android:text="Exercise"
-                        android:textSize="15dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="4dp"
-                        app:layout_constraintStart_toEndOf="@+id/textView5"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <TextView
-                            android:id="@+id/tv_upperbody"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:text="상체"
-                            android:textSize="10dp"
-                            android:fontFamily="@font/sdkukdetopokki_l" />
-                        <TextView
-                            android:id="@+id/tv_lowerbody"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:text="하체"
-                            android:textSize="10dp"
-                            android:fontFamily="@font/sdkukdetopokki_l"/>
-                        <TextView
-                            android:id="@+id/tv_chest"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:text="가슴"
-                            android:textSize="10dp"
-                            android:fontFamily="@font/sdkukdetopokki_l"/>
-                        <TextView
-                            android:id="@+id/tv_aerobic"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:text="유산소"
-                            android:textSize="10dp"
-                            android:fontFamily="@font/sdkukdetopokki_l"/>
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/iv_health"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/icon_exerciseblank"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <EditText
-                        android:layout_width="220dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/edittext_style"
-                        android:fontFamily="@font/nanumsquare_acl"
-                        android:gravity="top"
-                        android:inputType="textMultiLine"
-                        android:lineSpacingMultiplier="1"
-                        android:padding="5dp"
-                        android:textSize="14dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView5" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </TableRow>
-            <TextView
-                android:layout_width="match_parent"
-                android:background="#000000"
-                android:layout_height="1dp"
-                />
-            <TableRow>
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_span="3">
-
-                    <TextView
-                        android:textColor="@color/text_color"
-                        android:id="@+id/textView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/sdkukdetopokki_l"
-                        android:text="Comment"
-                        android:textSize="15dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/edittext_style"
-                        android:fontFamily="@font/nanumsquare_acl"
-                        android:gravity="top"
-                        android:inputType="textMultiLine"
-                        android:lineSpacingMultiplier="1"
-                        android:padding="5dp"
-                        android:textSize="14dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView6" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </TableRow>
-            <TextView
-                android:layout_width="match_parent"
-                android:background="#000000"
-                android:layout_height="1dp"
-                />
         </TableLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_span="3">
+
+                        <TextView
+                            android:textColor="@color/text_color"
+                            android:id="@+id/textView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/sdkukdetopokki_l"
+                            android:text="Exercise"
+                            android:textSize="15dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="4dp"
+                            app:layout_constraintStart_toEndOf="@+id/textView5"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/tv_upperbody"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:text="상체"
+                                android:textSize="10dp"
+                                android:fontFamily="@font/sdkukdetopokki_l" />
+                            <TextView
+                                android:id="@+id/tv_lowerbody"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:text="하체"
+                                android:textSize="10dp"
+                                android:fontFamily="@font/sdkukdetopokki_l"/>
+                            <TextView
+                                android:id="@+id/tv_chest"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:text="가슴"
+                                android:textSize="10dp"
+                                android:fontFamily="@font/sdkukdetopokki_l"/>
+                            <TextView
+                                android:id="@+id/tv_aerobic"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:text="유산소"
+                                android:textSize="10dp"
+                                android:fontFamily="@font/sdkukdetopokki_l"/>
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_health"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/icon_exerciseblank"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <EditText
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/edittext_style"
+                            android:fontFamily="@font/nanumsquare_acl"
+                            android:gravity="top"
+                            android:inputType="textMultiLine"
+                            android:lineSpacingMultiplier="1"
+                            android:padding="5dp"
+                            android:textSize="14dp"
+                            app:layout_constraintEnd_toStartOf="@+id/iv_health"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:background="#000000"
+                        android:layout_height="1dp"
+                        />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_span="3">
+
+                        <TextView
+                            android:textColor="@color/text_color"
+                            android:id="@+id/textView6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/sdkukdetopokki_l"
+                            android:text="Comment"
+                            android:textSize="15dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/edittext_style"
+                            android:fontFamily="@font/nanumsquare_acl"
+                            android:gravity="top"
+                            android:inputType="textMultiLine"
+                            android:lineSpacingMultiplier="1"
+                            android:padding="5dp"
+                            android:textSize="14dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:background="#000000"
+                        android:layout_height="1dp"
+                        />
+                </LinearLayout>
+
+
+
+
+
 
 
     </LinearLayout>
