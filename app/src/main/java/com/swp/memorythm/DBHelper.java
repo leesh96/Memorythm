@@ -9,6 +9,21 @@ public class DBHelper extends SQLiteOpenHelper {
     //테이블 생성 쿼리들
     private static final String CREATE_TABLE_LINEMEMO = "CREATE TABLE if not exists linememo(id integer primary key autoincrement, date text, content text, fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
     private static final String CREATE_TABLE_FOLDERS = "CREATE TABLE if not exists folders(id integer primary key autoincrement);";
+    //윤경
+    private static final String CREATE_TABLE_GRIDMEMO = "CREATE TABLE if not exists gridmemo(id integer primary key autoincrement, date text, content text, fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
+    private static final String CREATE_TABLE_HEALTHTRACKER = "CREATE TABLE if not exists healthtracker(id integer primary key autoincrement, date text, " +
+            "waterCnt integer, breakfastTime text, breakfastMenu text, lunchTime text, lunchMenu text, snackMenu text, dinnerTime text, dinnerMenu text, exercise integer, exerciseContent text, comment text, " +
+            "fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
+    private static final String CREATE_TABLE_MONTHTRACKER = "CREATE TABLE if not exists monthtracker(id integer primary key autoincrement, date text, studyTimecheck text, commentAll text," +
+            "commentAM1 text, commentAM2 text, commentAM3 text, commentAM4 text, commentAM5 text, commentAM6 text, commentAM7 text, commentAM8 text, commentAM9 text, commentAM10 text, commentAM11 text, commentAM12 text, " +
+            "commentPM1 text, commentPM2 text, commentPM3 text, commentPM4 text, commentPM5 text, commentPM6 text, commentPM7 text, commentPM8 text, commentPM9 text, commentPM10 text, commentPM11 text, commentPM12 text, " +
+            "fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
+    private static final String CREATE_TABLE_STUDYTRACKER = "CREATE TABLE if not exists studytracker(id integer primary key autoincrement, date text, " +
+            "goal text, dayCheck text, commet text," +
+            "fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
+    private static final String CREATE_TABLE_REVIEW = "CREATE TABLE if not exists review(id integer primary key autoincrement, date text, " +
+            "categoryCheck integer, categoryName text, starNum integer, score integer, reviewTitle text, reviewContent text, " +
+            "fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
 
     public DBHelper(Context context) {
         super(context, "memorythm.db", null, 1);
@@ -21,6 +36,12 @@ public class DBHelper extends SQLiteOpenHelper {
         //재설치할때 테이블 있으면 삭제하고 다시 만듦
         db.execSQL("DROP TABLE IF EXISTS linememo");
         db.execSQL("DROP TABLE IF EXISTS folders");
+        //윤경
+        db.execSQL("DROP TABLE IF EXISTS gridmemo");
+        db.execSQL("DROP TABLE IF EXISTS healthtracker");
+        db.execSQL("DROP TABLE IF EXISTS monthtracker");
+        db.execSQL("DROP TABLE IF EXISTS studytracker");
+        db.execSQL("DROP TABLE IF EXISTS review");
 
         if (!db.isReadOnly()) {
             // 외래키 사용할 수 있게
@@ -30,6 +51,12 @@ public class DBHelper extends SQLiteOpenHelper {
         //쿼리 실행
         db.execSQL(CREATE_TABLE_FOLDERS);
         db.execSQL(CREATE_TABLE_LINEMEMO);
+        //윤경
+        db.execSQL(CREATE_TABLE_GRIDMEMO);
+        db.execSQL(CREATE_TABLE_HEALTHTRACKER);
+        db.execSQL(CREATE_TABLE_MONTHTRACKER);
+        db.execSQL(CREATE_TABLE_STUDYTRACKER);
+        db.execSQL(CREATE_TABLE_REVIEW);
     }
 
     @Override
@@ -37,6 +64,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE if exists linememo");
         db.execSQL("DROP TABLE if exists folders");
+        //윤경
+        db.execSQL("DROP TABLE if exists gridmemo");
+        db.execSQL("DROP TABLE if exists healthtracker");
+        db.execSQL("DROP TABLE if exists monthtracker");
+        db.execSQL("DROP TABLE if exists studytracker");
+        db.execSQL("DROP TABLE if exists review");
+
         onCreate(db);
     }
 }
