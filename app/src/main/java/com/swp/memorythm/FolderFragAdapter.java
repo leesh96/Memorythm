@@ -24,6 +24,7 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
     private ArrayList<Folder> dataFolder;
     private Map<Folder, Boolean> mCheckedMap = new HashMap<>();
     private List<Folder> mCheckedFolder = new ArrayList<>(); //체크한 항목 저장
+    public boolean isTrash = false;
 
 
     public FolderFragAdapter(Context mContext, ArrayList<Folder> listFolder) {
@@ -76,6 +77,17 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
                 notifyDataSetChanged();
             }
         });
+        //삭제
+        if(isTrash) {
+            holder.numTV.setVisibility(View.GONE);
+            holder.checkBox.setVisibility(View.VISIBLE);
+            holder.itemView.setClickable(false);
+        }
+        else {
+            holder.numTV.setVisibility(View.VISIBLE);
+            holder.checkBox.setVisibility(View.GONE);
+            holder.itemView.setClickable(true);
+        }
     }
     //getItemCount() : 전체 데이터 갯수 리턴.
     @Override
@@ -110,4 +122,7 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
     }
 
 
+    public void setVisible(boolean trash){
+        isTrash = trash;
+    }
 }

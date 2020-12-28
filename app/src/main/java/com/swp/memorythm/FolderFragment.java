@@ -22,8 +22,8 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
     private RecyclerView folderRecyclerView;
     private ArrayList<Folder> listFolder;
     private FolderFragAdapter folderFragAdapter;
-
     private ImageButton addBtn, deleteBtn;
+    private Boolean check = false;
 
 
     @Override
@@ -85,11 +85,19 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
                 break;
             //삭제 기능 구현하기
             case R.id.deleteFolderBtn:
-
-                if(folderFragAdapter.removeItems()){
-                    Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
+                if(check){
+                    if(folderFragAdapter.removeItems()){
+                        Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
+                    }
+                    folderFragAdapter.setVisible(false);
+                    folderFragAdapter.notifyDataSetChanged();
+                    check = false;
+                } else {
+                    folderFragAdapter.setVisible(true);
+                    folderFragAdapter.notifyDataSetChanged();
+                    check = true;
                 }
                 break;
 

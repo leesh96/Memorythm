@@ -11,6 +11,7 @@
         android:layout_gravity="center_horizontal"
         app:cardCornerRadius="15dp"
         app:cardUseCompatPadding="true">
+
         <ImageView
             android:id="@+id/folderImg"
             android:layout_width="wrap_content"
@@ -28,40 +29,44 @@
             android:textSize="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="70dp"/>
-        <CheckBox
-            android:id="@+id/folderCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="110dp"
-            android:checked="false"
-            android:visibility="visible"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical">
+
+            <CheckBox
+                android:id="@+id/folderCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="30dp"
+                android:checked="false"
+                android:visibility="visible" />
+
             <TextView
                 android:id="@+id/folderNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:layout_alignEnd="@+id/folderArrowBtn"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
                 android:fontFamily="@font/sdkukdetopokki_b"
+                android:text="0"
                 android:textColor="@color/text_color"
                 android:textSize="13dp"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="40dp"
-                android:layout_marginLeft="200dp"/>
+                android:visibility="visible" />
+
             <ImageView
                 android:id="@+id/folderArrowBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/folder_arrow"
                 android:layout_alignParentRight="true"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginLeft="6dp"/>
+                android:layout_marginRight="20dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/folder_arrow" />
         </RelativeLayout>
 
 
