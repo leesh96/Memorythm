@@ -21,10 +21,10 @@
         android:id="@+id/addFolderBtn"
         android:layout_width="26dp"
         android:layout_height="26dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/add"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.812"
+        app:layout_constraintHorizontal_bias="0.851"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,6 +36,7 @@
         android:layout_marginEnd="8dp"
         android:background="@drawable/delete"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.68"
         app:layout_constraintStart_toEndOf="@+id/addFolderBtn"
         app:layout_constraintTop_toTopOf="parent" />
 

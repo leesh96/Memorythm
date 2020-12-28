@@ -64,6 +64,11 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.restoreBtn:
+                if(trashAdapter.removeItems()){
+                    Toast.makeText(getContext(), "복구버튼", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getContext(), "복구할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
+                }
 
                 break;
 

@@ -7,23 +7,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".WriteFragment">
 
-<!--    <ImageView-->
-<!--        android:id="@+id/writeBg"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@drawable/folder_bg"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <ImageView
+        android:id="@+id/writeBg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/folder_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="615dp"
-        android:background="@drawable/folder_bg"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +41,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="45dp"
+                    android:layout_marginTop="30dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -65,7 +67,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="45dp"
+                    android:layout_marginTop="30dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -92,7 +94,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="25dp"
                 android:orientation="horizontal">
                 <!--gridmemo-->
                 <LinearLayout
@@ -127,12 +129,14 @@
                     android:layout_marginTop="20dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
+
                     <ImageButton
                         android:id="@+id/todoListImg"
                         android:layout_width="140dp"
                         android:layout_height="220dp"
                         android:layout_gravity="center"
                         android:background="@drawable/ic_todo" />
+
                     <TextView
                         android:id="@+id/todoList"
                         android:layout_width="wrap_content"
@@ -149,7 +153,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="25dp"
                 android:orientation="horizontal">
                 <!-- wishmemo-->
                 <LinearLayout
@@ -158,12 +162,14 @@
                     android:layout_marginTop="20dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
+
                     <ImageButton
                         android:id="@+id/wishMemoImg"
                         android:layout_width="140dp"
                         android:layout_height="220dp"
                         android:layout_gravity="center"
                         android:background="@drawable/ic_wish" />
+
                     <TextView
                         android:id="@+id/wishMemo"
                         android:layout_width="wrap_content"
@@ -206,7 +212,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="25dp"
                 android:orientation="horizontal">
                 <!-- review memo-->
                 <LinearLayout
@@ -265,7 +271,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="25dp"
                 android:orientation="horizontal">
                 <!-- studytracker-->
                 <LinearLayout
@@ -324,7 +330,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="25dp"
                 android:orientation="horizontal">
                 <!-- daily-->
                 <LinearLayout
@@ -383,7 +389,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
                 <!-- monthly plan-->

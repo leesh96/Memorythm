@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
     private TemplateFragAdapter templateFragAdapter;
     private ItemTouchHelper helper;
     private ImageButton btnRange;
+    private boolean click = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +41,7 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
         // 정렬 버튼
         btnRange = (ImageButton)view.findViewById(R.id.rangeBtn);
         btnRange.setOnClickListener(this);
+
         //ItemTouchHelper 생성
         helper = new ItemTouchHelper(new ItemTouchHelperCallback(templateFragAdapter));
         //RecyclerView에 ItemTouchHelper 붙이기
@@ -69,7 +72,13 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.rangeBtn:
-
+                if(click){
+                    templateFragAdapter.setArray(false);
+                    click = false;
+                }else{
+                    templateFragAdapter.setArray(true);
+                    click = true;
+                }
 
                 break;
         }

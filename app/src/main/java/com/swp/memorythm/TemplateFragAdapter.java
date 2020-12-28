@@ -15,6 +15,7 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
 
     Context templateContext;
     ArrayList<Template> dataTemplate = new ArrayList<>();
+    public boolean isArray = false;
 
     public TemplateFragAdapter() { }
 
@@ -38,6 +39,14 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
         holder.templateTitle.setText(dataTemplate.get(position).getTitle());
         holder.templateNum.setText(dataTemplate.get(position).getNum());
 
+        if(isArray){
+            holder.itemView.setClickable(false);
+            holder.templateNum.setVisibility(View.INVISIBLE);
+
+        }else{
+            holder.itemView.setClickable(true);
+            holder.templateNum.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -73,5 +82,8 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
             this.templateTitle = (TextView)itemView.findViewById(R.id.templateName);
             this.templateNum = (TextView)itemView.findViewById(R.id.templateNum);
         }
+    }
+    public void setArray(boolean array){
+        isArray = array;
     }
 }
