@@ -58,7 +58,6 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     //  addBtn 누르면 폴더 추가 다이얼로그 생성

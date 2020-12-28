@@ -13,9 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 // 프레그먼트 위에 다이얼로그 띄우기
 public class FragmentDialog extends DialogFragment implements View.OnClickListener {
     FolderDialogResult folderDialogResult;
@@ -29,7 +26,7 @@ public class FragmentDialog extends DialogFragment implements View.OnClickListen
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.folder_add_dialog,container,false);
+        View view = inflater.inflate(R.layout.dialog_folder_add,container,false);
         Bundle args = getArguments();
         String value = args.getString("key");
         fragment = getActivity().getSupportFragmentManager().findFragmentByTag("tag");
