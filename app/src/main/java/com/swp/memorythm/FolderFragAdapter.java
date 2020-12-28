@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.ViewHolder>{
+public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.ViewHolder> {
 
     Context mContext;
     private ArrayList<Folder> dataFolder;

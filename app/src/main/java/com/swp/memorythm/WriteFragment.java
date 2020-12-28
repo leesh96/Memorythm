@@ -1,5 +1,6 @@
 package com.swp.memorythm;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -38,98 +39,138 @@ public class WriteFragment extends Fragment {
         nolineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "무지메모", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "nonlinememo");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
             }
         });
         //줄메모
         lineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "줄메모", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "linememo");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
             }
         });
         //todolist
         todoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "todolist", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "todolist");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
             }
         });
         //grid memo
         gridBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "grid memo", Toast.LENGTH_SHORT).show();
-            }
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "gridmemo");
+                intent.putExtra("mode", "write");
+                startActivity(intent);            }
         });
         //wish list
         wishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "wish list", Toast.LENGTH_SHORT).show();
-            }
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "wishlist");
+                intent.putExtra("mode", "write");
+                startActivity(intent);            }
         });
         //shoppinglist
         shoppingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "shopping list", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "shoppinglist");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
             }
         });
         //review
         reviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "review", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "review");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
             }
         });
         //health tracker
         healthTBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "health tracker", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "healthtracker");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
             }
         });
         //study tracker
         studyTBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "study tracker", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "studytracker");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
             }
         });
         //monthly tracker
         monthlyTBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "monthly tracker", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "monthlytracker");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
             }
         });
         //daily plan
         dailyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "daily plan", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "dailyplan");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
             }
         });
         //weekly plan
         weeklyTBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "weekly plan", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "weeklyplan");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
             }
         });
         //monthly plan
         monthlyPBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "monthly plan", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "monthlyplan");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
             }
         });
         //yearly plan
         yearlyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "yearly plan", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "yearlyplan");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
             }
         });
 

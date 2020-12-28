@@ -3,6 +3,7 @@ package com.swp.memorythm;
 import androidx.fragment.app.Fragment;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Switch;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -26,11 +28,8 @@ public class MemoViewActivity extends AppCompatActivity {
     private FrameLayout template_frame;
 
     private String TemplateCase;
+    private String Mode;
     private boolean isMemoFixed;
-
-    // 메모 보는거면 intent에 ViewMode로, 메모 새로만들기면 intent에 WriteMode로 넘기기
-    private boolean isViewMode;
-    private boolean isWriteMode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,17 +54,31 @@ public class MemoViewActivity extends AppCompatActivity {
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
 
-        // 메모지 템플릿 종류 intent로 넘겨서 받아오기
-        TemplateCase = "nonlinememo";
+        // 메모지 템플릿 종류 받아오기
+        Intent intent = getIntent();
+        TemplateCase = intent.getStringExtra("template");
+        // 작성모드 or 보기모드
+        Mode = intent.getStringExtra("mode");
+
+        // 템플릿 별로 프래그먼트 다르게 띄우기
         switch (TemplateCase) {
-            // TODO: 2020-11-20 템플릿 케이스 별로 프래그먼트 다르게 띄우기
             case "nonlinememo":
                 ft.replace(R.id.template_frame, new NonlineMemoFragment());
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
+            case "linememo":
+                ft.replace(R.id.template_frame, new LineMemoFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
             case "todolist":
                 ft.replace(R.id.template_frame, new TodoFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "gridmemo":
+                ft.replace(R.id.template_frame, new GridMemoFragment());
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
@@ -76,6 +89,46 @@ public class MemoViewActivity extends AppCompatActivity {
                 break;
             case "shoppinglist":
                 ft.replace(R.id.template_frame, new ShoppingFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "review":
+                ft.replace(R.id.template_frame, new ReviewFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "healthtracker":
+                ft.replace(R.id.template_frame, new HealthTrackerFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "studytracker":
+                ft.replace(R.id.template_frame, new StudyTrackerFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "monthlytracker":
+                ft.replace(R.id.template_frame, new MonthTrackerFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "dailyplan":
+                ft.replace(R.id.template_frame, new DailyPlanFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "weeklyplan":
+                ft.replace(R.id.template_frame, new WeeklyPlanFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "monthlyplan":
+                ft.replace(R.id.template_frame, new MonthlyPlanFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "yearlyplan":
+                ft.replace(R.id.template_frame, new YearlyPlanFragment());
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
@@ -175,12 +228,11 @@ public class MemoViewActivity extends AppCompatActivity {
                 if (fragment instanceof NonlineMemoFragment) {
                     ((NonlineMemoFragment) fragment).save();
                 }
-
-                if (isViewMode) {
-                    // 메모 수정 내용 저장
-                }
-                if (isWriteMode) {
-                    // 새 메모 저장
+                switch (Mode) {
+                    case "writemode":
+                        break;
+                    case "viewmode":
+                        break;
                 }
             }
         });
