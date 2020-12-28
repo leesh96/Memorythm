@@ -20,12 +20,12 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_HEALTHTRACKER = "CREATE TABLE if not exists healthtracker(id integer primary key autoincrement, date text, " +
             "waterCnt integer, breakfastTime text, breakfastMenu text, lunchTime text, lunchMenu text, snackMenu text, dinnerTime text, dinnerMenu text, exercise integer, aerobic integer, exerciseContent text, comment text, " +
             "fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
-    private static final String CREATE_TABLE_MONTHTRACKER = "CREATE TABLE if not exists monthtracker(id integer primary key autoincrement, date text, studyTimecheck text, commentAll text," +
+    private static final String CREATE_TABLE_MONTHTRACKER = "CREATE TABLE if not exists studytracker(id integer primary key autoincrement, date text, " +
+            "goal text, dayCheck text, commet text," +
+            "fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
+    private static final String CREATE_TABLE_STUDYTRACKER = "CREATE TABLE if not exists monthtracker(id integer primary key autoincrement, date text, studyTimecheck text, commentAll text," +
             "commentAM1 text, commentAM2 text, commentAM3 text, commentAM4 text, commentAM5 text, commentAM6 text, commentAM7 text, commentAM8 text, commentAM9 text, commentAM10 text, commentAM11 text, commentAM12 text, " +
             "commentPM1 text, commentPM2 text, commentPM3 text, commentPM4 text, commentPM5 text, commentPM6 text, commentPM7 text, commentPM8 text, commentPM9 text, commentPM10 text, commentPM11 text, commentPM12 text, " +
-            "fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
-    private static final String CREATE_TABLE_STUDYTRACKER = "CREATE TABLE if not exists studytracker(id integer primary key autoincrement, date text, " +
-            "goal text, dayCheck text, commet text," +
             "fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
     private static final String CREATE_TABLE_REVIEW = "CREATE TABLE if not exists review(id integer primary key autoincrement, date text, " +
             "categoryCheck integer, categoryName text, starNum integer, score integer, reviewTitle text, reviewContent text, " +
