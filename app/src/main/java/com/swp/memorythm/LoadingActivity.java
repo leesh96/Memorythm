@@ -64,7 +64,7 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
-                intent = new Intent(LoadingActivity.this, LoginActivity.class);
+                intent = new Intent(LoadingActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
