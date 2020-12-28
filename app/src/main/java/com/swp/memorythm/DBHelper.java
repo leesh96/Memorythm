@@ -18,7 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //윤경
     private static final String CREATE_TABLE_GRIDMEMO = "CREATE TABLE if not exists gridmemo(id integer primary key autoincrement, date text, content text, fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
     private static final String CREATE_TABLE_HEALTHTRACKER = "CREATE TABLE if not exists healthtracker(id integer primary key autoincrement, date text, " +
-            "waterCnt integer, breakfastTime text, breakfastMenu text, lunchTime text, lunchMenu text, snackMenu text, dinnerTime text, dinnerMenu text, exercise integer, exerciseContent text, comment text, " +
+            "waterCnt integer, breakfastTime text, breakfastMenu text, lunchTime text, lunchMenu text, snackMenu text, dinnerTime text, dinnerMenu text, exercise integer, aerobic integer, exerciseContent text, comment text, " +
             "fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
     private static final String CREATE_TABLE_MONTHTRACKER = "CREATE TABLE if not exists monthtracker(id integer primary key autoincrement, date text, studyTimecheck text, commentAll text," +
             "commentAM1 text, commentAM2 text, commentAM3 text, commentAM4 text, commentAM5 text, commentAM6 text, commentAM7 text, commentAM8 text, commentAM9 text, commentAM10 text, commentAM11 text, commentAM12 text, " +
