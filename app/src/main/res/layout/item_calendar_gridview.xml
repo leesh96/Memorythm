@@ -23,6 +23,7 @@
         android:fontFamily="@font/nanumsquare_acl"
         android:gravity="start|top"
         android:inputType="textMultiLine"
+        android:maxLength="28"
         android:padding="5dp"
         android:textColor="@color/black"
         android:textSize="10sp" />
