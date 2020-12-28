@@ -32,7 +32,6 @@
         android:id="@+id/templateRV"
         android:layout_width="match_parent"
         android:layout_height="550dp"
-        android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="@+id/templateBg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,9 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_template, container, false);
         templateRecyclerView = (RecyclerView)view.findViewById(R.id.templateRV);
         templateRecyclerView.setHasFixedSize(true);
-        templateRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        templateRecyclerView.setLayoutManager(manager);
         //어뎁터
         templateFragAdapter = new TemplateFragAdapter(getContext(),listTemplate);
         templateRecyclerView.setAdapter(templateFragAdapter);
@@ -37,39 +40,17 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
         btnRange = (ImageButton)view.findViewById(R.id.rangeBtn);
         btnRange.setOnClickListener(this);
         //ItemTouchHelper 생성
-//        helper = new ItemTouchHelper(new ItemTouchHelperCallback(templateFragAdapter));
+        helper = new ItemTouchHelper(new ItemTouchHelperCallback(templateFragAdapter));
         //RecyclerView에 ItemTouchHelper 붙이기
-//        helper.attachToRecyclerView(templateRecyclerView);
+        helper.attachToRecyclerView(templateRecyclerView);
+
+        templateFragAdapter.setItems(listTemplate);
         return view;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-/*
-        Template template1 = new Template("무지 메모","0");
-        Template template2 = new Template("메모 (줄)","0");
-        Template template3 = new Template("메모 (방안)","0");
-        Template template4 = new Template("TODOLIST","0");
-        Template template5 = new Template("WISH LIST","0");
-        Template template6 = new Template("SHOPPING LIST","0");
-        Template template7 = new Template("Review LIST","0");
-        Template template8 = new Template("Health Tracker","0");
-        Template template9 = new Template("Study Tracker","0");
-        templateFragAdapter.addItem(template1);
-        templateFragAdapter.addItem(template2);
-        templateFragAdapter.addItem(template3);
-        templateFragAdapter.addItem(template4);
-        templateFragAdapter.addItem(template5);
-        templateFragAdapter.addItem(template6);
-        templateFragAdapter.addItem(template7);
-        templateFragAdapter.addItem(template8);
-        templateFragAdapter.addItem(template9);
-
- */
-
 
         listTemplate = new ArrayList<>();
         listTemplate.add(new Template("무지 메모","0"));
@@ -88,6 +69,7 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.rangeBtn:
+
 
                 break;
         }

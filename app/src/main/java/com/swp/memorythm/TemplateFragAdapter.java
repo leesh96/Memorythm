@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapter.TemplateViewHolder> {
+public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapter.TemplateViewHolder> implements ItemTouchHelperListener {
 
     Context templateContext;
-    ArrayList<Template> dataTemplate;
+    ArrayList<Template> dataTemplate = new ArrayList<>();
+
+    public TemplateFragAdapter() { }
 
     public TemplateFragAdapter(Context templateContext, ArrayList<Template> dataTemplate) {
         this.templateContext = templateContext;
@@ -41,6 +43,26 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
     @Override
     public int getItemCount() {
         return (null != dataTemplate ? dataTemplate.size():0);
+    }
+
+    public void setItems(ArrayList<Template> itemList){
+        dataTemplate = itemList;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onItemMove(int from_position, int to_position) {
+        Template template = dataTemplate.get(from_position);
+        dataTemplate.remove(from_position);
+        dataTemplate.add(to_position,template);
+        notifyItemMoved(from_position,to_position);
+
+        return true;
+    }
+
+    @Override
+    public void onItemSwipe(int position) {
+
     }
 
     // 아이템 뷰를 저장하는 뷰홀더 클래스.
