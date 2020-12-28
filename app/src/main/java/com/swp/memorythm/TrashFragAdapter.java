@@ -21,6 +21,7 @@ public class TrashFragAdapter extends RecyclerView.Adapter<TrashFragAdapter.View
     private ArrayList<MemoData> trashList;
     private Map<MemoData, Boolean> mCheckedMap = new HashMap<>();
     private List<MemoData> mCheckedTrash = new ArrayList<>(); //체크한 항목 저장
+    private ArrayList<MemoData> getMemoChecked = new ArrayList<>(); //메모리스트에서 체크한 항목 저장 리스트
 
     public TrashFragAdapter(Context mcontext, ArrayList<MemoData> list) {
         this.trashContext = mcontext;

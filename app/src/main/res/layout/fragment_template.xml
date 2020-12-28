@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/mixerBtn"
+        android:id="@+id/rangeBtn"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="16dp"
@@ -36,6 +36,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/templateBg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mixerBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/rangeBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,13 +1,36 @@
 package com.swp.memorythm;
 
-public class MemoData {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class MemoData implements Parcelable {
     private String memoTitle;
     private String memoDate;
+
+    public MemoData() {
+    }
 
     public MemoData(String trashTitle, String trashDate) {
         this.memoTitle = trashTitle;
         this.memoDate = trashDate;
     }
+
+    protected MemoData(Parcel in) {
+        memoTitle = in.readString();
+        memoDate = in.readString();
+    }
+
+    public static final Creator<MemoData> CREATOR = new Creator<MemoData>() {
+        @Override
+        public MemoData createFromParcel(Parcel in) {
+            return new MemoData(in);
+        }
+
+        @Override
+        public MemoData[] newArray(int size) {
+            return new MemoData[size];
+        }
+    };
 
     public String getMemoTitle() {
         return memoTitle;
@@ -23,5 +46,16 @@ public class MemoData {
 
     public void setMemoDate(String memoDate) {
         this.memoDate = memoDate;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(memoTitle);
+        parcel.writeString(memoDate);
     }
 }

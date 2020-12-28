@@ -7,155 +7,439 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".WriteFragment">
 
-    <ImageView
-        android:id="@+id/writeBg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/folder_bg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <ImageView-->
+<!--        android:id="@+id/writeBg"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@drawable/folder_bg"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="615dp"
+        android:background="@drawable/folder_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/writeBg">
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <!--1번째-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:baselineAligned="true"
                 android:orientation="horizontal">
-
+                <!--nolinememo-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="45dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
+
                     <ImageButton
                         android:id="@+id/nolineMemoImg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/nolinememo" />
+                        android:background="@drawable/ic_noline" />
+
                     <TextView
                         android:id="@+id/nolineMemo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
                         android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
                         android:fontFamily="@font/sdkukdetopokki_b"
+                        android:text="무지메모"
                         android:textColor="@color/text_color"
-                        android:textSize="20dp"
-                        android:text="무지메모" />
+                        android:textSize="16sp" />
                 </LinearLayout>
-
+                <!--linememo-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_marginTop="45dp"
                     android:layout_weight="1"
-                    android:layout_marginTop="50dp">
+                    android:orientation="vertical">
+
                     <ImageButton
                         android:id="@+id/lineMemoImg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/linememo" />
+                        android:background="@drawable/ic_line" />
+
                     <TextView
                         android:id="@+id/lineMemo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
                         android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
                         android:fontFamily="@font/sdkukdetopokki_b"
+                        android:text="메모 (줄)"
                         android:textColor="@color/text_color"
-                        android:textSize="20dp"
-                        android:text="메모 (줄)" />
+                        android:textSize="16sp" />
                 </LinearLayout>
             </LinearLayout>
-
+            <!--2번째-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
+                <!--gridmemo-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginTop="20dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
                     <ImageButton
                         android:id="@+id/gridMemoImg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/gridmemo" />
+                        android:background="@drawable/ic_grid" />
+
                     <TextView
                         android:id="@+id/gridMemo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/sdkukdetopokki_b"
-                        android:textColor="@color/text_color"
-                        android:layout_marginTop="20dp"
                         android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/sdkukdetopokki_b"
                         android:text="메모 (방안)"
-                        android:textSize="20dp"/>
+                        android:textColor="@color/text_color"
+                        android:textSize="16sp" />
                 </LinearLayout>
-
+                <!--todolist-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginTop="20dp"
-
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
                     <ImageButton
                         android:id="@+id/todoListImg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
                         android:layout_gravity="center"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/todolist" />
+                        android:background="@drawable/ic_todo" />
                     <TextView
                         android:id="@+id/todoList"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/sdkukdetopokki_b"
-                        android:textColor="@color/text_color"
-                        android:layout_marginTop="20dp"
                         android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/sdkukdetopokki_b"
                         android:text="TODO LIST"
-                        android:textSize="20dp"/>
+                        android:textColor="@color/text_color"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--3번째-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <!-- wishmemo-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <ImageButton
+                        android:id="@+id/wishMemoImg"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_wish" />
+                    <TextView
+                        android:id="@+id/wishMemo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/sdkukdetopokki_b"
+                        android:text="WISH LIST"
+                        android:textColor="@color/text_color"
+                        android:textSize="16sp" />
+                </LinearLayout>
+                <!--shoppinglist-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/shoppingListImg"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_todo" />
+
+                    <TextView
+                        android:id="@+id/shoppingList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/sdkukdetopokki_b"
+                        android:text="SHOPPING LIST"
+                        android:textColor="@color/text_color"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--4번째-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <!-- review memo-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/reviewMemoImg"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_review" />
+
+                    <TextView
+                        android:id="@+id/reviewMemo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/sdkukdetopokki_b"
+                        android:text="REVIEW"
+                        android:textColor="@color/text_color"
+                        android:textSize="16sp" />
+                </LinearLayout>
+                <!--healthtracker-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/healthTrackerImg"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_todo" />
+
+                    <TextView
+                        android:id="@+id/healthTracker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/sdkukdetopokki_b"
+                        android:text="HEALTH TRACKER"
+                        android:textColor="@color/text_color"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--5번째-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <!-- studytracker-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/studyTrackerImg"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_study_tracker" />
+
+                    <TextView
+                        android:id="@+id/studyTracker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/sdkukdetopokki_b"
+                        android:text="STUDY TRACKER"
+                        android:textColor="@color/text_color"
+                        android:textSize="16sp" />
+                </LinearLayout>
+                <!--monthly tracker-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/monthlyTrackerImg"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_month_tracker" />
+
+                    <TextView
+                        android:id="@+id/monthlyTracker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/sdkukdetopokki_b"
+                        android:text="MONTHLY TRACKER"
+                        android:textColor="@color/text_color"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--6번째-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <!-- daily-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/dailyImg"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_daily" />
+
+                    <TextView
+                        android:id="@+id/daily"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/sdkukdetopokki_b"
+                        android:text="DAILY"
+                        android:textColor="@color/text_color"
+                        android:textSize="16sp" />
+                </LinearLayout>
+                <!--weeklytracker-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/weeklyTrackerImg"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_weekly" />
+
+                    <TextView
+                        android:id="@+id/weeklyTracker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/sdkukdetopokki_b"
+                        android:text="WEEKLY TRACKER"
+                        android:textColor="@color/text_color"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--7번째-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+                <!-- monthly plan-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/monthlyPlanImg"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_monthly" />
+
+                    <TextView
+                        android:id="@+id/monthlyPlan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/sdkukdetopokki_b"
+                        android:text="MONTHLY PLAN"
+                        android:textColor="@color/text_color"
+                        android:textSize="16sp" />
+                </LinearLayout>
+                <!--yearly tracker-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/yearlyTrackerImg"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_yearly" />
+
+                    <TextView
+                        android:id="@+id/yearlyTracker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/sdkukdetopokki_b"
+                        android:text="YEARLY TRACKER"
+                        android:textColor="@color/text_color"
+                        android:textSize="16sp" />
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

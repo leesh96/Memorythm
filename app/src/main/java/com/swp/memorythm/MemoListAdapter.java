@@ -1,6 +1,7 @@
 package com.swp.memorythm;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
     Context memoContext;
     private ArrayList<MemoData> listMemo;
     private Map<MemoData, Boolean> memoCheckedMap = new HashMap<>();
-    private List<MemoData> mCheckedMemo = new ArrayList<>(); //체크한 항목 저장
+    private ArrayList<MemoData> mCheckedMemo = new ArrayList<>(); //체크한 항목 저장
 
     public MemoListAdapter(Context memoContext,ArrayList<MemoData> listMemo) {
         this.listMemo = listMemo;
@@ -40,11 +41,9 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
                 MemoData memoData = listMemo.get(vHolder.getAdapterPosition());
                 memoCheckedMap.put(memoData, isChecked);
                 // 체크된거 mCheckedTrash 넣기
-                if(isChecked){
-                    mCheckedMemo.add(memoData);
-                }else {
-                    mCheckedMemo.remove(memoData);
-                }
+                if(isChecked){ mCheckedMemo.add(memoData); }
+                else { mCheckedMemo.remove(memoData); }
+
             }
         });
         return vHolder;
@@ -59,6 +58,7 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
         //체크박스 체크 여부
         boolean isChecked = memoCheckedMap.get(memoData)==null?false:memoCheckedMap.get(memoData);
         holder.checkBox.setChecked(isChecked);
+
     }
 
     @Override
@@ -82,4 +82,6 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
         if(result){ notifyDataSetChanged(); }
         return result;
     }
+
 }
+
