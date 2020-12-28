@@ -49,6 +49,7 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
         //아이템 갱신
         folderFragAdapter.setItems(listFolder);
         folderFragAdapter.notifyDataSetChanged();
+
         return view;
     }
 
@@ -92,8 +93,6 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
 
-//                int btnPosition = (int)view.getTag();
-//                listFolder.remove(btnPosition);
 
 
         }

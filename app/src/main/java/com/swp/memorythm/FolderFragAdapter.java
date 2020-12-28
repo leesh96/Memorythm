@@ -20,6 +20,7 @@ import java.util.Map;
 public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.ViewHolder> {
 
     Context mContext;
+
     private ArrayList<Folder> dataFolder;
     private Map<Folder, Boolean> mCheckedMap = new HashMap<>();
     private List<Folder> mCheckedFolder = new ArrayList<>(); //체크한 항목 저장
@@ -34,12 +35,12 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.item_folder_view, parent, false);
-        ViewHolder vHolder = new ViewHolder(v);
+        ViewHolder viewHolder = new ViewHolder(v);
 
-        vHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                Folder folder = dataFolder.get(vHolder.getAdapterPosition());
+                Folder folder = dataFolder.get(viewHolder.getAdapterPosition());
                 mCheckedMap.put(folder,isChecked);
                 // 체크된거 mCheckedFolder 넣기
                 if(isChecked){
@@ -49,7 +50,7 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
                 }
             }
         });
-        return vHolder;
+        return viewHolder;
     }
 
     // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
@@ -94,6 +95,7 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
             this.numTV = (TextView)itemView.findViewById(R.id.folderNum);
             this.checkBox = (CheckBox)itemView.findViewById(R.id.folderCheckBox);
         }
+
     }
 
     // 아이템 삭제
@@ -106,5 +108,6 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
     public void setItems(ArrayList<Folder> items){
         dataFolder = items;
     }
+
 
 }

@@ -59,7 +59,7 @@
                         android:fontFamily="@font/sdkukdetopokki_b"
                         android:text="무지메모"
                         android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
                 <!--linememo-->
                 <LinearLayout
@@ -85,7 +85,7 @@
                         android:fontFamily="@font/sdkukdetopokki_b"
                         android:text="메모 (줄)"
                         android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
             <!--2번째-->
@@ -118,7 +118,7 @@
                         android:fontFamily="@font/sdkukdetopokki_b"
                         android:text="메모 (방안)"
                         android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
                 <!--todolist-->
                 <LinearLayout
@@ -142,7 +142,7 @@
                         android:fontFamily="@font/sdkukdetopokki_b"
                         android:text="TODO LIST"
                         android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
             <!--3번째-->
@@ -173,7 +173,7 @@
                         android:fontFamily="@font/sdkukdetopokki_b"
                         android:text="WISH LIST"
                         android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
                 <!--shoppinglist-->
                 <LinearLayout
@@ -188,7 +188,7 @@
                         android:layout_width="140dp"
                         android:layout_height="220dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/ic_todo" />
+                        android:background="@drawable/ic_shopping" />
 
                     <TextView
                         android:id="@+id/shoppingList"
@@ -199,7 +199,7 @@
                         android:fontFamily="@font/sdkukdetopokki_b"
                         android:text="SHOPPING LIST"
                         android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
             <!--4번째-->
@@ -232,7 +232,7 @@
                         android:fontFamily="@font/sdkukdetopokki_b"
                         android:text="REVIEW"
                         android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
                 <!--healthtracker-->
                 <LinearLayout
@@ -247,7 +247,7 @@
                         android:layout_width="140dp"
                         android:layout_height="220dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/ic_todo" />
+                        android:background="@drawable/ic_health_tracker" />
 
                     <TextView
                         android:id="@+id/healthTracker"
@@ -258,7 +258,7 @@
                         android:fontFamily="@font/sdkukdetopokki_b"
                         android:text="HEALTH TRACKER"
                         android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
             <!--5번째-->
@@ -291,7 +291,7 @@
                         android:fontFamily="@font/sdkukdetopokki_b"
                         android:text="STUDY TRACKER"
                         android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
                 <!--monthly tracker-->
                 <LinearLayout
@@ -317,7 +317,7 @@
                         android:fontFamily="@font/sdkukdetopokki_b"
                         android:text="MONTHLY TRACKER"
                         android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
             <!--6번째-->
@@ -348,9 +348,9 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/sdkukdetopokki_b"
-                        android:text="DAILY"
+                        android:text="DAILY PLAN"
                         android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
                 <!--weeklytracker-->
                 <LinearLayout
@@ -374,9 +374,9 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/sdkukdetopokki_b"
-                        android:text="WEEKLY TRACKER"
+                        android:text="WEEKLY PLAN"
                         android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
             <!--7번째-->
@@ -410,7 +410,7 @@
                         android:fontFamily="@font/sdkukdetopokki_b"
                         android:text="MONTHLY PLAN"
                         android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
                 <!--yearly tracker-->
                 <LinearLayout
@@ -434,9 +434,9 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/sdkukdetopokki_b"
-                        android:text="YEARLY TRACKER"
+                        android:text="YEARLY PLAN"
                         android:textColor="@color/text_color"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
 

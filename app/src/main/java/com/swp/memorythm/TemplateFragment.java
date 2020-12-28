@@ -23,9 +23,6 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
     private ItemTouchHelper helper;
     private ImageButton btnRange;
 
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
