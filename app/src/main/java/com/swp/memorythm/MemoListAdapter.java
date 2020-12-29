@@ -23,6 +23,7 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
     private ArrayList<MemoData> listMemo;
     private Map<MemoData, Boolean> memoCheckedMap = new HashMap<>();
     private ArrayList<MemoData> mCheckedMemo = new ArrayList<>(); //체크한 항목 저장
+    public boolean isTrash = false;
 
     public MemoListAdapter(Context memoContext,ArrayList<MemoData> listMemo) {
         this.listMemo = listMemo;
@@ -59,6 +60,16 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
         boolean isChecked = memoCheckedMap.get(memoData)==null?false:memoCheckedMap.get(memoData);
         holder.checkBox.setChecked(isChecked);
 
+        //삭제
+        if(isTrash) {
+            holder.checkBox.setVisibility(View.VISIBLE);
+            holder.itemView.setClickable(false);
+        }
+        else {
+            holder.checkBox.setVisibility(View.GONE);
+            holder.itemView.setClickable(true);
+        }
+
     }
 
     @Override
@@ -81,6 +92,10 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
         boolean result = listMemo.removeAll(mCheckedMemo);
         if(result){ notifyDataSetChanged(); }
         return result;
+    }
+    //체크박스 숨김에 사용
+    public void setVisible(boolean trash){
+        isTrash = trash;
     }
 
 }

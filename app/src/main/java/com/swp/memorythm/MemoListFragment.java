@@ -22,6 +22,8 @@ public class MemoListFragment extends Fragment {
     private MemoListAdapter memoListAdapter;
     private MemoTopListAdapter memoTopListAdapter;
     private ImageButton btnDelete;
+    private Boolean check = false;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,11 +43,25 @@ public class MemoListFragment extends Fragment {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if((memoListAdapter.removeItems() || memoTopListAdapter.removeItems())&&(memoTopListAdapter.removeItems() || memoListAdapter.removeItems())){
-                    Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                if(check){
+                    if((memoListAdapter.removeItems() || memoTopListAdapter.removeItems())&&(memoTopListAdapter.removeItems() || memoListAdapter.removeItems())){
+                        Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
+                    }
+                    memoListAdapter.setVisible(false);
+                    memoTopListAdapter.setVisible(false);
+                    memoListAdapter.notifyDataSetChanged();
+                    memoTopListAdapter.notifyDataSetChanged();
+                    check = false;
                 }else {
-                    Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
+                    memoListAdapter.setVisible(true);
+                    memoTopListAdapter.setVisible(true);
+                    memoListAdapter.notifyDataSetChanged();
+                    memoTopListAdapter.notifyDataSetChanged();
+                    check = true;
                 }
+
             }
         });
         return view;

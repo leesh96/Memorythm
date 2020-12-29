@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +24,7 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
     private ArrayList<Folder> listFolder;
     private FolderFragAdapter folderFragAdapter;
     private ImageButton addBtn, deleteBtn;
+    private ItemTouchHelper helper;
     private Boolean check = false;
 
 
@@ -33,8 +35,10 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
 
         folderRecyclerView = (RecyclerView)view.findViewById(R.id.folderRV);
         folderRecyclerView.setHasFixedSize(true);
-
-        folderRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        //리니어레이아웃
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        folderRecyclerView.setLayoutManager(manager);
         listFolder = new ArrayList<>();
         //어뎁터 연결
         folderFragAdapter = new FolderFragAdapter(getContext(),listFolder);
@@ -45,7 +49,10 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
         //삭제 버튼
         deleteBtn = (ImageButton)view.findViewById(R.id.deleteFolderBtn);
         deleteBtn.setOnClickListener(this);
-
+        //ItemTouchHelper 생성
+        helper = new ItemTouchHelper(new ItemTouchHelperCallback(folderFragAdapter));
+        //RecyclerView에 ItemTouchHelper 붙이기
+        helper.attachToRecyclerView(folderRecyclerView);
         //아이템 갱신
         folderFragAdapter.setItems(listFolder);
         folderFragAdapter.notifyDataSetChanged();

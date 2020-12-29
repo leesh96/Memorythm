@@ -21,6 +21,7 @@ public class TrashFragAdapter extends RecyclerView.Adapter<TrashFragAdapter.View
     private ArrayList<MemoData> trashList;
     private Map<MemoData, Boolean> mCheckedMap = new HashMap<>();
     private List<MemoData> mCheckedTrash = new ArrayList<>(); //체크한 항목 저장
+    public boolean isTrash = false;
 
     public TrashFragAdapter(Context mcontext, ArrayList<MemoData> list) {
         this.trashContext = mcontext;
@@ -57,6 +58,15 @@ public class TrashFragAdapter extends RecyclerView.Adapter<TrashFragAdapter.View
         //체크박스 체크 여부
         boolean isChecked = mCheckedMap.get(trashData)==null?false:mCheckedMap.get(trashData);
         holder.checkBox.setChecked(isChecked);
+        //삭제
+        if(isTrash) {
+            holder.checkBox.setVisibility(View.VISIBLE);
+            holder.itemView.setClickable(false);
+        }
+        else {
+            holder.checkBox.setVisibility(View.GONE);
+            holder.itemView.setClickable(true);
+        }
     }
 
     @Override
@@ -85,5 +95,9 @@ public class TrashFragAdapter extends RecyclerView.Adapter<TrashFragAdapter.View
     // 아이템 갱신에 사용
     public void setItems(ArrayList<MemoData> items){
         trashList = items;
+    }
+    //체크박스 숨김에 사용
+    public void setVisible(boolean trash){
+        isTrash = trash;
     }
 }

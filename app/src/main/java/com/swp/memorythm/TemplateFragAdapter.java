@@ -54,17 +54,18 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
         return (null != dataTemplate ? dataTemplate.size():0);
     }
 
+    //TemplateFragment에서 객체를 생성한 후에 리스트를 입력하여 어댑터의 dataTemplate에 매치
     public void setItems(ArrayList<Template> itemList){
         dataTemplate = itemList;
         notifyDataSetChanged();
     }
-
+    // 아이템의 리스트상 현재위치와 움직일 위치를 입력 받음
     @Override
     public boolean onItemMove(int from_position, int to_position) {
         Template template = dataTemplate.get(from_position);
         dataTemplate.remove(from_position);
         dataTemplate.add(to_position,template);
-        notifyItemMoved(from_position,to_position);
+        notifyItemMoved(from_position,to_position); // 데이터가 이동함을 알림
 
         return true;
     }
@@ -83,6 +84,7 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
             this.templateNum = (TextView)itemView.findViewById(R.id.templateNum);
         }
     }
+
     public void setArray(boolean array){
         isArray = array;
     }

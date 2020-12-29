@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.ViewHolder> {
+public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.ViewHolder> implements ItemTouchHelperListener{
 
     Context mContext;
 
@@ -26,6 +26,8 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
     private List<Folder> mCheckedFolder = new ArrayList<>(); //체크한 항목 저장
     public boolean isTrash = false;
 
+    public FolderFragAdapter() {
+    }
 
     public FolderFragAdapter(Context mContext, ArrayList<Folder> listFolder) {
         this.mContext = mContext;
@@ -93,6 +95,22 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
     @Override
     public int getItemCount() {
         return (null != dataFolder ? dataFolder.size():0);
+    }
+
+    //FolderFragment 에서 객체를 생성한 후에 리스트를 입력하여 어댑터의 dataFolder 에 매치
+    @Override
+    public boolean onItemMove(int from_position, int to_position) {
+        Folder folder = dataFolder.get(from_position);
+        dataFolder.remove(from_position);
+        dataFolder.add(to_position, folder);
+        notifyItemMoved(from_position, to_position); // 데이터가 이동함을 알림
+
+        return true;
+    }
+
+    @Override
+    public void onItemSwipe(int position) {
+
     }
 
     //ViewHolder

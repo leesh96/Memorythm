@@ -20,6 +20,7 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
     private TrashFragAdapter trashAdapter;
     private ImageButton btnRestore, btnEmpty;
     private ArrayList<MemoData> trashList;
+    private Boolean check = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,19 +58,37 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.emptyBtn:
-                if(trashAdapter.removeItems()){
-                    Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                if(check){
+                    if(trashAdapter.removeItems()){
+                        Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
+                    }
+                    trashAdapter.setVisible(false);
+                    trashAdapter.notifyDataSetChanged();
+                    check = false;
                 }else {
-                    Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
+                    trashAdapter.setVisible(true);
+                    trashAdapter.notifyDataSetChanged();
+                    check = true;
                 }
                 break;
-            case R.id.restoreBtn:
-                if(trashAdapter.removeItems()){
-                    Toast.makeText(getContext(), "복구버튼", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(getContext(), "복구할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
-                }
 
+            case R.id.restoreBtn:
+                if(check){
+                    if(trashAdapter.removeItems()){
+                        Toast.makeText(getContext(), "복구버튼 눌렀음", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getContext(), "복구할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
+                    }
+                    trashAdapter.setVisible(false);
+                    trashAdapter.notifyDataSetChanged();
+                    check = false;
+                }else {
+                    trashAdapter.setVisible(true);
+                    trashAdapter.notifyDataSetChanged();
+                    check = true;
+                }
                 break;
 
         }
