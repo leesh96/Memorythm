@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -36,6 +37,8 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
     LocationManager locationManager;
     double latitude;
     double longitude;
+    SuhoDBHelper dbHelper;
+    SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,26 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
         //GPS 권한 요구, 확인
         requestLocation();
 
+        // 날짜 받아오기
+        setCurrentDate();
+
+        dbHelper = new SuhoDBHelper(LoadingActivity.this);
+        db = dbHelper.getReadableDatabase();
+
+        // 로딩화면 3초 전환
+        Handler mHandler = new Handler() {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                intent = new Intent(LoadingActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
+        mHandler.sendEmptyMessageDelayed(0, 3000);
+    }
+
+    private void setCurrentDate() {
         // 앱 실행할때마다 날짜 가져오기
         // 캘린더 객체 생성
         Calendar myCalendar = Calendar.getInstance();
@@ -58,18 +81,6 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
         if (!PreferenceManager.getString(LoadingActivity.this, "currentDate").equals(CurrentDate)) {
             PreferenceManager.setString(LoadingActivity.this, "currentDate", CurrentDate);
         }
-
-        // 로딩화면 3초
-        Handler mHandler = new Handler() {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                intent = new Intent(LoadingActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        };
-        mHandler.sendEmptyMessageDelayed(0, 3000);
     }
 
     @Override

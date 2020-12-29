@@ -59,6 +59,14 @@ public class MemoViewActivity extends AppCompatActivity {
         TemplateCase = intent.getStringExtra("template");
         // 작성모드 or 보기모드
         Mode = intent.getStringExtra("mode");
+        switch (Mode) {
+            case "write":
+                btnDelete.setVisibility(View.GONE);
+                break;
+            case "view":
+                btnDelete.setVisibility(View.VISIBLE);
+                break;
+        }
 
         // 템플릿 별로 프래그먼트 다르게 띄우기
         switch (TemplateCase) {
@@ -226,13 +234,7 @@ public class MemoViewActivity extends AppCompatActivity {
                 // 프래그먼트 구분
                 // 각 프래그먼트마다 파이어베이스에 저장하는 함수 만들어놓고 아래 처럼 호출
                 if (fragment instanceof NonlineMemoFragment) {
-                    ((NonlineMemoFragment) fragment).save();
-                }
-                switch (Mode) {
-                    case "writemode":
-                        break;
-                    case "viewmode":
-                        break;
+                    ((NonlineMemoFragment) fragment).save(Mode);
                 }
             }
         });

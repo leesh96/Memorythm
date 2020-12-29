@@ -1,6 +1,7 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -24,6 +21,7 @@ import java.util.Locale;
 public class NonlineMemoFragment extends Fragment {
     private TextView textViewDate;
     private EditText editTextContent;
+    SuhoDBHelper dbHelper;
 
     public static NonlineMemoFragment newInstance() {
         return new NonlineMemoFragment();
@@ -55,6 +53,7 @@ public class NonlineMemoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_nonlinememo, container, false);
+        dbHelper = new SuhoDBHelper(getContext());
 
         textViewDate = rootView.findViewById(R.id.write_date);
         editTextContent = rootView.findViewById(R.id.nonlinememo_content);
@@ -69,17 +68,21 @@ public class NonlineMemoFragment extends Fragment {
             }
         });
 
-        // TODO : 저장, 로드 방법 생각
-
         return rootView;
     }
 
-    public void save() {
+    public void save(String Mode) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
         String Content = editTextContent.getText().toString();
 
-        String uid = FirebaseAuth.getInstance().getUid();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(uid);
-
-        databaseReference.child("nonline").child("content").push().setValue(Content);
+        switch (Mode) {
+            case "write":
+                db.execSQL("INSERT INTO nonline('content', 'folder_name') VALUES('" + Content + "', 'default folder');");
+                break;
+            case "view":
+                break;
+        }
+        db.close();
     }
 }
