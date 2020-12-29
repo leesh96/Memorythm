@@ -117,7 +117,7 @@ public class MonthTrackerFragment extends Fragment {
             else changeBgColor(btn_day[i],1);
         }
     }
-    public void saveData(){
+    public void saveData(String mode){
         //String : userdate, goal, dayCheck, comment
         String userdate = textViewDate.getText().toString();
         String goal = et_goal.getText().toString();

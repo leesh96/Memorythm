@@ -210,7 +210,7 @@ public class HealthTrackerFragment extends Fragment {
             else changeCups(ibtn_cup[i],1);
         }
     }
-    public void saveData(){
+    public void saveData(String mode){
         //string : userdate, breakfastTime, breakfastMenu, lunchTime, lunchMenu, snackMenu , dinnerTime, dinnerMenu, exerciseContent, comment
         //int : waterCnt, exercisedata, aerobicdata
         String userdate = textViewDate.getText().toString();

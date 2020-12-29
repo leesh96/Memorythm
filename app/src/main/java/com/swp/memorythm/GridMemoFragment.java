@@ -58,7 +58,7 @@ public class GridMemoFragment extends Fragment {
 
         return viewGroup;
     }
-    public void saveData(){
+    public void saveData(String mode){
         //userdate, content
         String userdate = textViewDate.getText().toString();
         String content = editTextContent.getText().toString();

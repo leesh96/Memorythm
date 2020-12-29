@@ -111,7 +111,7 @@ public class StudyTrackerFragment extends Fragment {
             else changeBgColor(iv_time[i],1);
         }
     }
-    public void saveData(){
+    public void saveData(String mode){
         //String : userdate, studyTimecheck , commentAll , commentTime
         String userdate = textViewDate.getText().toString();
         StringBuilder studyTimecheck = new StringBuilder();

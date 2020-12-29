@@ -118,7 +118,7 @@ public class ReviewFragment extends Fragment {
         current.setBackgroundResource(R.drawable.bg_selector);
     }
 
-    public void saveData(){
+    public void saveData(String mode){
         //String : userdate, categoryName, reviewTitle, reviewContent
         //int : categoryCheck, starNum, score
         String userdate = textViewDate.getText().toString();

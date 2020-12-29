@@ -233,9 +233,18 @@ public class MemoViewActivity extends AppCompatActivity {
                 Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.template_frame);      // 현재 보여지는 프래그먼트 가져오기
                 // 프래그먼트 구분
                 // 각 프래그먼트마다 파이어베이스에 저장하는 함수 만들어놓고 아래 처럼 호출
-                if (fragment instanceof NonlineMemoFragment) {
+                if (fragment instanceof NonlineMemoFragment)
                     ((NonlineMemoFragment) fragment).save(Mode);
-                }
+                else if(fragment instanceof GridMemoFragment)
+                    ((GridMemoFragment) fragment).saveData(Mode);
+                else if(fragment instanceof HealthTrackerFragment)
+                    ((HealthTrackerFragment) fragment).saveData(Mode);
+                else if(fragment instanceof MonthTrackerFragment)
+                    ((MonthTrackerFragment) fragment).saveData(Mode);
+                else if(fragment instanceof StudyTrackerFragment)
+                    ((StudyTrackerFragment) fragment).saveData(Mode);
+                else if(fragment instanceof ReviewFragment)
+                    ((ReviewFragment) fragment).saveData(Mode);
             }
         });
 
