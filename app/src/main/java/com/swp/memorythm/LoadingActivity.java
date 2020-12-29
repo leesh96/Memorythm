@@ -37,7 +37,7 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
     LocationManager locationManager;
     double latitude;
     double longitude;
-    SuhoDBHelper dbHelper;
+    DBHelper dbHelper;
     SQLiteDatabase db;
 
     @Override
@@ -53,8 +53,13 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
         // 날짜 받아오기
         setCurrentDate();
 
-        dbHelper = new SuhoDBHelper(LoadingActivity.this);
+        dbHelper = new DBHelper(LoadingActivity.this);
+        // 이거 써서 db 접근
         db = dbHelper.getReadableDatabase();
+        // DB 읽기. DB가 없으면 onCreate가 호출, 버전이 바뀌었으면 onUpgrade 호출
+
+        // dbHelper.getWritableDatabase() : 읽고 쓰기 위해 DB 연다. 권한이 없거나 디스크가 가득 차면 실패
+        // db.close() : DB를 닫는다.
 
         // 로딩화면 3초 전환
         Handler mHandler = new Handler() {

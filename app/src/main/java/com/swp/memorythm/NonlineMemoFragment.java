@@ -1,14 +1,18 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,10 +22,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 public class NonlineMemoFragment extends Fragment {
     private TextView textViewDate;
     private EditText editTextContent;
-    SuhoDBHelper dbHelper;
+    DBHelper dbHelper;
+    SQLiteDatabase db;
 
     public static NonlineMemoFragment newInstance() {
         return new NonlineMemoFragment();
@@ -53,7 +60,7 @@ public class NonlineMemoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_nonlinememo, container, false);
-        dbHelper = new SuhoDBHelper(getContext());
+        dbHelper = new DBHelper(getContext());
 
         textViewDate = rootView.findViewById(R.id.write_date);
         editTextContent = rootView.findViewById(R.id.nonlinememo_content);
@@ -71,16 +78,22 @@ public class NonlineMemoFragment extends Fragment {
         return rootView;
     }
 
-    public void save(String Mode) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+    public void saveData(String Mode) {
+        db = dbHelper.getReadableDatabase();
 
         String Content = editTextContent.getText().toString();
+        String Userdate = textViewDate.getText().toString();
+
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editTextContent.getWindowToken(), 0);
+        editTextContent.clearFocus();
 
         switch (Mode) {
             case "write":
-                db.execSQL("INSERT INTO nonline('content', 'folder_name') VALUES('" + Content + "', 'default folder');");
+                db.execSQL("INSERT INTO nonline('userdate', 'content') VALUES('" + Content + "', '" + Userdate + "');");
                 break;
             case "view":
+                // 쿼리 업데이트 쓰기
                 break;
         }
         db.close();

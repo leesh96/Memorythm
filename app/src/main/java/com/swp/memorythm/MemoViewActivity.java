@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -231,10 +232,34 @@ public class MemoViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.template_frame);      // 현재 보여지는 프래그먼트 가져오기
+
                 // 프래그먼트 구분
                 // 각 프래그먼트마다 파이어베이스에 저장하는 함수 만들어놓고 아래 처럼 호출
-                if (fragment instanceof NonlineMemoFragment)
-                    ((NonlineMemoFragment) fragment).save(Mode);
+                if (fragment instanceof NonlineMemoFragment) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                    alert.setMessage("메모를 저장하시겠습니까?");
+                    alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            try {
+                                ((NonlineMemoFragment) fragment).saveData(Mode);
+                                Mode = "view";
+                                btnDelete.setVisibility(View.VISIBLE);
+                                Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            } catch (Exception e) {
+                                Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                            }
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.show();
+                }
                 else if(fragment instanceof GridMemoFragment)
                     ((GridMemoFragment) fragment).saveData(Mode);
                 else if(fragment instanceof HealthTrackerFragment)
