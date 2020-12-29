@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -26,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private WriteFragment writeFragment; // 작성 프레그먼트
     private TrashFragment trashFragment; // 휴지통 프레그먼트
     private SetFragment setFragment; // 설정 프레그먼트
-    private ImageButton homeBtn;
+    private ImageButton homeBtn; // 홈으로 가는 버튼
+    private Menu menu;
 
 
     public MainActivity() {
@@ -62,7 +64,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(pagerAdapter);
 */
         //바닥네비게이션 사용
+
         bottomNavigationView  = findViewById(R.id.bottomNavi);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -92,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
         trashFragment = new TrashFragment();
         setFragment = new SetFragment();
 //        setFrag(1); // 첫 프레그먼트 지정
-
-
 
     }
 

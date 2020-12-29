@@ -46,6 +46,7 @@
         app:itemTextColor="@color/text_color"
         app:itemIconTint="@color/black"
         android:background="@color/background"
+        app:itemIconSize="50dp"
         app:labelVisibilityMode="unlabeled"
         app:layout_anchorGravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"

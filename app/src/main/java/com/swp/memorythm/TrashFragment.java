@@ -65,10 +65,12 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
                         Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
                     }
                     trashAdapter.setVisible(false);
+                    btnRestore.setVisibility(View.VISIBLE);
                     trashAdapter.notifyDataSetChanged();
                     check = false;
                 }else {
                     trashAdapter.setVisible(true);
+                    btnRestore.setVisibility(View.INVISIBLE);
                     trashAdapter.notifyDataSetChanged();
                     check = true;
                 }
@@ -82,10 +84,12 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
                         Toast.makeText(getContext(), "복구할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
                     }
                     trashAdapter.setVisible(false);
+                    btnEmpty.setVisibility(View.VISIBLE);
                     trashAdapter.notifyDataSetChanged();
                     check = false;
                 }else {
                     trashAdapter.setVisible(true);
+                    btnEmpty.setVisibility(View.INVISIBLE);
                     trashAdapter.notifyDataSetChanged();
                     check = true;
                 }
