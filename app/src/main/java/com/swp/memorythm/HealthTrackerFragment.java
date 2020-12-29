@@ -7,12 +7,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,17 +18,17 @@ import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class HealthTrackerFragment extends Fragment {
     private TextView textViewDate, tv_upperbody, tv_lowerbody, tv_chest, tv_aerobic;
     private EditText et_breakfast, et_lunch, et_snack, et_dinner, et_exercise, et_comment;
     private ImageView iv_health;
-    private ImageButton ibtn_cup1,ibtn_cup2,ibtn_cup3,ibtn_cup4,ibtn_cup5,ibtn_cup6,ibtn_cup7,ibtn_cup8;
+    private final ImageButton[] ibtn_cup = new ImageButton[8];
     private boolean upperbody, lowerbody, chest;
     private int aerobic=0;
-    private int cup1, cup2, cup3, cup4, cup5, cup6, cup7, cup8;
+    private final int[] cups = new int[8];
     //시계
     private TextView tv_breakfast, tv_lunch, tv_dinner;
     public static HealthTrackerFragment newInstance() {
@@ -41,14 +39,11 @@ public class HealthTrackerFragment extends Fragment {
     Calendar myCalendar = Calendar.getInstance();
 
     //데이트픽커 다이얼로그
-    DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, month);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel();
-        }
+    DatePickerDialog.OnDateSetListener myDatePicker = (datePicker, year, month, dayOfMonth) -> {
+        myCalendar.set(Calendar.YEAR, year);
+        myCalendar.set(Calendar.MONTH, month);
+        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        updateLabel();
     };
 
     // 텍스트뷰 날짜 업데이트
@@ -65,33 +60,21 @@ public class HealthTrackerFragment extends Fragment {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.template_healthtracker, container, false);
 
         textViewDate = viewGroup.findViewById(R.id.write_date);
-        ibtn_cup1 = viewGroup.findViewById(R.id.ibtn_cup1);
-        ibtn_cup2 = viewGroup.findViewById(R.id.ibtn_cup2);
-        ibtn_cup3 = viewGroup.findViewById(R.id.ibtn_cup3);
-        ibtn_cup4 = viewGroup.findViewById(R.id.ibtn_cup4);
-        ibtn_cup5 = viewGroup.findViewById(R.id.ibtn_cup5);
-        ibtn_cup6 = viewGroup.findViewById(R.id.ibtn_cup6);
-        ibtn_cup7 = viewGroup.findViewById(R.id.ibtn_cup7);
-        ibtn_cup8 = viewGroup.findViewById(R.id.ibtn_cup8);
-        tv_upperbody = viewGroup.findViewById(R.id.tv_upperbody);
-        tv_lowerbody = viewGroup.findViewById(R.id.tv_lowerbody);
-        tv_chest = viewGroup.findViewById(R.id.tv_chest);
-        tv_aerobic = viewGroup.findViewById(R.id.tv_aerobic);
+        tv_upperbody = viewGroup.findViewById(R.id.tv_upperbody); tv_lowerbody = viewGroup.findViewById(R.id.tv_lowerbody);
+        tv_chest = viewGroup.findViewById(R.id.tv_chest); tv_aerobic = viewGroup.findViewById(R.id.tv_aerobic);
         iv_health = viewGroup.findViewById(R.id.iv_health);
-        tv_breakfast = viewGroup.findViewById(R.id.tv_breakfast);
-        tv_lunch = viewGroup.findViewById(R.id.tv_lunch);
-        tv_dinner = viewGroup.findViewById(R.id.tv_dinner);
-        et_breakfast = viewGroup.findViewById(R.id.et_breakfast);
-        et_lunch = viewGroup.findViewById(R.id.et_lunch);
-        et_snack = viewGroup.findViewById(R.id.et_snack);
-        et_dinner = viewGroup.findViewById(R.id.et_dinner);
-        et_comment = viewGroup.findViewById(R.id.et_comment);
-        et_exercise = viewGroup.findViewById(R.id.et_exercise);
-
+        tv_breakfast = viewGroup.findViewById(R.id.tv_breakfast); tv_lunch = viewGroup.findViewById(R.id.tv_lunch); tv_dinner = viewGroup.findViewById(R.id.tv_dinner);
+        et_breakfast = viewGroup.findViewById(R.id.et_breakfast); et_lunch = viewGroup.findViewById(R.id.et_lunch);
+        et_snack = viewGroup.findViewById(R.id.et_snack); et_dinner = viewGroup.findViewById(R.id.et_dinner);
+        et_comment = viewGroup.findViewById(R.id.et_comment); et_exercise = viewGroup.findViewById(R.id.et_exercise);
+        String packName = Objects.requireNonNull(this.getActivity()).getPackageName();
+        for (int i = 1; i < 9; i++) {
+            String name = "ibtn_cup"+i;
+            int id = getResources().getIdentifier(name,"id",packName);
+            ibtn_cup[i-1]=viewGroup.findViewById(id);
+        }
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
-        Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy - MM - dd", Locale.KOREA);
-        textViewDate.setText(simpleDateFormat.format(currentTime));
+        textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
 
         textViewDate.setOnClickListener(v -> { // 데이트픽커 띄우기
             new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -99,51 +82,42 @@ public class HealthTrackerFragment extends Fragment {
         // 시계
         tv_breakfast.setOnClickListener(v -> {
             TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog,
-                    new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    String hour = changeTime(hourOfDay);
-                    String min = changeTime(minute);
-                    tv_breakfast.setText(hour+":"+min);
-                }
-            },8,0,true); timePickerDialog.show();
+                    (view, hourOfDay, minute) -> {
+                        String hour = changeTime(hourOfDay);
+                        String min = changeTime(minute);
+                        String string = hour+":"+min;
+                        tv_breakfast.setText(string);
+                    },8,0,true); timePickerDialog.show();
         });
         tv_lunch.setOnClickListener(v -> {
             TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog,
-                    new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            String hour = changeTime(hourOfDay);
-                            String min = changeTime(minute);
-                            tv_lunch.setText(hour+":"+min);
-                        }
+                    (view, hourOfDay, minute) -> {
+                        String hour = changeTime(hourOfDay);
+                        String min = changeTime(minute);
+                        String string = hour+":"+min;
+                        tv_lunch.setText(string);
                     },12,0,true); timePickerDialog.show();
         });
         tv_dinner.setOnClickListener(v -> {
             TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog,
-                    new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            String hour = changeTime(hourOfDay);
-                            String min = changeTime(minute);
-                            tv_dinner.setText(hour+":"+min);
-                        }
+                    (view, hourOfDay, minute) -> {
+                        String hour = changeTime(hourOfDay);
+                        String min = changeTime(minute);
+                        String string = hour+":"+min;
+                        tv_dinner.setText(string);
                     },18,0,true); timePickerDialog.show();
         });
         // 운동
         tv_upperbody.setOnClickListener(v -> {
-            if(!upperbody) upperbody = true;
-            else upperbody = false;
+            upperbody = !upperbody;
             setHealth(iv_health, getExercise(), aerobic);
         });
         tv_lowerbody.setOnClickListener(v -> {
-            if(!lowerbody)lowerbody = true;
-            else lowerbody = false;
+            lowerbody = !lowerbody;
             setHealth(iv_health, getExercise(), aerobic);
         });
         tv_chest.setOnClickListener(v -> {
-            if(!chest) chest = true;
-            else chest = false;
+            chest = !chest;
             setHealth(iv_health, getExercise(), aerobic);
         });
         tv_aerobic.setOnClickListener(v -> {
@@ -153,14 +127,11 @@ public class HealthTrackerFragment extends Fragment {
         });
 
         // 물컵
-        ibtn_cup1.setOnClickListener(v -> {cup1 = setCup(ibtn_cup1,cup1);});
-        ibtn_cup2.setOnClickListener(v -> {cup2 = setCup(ibtn_cup2,cup2);});
-        ibtn_cup3.setOnClickListener(v -> {cup3 = setCup(ibtn_cup3,cup3);});
-        ibtn_cup4.setOnClickListener(v -> {cup4 = setCup(ibtn_cup4,cup4);});
-        ibtn_cup5.setOnClickListener(v -> {cup5 = setCup(ibtn_cup5,cup5);});
-        ibtn_cup6.setOnClickListener(v -> {cup6 = setCup(ibtn_cup6,cup6);});
-        ibtn_cup7.setOnClickListener(v -> {cup7 = setCup(ibtn_cup7,cup7);});
-        ibtn_cup8.setOnClickListener(v -> {cup8 = setCup(ibtn_cup8,cup8);});
+        setCups();
+        for (int i = 0; i <ibtn_cup.length ; i++) {
+            int finalI = i;
+            ibtn_cup[i].setOnClickListener(v -> cups[finalI]= changeCups(ibtn_cup[finalI], cups[finalI]));
+        }
 
 
         return viewGroup;
@@ -221,16 +192,22 @@ public class HealthTrackerFragment extends Fragment {
         aerobic=doAerobic;
     }
     public String changeTime(int n){
-        if(n<10) return "0"+Integer.toString(n);
+        if(n<10) return "0"+ n;
         else return Integer.toString(n);
     }
-    public int setCup(ImageButton imageButton, int n){
+    public int changeCups(ImageButton imageButton, int n){
         if(n==0){
             imageButton.setImageResource(R.drawable.icon_fillcup);
             return 1;
         }else {
-            ibtn_cup8.setImageResource(R.drawable.icon_blankcup);
+            imageButton.setImageResource(R.drawable.icon_blankcup);
             return 0;
+        }
+    }
+    public void setCups(){
+        for (int i = 0; i <cups.length ; i++) {
+            if(cups[i]==1) changeCups(ibtn_cup[i],0);
+            else changeCups(ibtn_cup[i],1);
         }
     }
     public void saveData(){
@@ -246,19 +223,23 @@ public class HealthTrackerFragment extends Fragment {
         String dinnerMenu = et_dinner.getText().toString();
         String exerciseContent = et_exercise.getText().toString();
         String comment = et_comment.getText().toString();
-        int waterCnt = cup1 + cup2 + cup3 + cup4 + cup5 + cup6 + cup7 + cup8;
+        StringBuilder waterCups = new StringBuilder();
+        for (int value : cups) waterCups.append(value);
         int exercisedata = getExercise();
         int aerobicdata = aerobic;
         // TODO: 2020-12-29 SQL에 저장
     }
     public void setData(){
-        String date=null, breakfastTime=null, breakfastMenu=null, lunchTime=null, lunchMenu=null, snackMenu=null, dinnerTime=null, dinnerMenu=null, exerciseContent=null, comment=null;
-        int waterCnt=0, exercisedata=0, aerobicdata=0;
+        String date=null, breakfastTime=null, breakfastMenu=null, lunchTime=null, lunchMenu=null, snackMenu=null, dinnerTime=null, dinnerMenu=null, exerciseContent=null, comment=null, waterCups=null;
+        int exerciseData =0, aerobicData =0;
+        String[] array;
         // TODO: 2020-12-29 SQL에서 불러오기
         textViewDate.setText(date);
         tv_breakfast.setText(breakfastTime); tv_lunch.setText(lunchTime); tv_dinner.setText(dinnerTime);
         et_breakfast.setText(breakfastMenu); et_lunch.setText(lunchMenu); et_snack.setText(snackMenu); et_dinner.setText(dinnerMenu);
         et_exercise.setText(exerciseContent); et_comment.setText(comment);
-        setHealth(iv_health, exercisedata, aerobicdata);
+        setHealth(iv_health, exerciseData, aerobicData);
+        array = waterCups.split("");
+        for (int i = 0; i <array.length ; i++) cups[i] = Integer.parseInt(array[i]);
     }
 }

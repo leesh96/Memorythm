@@ -5,17 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class GridMemoFragment extends Fragment {
@@ -30,14 +26,11 @@ public class GridMemoFragment extends Fragment {
     Calendar myCalendar = Calendar.getInstance();
 
     //데이트픽커 다이얼로그
-    DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, month);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel();
-        }
+    DatePickerDialog.OnDateSetListener myDatePicker = (datePicker, year, month, dayOfMonth) -> {
+        myCalendar.set(Calendar.YEAR, year);
+        myCalendar.set(Calendar.MONTH, month);
+        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        updateLabel();
     };
 
     // 텍스트뷰 날짜 업데이트
@@ -57,15 +50,10 @@ public class GridMemoFragment extends Fragment {
         editTextContent = viewGroup.findViewById(R.id.memo_content);
 
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
-        Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy - MM - dd", Locale.KOREA);
-        textViewDate.setText(simpleDateFormat.format(currentTime));
+        textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
 
-        textViewDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { // 데이트픽커 띄우기
-                new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
+        textViewDate.setOnClickListener(v -> { // 데이트픽커 띄우기
+            new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         });
 
         return viewGroup;
