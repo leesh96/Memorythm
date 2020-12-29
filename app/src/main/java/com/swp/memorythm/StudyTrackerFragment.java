@@ -112,8 +112,8 @@ public class StudyTrackerFragment extends Fragment {
         }
     }
     public void saveData(){
-        //String : date, studyTimecheck , commentAll , commentTime
-        String date = textViewDate.getText().toString();
+        //String : userdate, studyTimecheck , commentAll , commentTime
+        String userdate = textViewDate.getText().toString();
         StringBuilder studyTimecheck = new StringBuilder();
         for (int value : num_time) studyTimecheck.append(value);
         String commentAll = et_comment.getText().toString();
@@ -126,10 +126,10 @@ public class StudyTrackerFragment extends Fragment {
         // TODO: 2020-12-29 SQL에 저장
     }
     public void setData(){
-        String date=null, studyTimecheck=null , commentAll =null, commentTime=null;
+        String userdate=null, studyTimecheck=null , commentAll =null, commentTime=null;
         String[] array, array1;
         // TODO: 2020-12-29 SQL에서 불러오기
-        textViewDate.setText(date);
+        textViewDate.setText(userdate);
         array = studyTimecheck.split("");
         for (int i = 0; i <array.length ; i++) num_time[i] = Integer.parseInt(array[i]);
         et_comment.setText(commentAll);

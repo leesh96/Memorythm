@@ -119,9 +119,9 @@ public class ReviewFragment extends Fragment {
     }
 
     public void saveData(){
-        //String : date, categoryName, reviewTitle, reviewContent
+        //String : userdate, categoryName, reviewTitle, reviewContent
         //int : categoryCheck, starNum, score
-        String date = textViewDate.getText().toString();
+        String userdate = textViewDate.getText().toString();
         String reviewTitle = et_title.getText().toString();
         String reviewContent = et_content.getText().toString();
         int starNum = rb_review.getNumStars();
@@ -139,10 +139,10 @@ public class ReviewFragment extends Fragment {
         // TODO: 2020-12-29 SQL에 저장
     }
     public void setData(){
-        String date=null, categoryName=null, reviewTitle=null, reviewContent=null;
+        String userdate=null, categoryName=null, reviewTitle=null, reviewContent=null;
         int categoryCheck=0, starNum=0, score=0;
         // TODO: 2020-12-29 SQL에서 불러오기
-        textViewDate.setText(date);
+        textViewDate.setText(userdate);
         et_title.setText(reviewTitle);
         et_content.setText(reviewContent);
         rb_review.setRating(starNum);

@@ -211,9 +211,9 @@ public class HealthTrackerFragment extends Fragment {
         }
     }
     public void saveData(){
-        //string : date, breakfastTime, breakfastMenu, lunchTime, lunchMenu, snackMenu , dinnerTime, dinnerMenu, exerciseContent, comment
+        //string : userdate, breakfastTime, breakfastMenu, lunchTime, lunchMenu, snackMenu , dinnerTime, dinnerMenu, exerciseContent, comment
         //int : waterCnt, exercisedata, aerobicdata
-        String date = textViewDate.getText().toString();
+        String userdate = textViewDate.getText().toString();
         String breakfastTime = tv_breakfast.getText().toString();
         String lunchTime = tv_lunch.getText().toString();
         String dinnerTime = tv_dinner.getText().toString();
@@ -230,11 +230,11 @@ public class HealthTrackerFragment extends Fragment {
         // TODO: 2020-12-29 SQL에 저장
     }
     public void setData(){
-        String date=null, breakfastTime=null, breakfastMenu=null, lunchTime=null, lunchMenu=null, snackMenu=null, dinnerTime=null, dinnerMenu=null, exerciseContent=null, comment=null, waterCups=null;
+        String userdate=null, breakfastTime=null, breakfastMenu=null, lunchTime=null, lunchMenu=null, snackMenu=null, dinnerTime=null, dinnerMenu=null, exerciseContent=null, comment=null, waterCups=null;
         int exerciseData =0, aerobicData =0;
         String[] array;
         // TODO: 2020-12-29 SQL에서 불러오기
-        textViewDate.setText(date);
+        textViewDate.setText(userdate);
         tv_breakfast.setText(breakfastTime); tv_lunch.setText(lunchTime); tv_dinner.setText(dinnerTime);
         et_breakfast.setText(breakfastMenu); et_lunch.setText(lunchMenu); et_snack.setText(snackMenu); et_dinner.setText(dinnerMenu);
         et_exercise.setText(exerciseContent); et_comment.setText(comment);

@@ -59,15 +59,15 @@ public class GridMemoFragment extends Fragment {
         return viewGroup;
     }
     public void saveData(){
-        //date, content
-        String date = textViewDate.getText().toString();
+        //userdate, content
+        String userdate = textViewDate.getText().toString();
         String content = editTextContent.getText().toString();
         // TODO: 2020-12-29 SQL에 저장
     }
     public void setData(){
-        String date=null, content=null;
+        String userdate=null, content=null;
         // TODO: 2020-12-29 SQL에서 불러오기
-        textViewDate.setText(date);
+        textViewDate.setText(userdate);
         editTextContent.setText(content);
     }
 }

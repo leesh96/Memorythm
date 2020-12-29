@@ -16,17 +16,17 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_YEARLYPLAN = "CREATE TABLE if not exists yearlyplan(id integer primary key autoincrement, date text, contentJan text, contentFeb text, contentMar text, contentApr text, contentMay text, contentJun text, contentJul text, " +
             "contentAug text, contentSep text, contentOct text, contentNov text, contentDec text, fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
     //윤경
-    private static final String CREATE_TABLE_GRIDMEMO = "CREATE TABLE if not exists gridmemo(id integer primary key autoincrement, date text, content text, fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
-    private static final String CREATE_TABLE_HEALTHTRACKER = "CREATE TABLE if not exists healthtracker(id integer primary key autoincrement, date text, " +
+    private static final String CREATE_TABLE_GRIDMEMO = "CREATE TABLE if not exists gridmemo(id integer primary key autoincrement, editdate text, userdate text, content text, fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
+    private static final String CREATE_TABLE_HEALTHTRACKER = "CREATE TABLE if not exists healthtracker(id integer primary key autoincrement, editdate text, userdate text, " +
             "waterCups text, breakfastTime text, breakfastMenu text, lunchTime text, lunchMenu text, snackMenu text, dinnerTime text, dinnerMenu text, exercise integer, aerobic integer, exerciseContent text, comment text, " +
             "fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
-    private static final String CREATE_TABLE_MONTHTRACKER = "CREATE TABLE if not exists studytracker(id integer primary key autoincrement, date text, " +
+    private static final String CREATE_TABLE_MONTHTRACKER = "CREATE TABLE if not exists studytracker(id integer primary key autoincrement, editdate text, userdate text, " +
             "goal text, dayCheck text, commet text," +
             "fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
-    private static final String CREATE_TABLE_STUDYTRACKER = "CREATE TABLE if not exists monthtracker(id integer primary key autoincrement, date text, " +
+    private static final String CREATE_TABLE_STUDYTRACKER = "CREATE TABLE if not exists monthtracker(id integer primary key autoincrement, editdate text, userdate text, " +
             "studyTimecheck text, commentAll text, commentTime text, " +
             "fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
-    private static final String CREATE_TABLE_REVIEW = "CREATE TABLE if not exists review(id integer primary key autoincrement, date text, " +
+    private static final String CREATE_TABLE_REVIEW = "CREATE TABLE if not exists review(id integer primary key autoincrement, editdate text, userdate text, " +
             "categoryCheck integer, categoryName text, starNum integer, score integer, reviewTitle text, reviewContent text, " +
             "fixed integer, deleted integer, folder integer, FOREIGN KEY(folder) REFERENCES folders(id));";
 

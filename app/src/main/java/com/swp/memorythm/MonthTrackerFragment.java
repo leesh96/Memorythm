@@ -118,8 +118,8 @@ public class MonthTrackerFragment extends Fragment {
         }
     }
     public void saveData(){
-        //String : date, goal, dayCheck, comment
-        String date = textViewDate.getText().toString();
+        //String : userdate, goal, dayCheck, comment
+        String userdate = textViewDate.getText().toString();
         String goal = et_goal.getText().toString();
         String comment = et_comment.getText().toString();
         StringBuilder dayCheck = new StringBuilder();
@@ -128,10 +128,10 @@ public class MonthTrackerFragment extends Fragment {
         // TODO: 2020-12-29 SQL에 저장
     }
     public void setData(){
-        String date=null, goal=null, dayCheck=null, comment=null;
+        String userdate=null, goal=null, dayCheck=null, comment=null;
         String[] array;
         // TODO: 2020-12-29 SQL에서 불러오기
-        textViewDate.setText(date);
+        textViewDate.setText(userdate);
         et_goal.setText(goal);
         et_comment.setText(comment);
         array = dayCheck.split("");
