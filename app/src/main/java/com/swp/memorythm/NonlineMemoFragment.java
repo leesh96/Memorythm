@@ -90,7 +90,7 @@ public class NonlineMemoFragment extends Fragment {
 
         switch (Mode) {
             case "write":
-                db.execSQL("INSERT INTO nonline('userdate', 'content') VALUES('" + Content + "', '" + Userdate + "');");
+                db.execSQL("INSERT INTO nonlinememo('userdate', 'content') VALUES('" + Content + "', '" + Userdate + "');");
                 break;
             case "view":
                 // 쿼리 업데이트 쓰기

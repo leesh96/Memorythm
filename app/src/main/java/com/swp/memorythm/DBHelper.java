@@ -10,38 +10,67 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // 테이블 생성 쿼리
     // 폴더 테이블
-    private static final String CREATE_TABLE_FOLDERS = "CREATE TABLE if not exists folders(name TEXT primary key);";
+    private static final String CREATE_TABLE_FOLDER = "CREATE TABLE if not exists folder(name TEXT primary key);";
 
-    // 테이블 공통 : id integer primary key autoincrement, editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folders(name)
+    /* 테이블마다 공통 컬럼
+    id integer primary key autoincrement,
+    editdate DATETIME DEFAULT (datetime('now', 'localtime')),
+    deleted integer DEFAULT 0,
+    fixed integer DEFAULT 0,
+    folder_name TEXT DEFAULT '메모' FOREIGN KEY(folder_name) REFERENCES folder(name)
+    */
 
-    // 재석
-    private static final String CREATE_TABLE_LINEMEMO = "CREATE TABLE if not exists linememo(id integer primary key autoincrement, date text, content text, fixed integer, deleted integer, folder_name TEXT, FOREIGN KEY(folder_name) REFERENCES folders(name));";
-    private static final String CREATE_TABLE_DAILYPLAN = "CREATE TABLE if not exists dailyplan(id integer primary key autoincrement, date text, contentAm text, contentPm text, weather text, fixed integer, deleted integer, folder_name TEXT, FOREIGN KEY(folder_name) REFERENCES folders(name));";
-    private static final String CREATE_TABLE_WEEKLYPLAN = "CREATE TABLE if not exists weeklyplan(id integer primary key autoincrement, date text, contentMon text, contentTue text, contentWed text, contentThu text, contentFri text, contentSat text, contentSun text, " +
-            "checkedMon integer, checkedTue integer, checkedWed integer, checkedThu integer, checkedFri integer, checkedSat integer, checkedSun integer, fixed integer, deleted integer, folder integer, folder_name TEXT, FOREIGN KEY(folder_name) REFERENCES folders(name));";
-    private static final String CREATE_TABLE_MONTHLYPLAN = "CREATE TABLE if not exists monthlyplan(id integer primary key autoincrement, date text, fixed integer, deleted integer, folder_name TEXT, FOREIGN KEY(folder_name) REFERENCES folders(name));";
-    private static final String CREATE_TABLE_YEARLYPLAN = "CREATE TABLE if not exists yearlyplan(id integer primary key autoincrement, date text, contentJan text, contentFeb text, contentMar text, contentApr text, contentMay text, contentJun text, contentJul text, " +
-            "contentAug text, contentSep text, contentOct text, contentNov text, contentDec text, fixed integer, deleted integer, folder_name TEXT, FOREIGN KEY(folder_name) REFERENCES folders(name));";
+    //재석 탬플릿
+    private static final String CREATE_TABLE_LINEMEMO = "CREATE TABLE if not exists linememo(id integer primary key autoincrement, userdate text, content text, " +
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
-    //윤경
-    private static final String CREATE_TABLE_GRIDMEMO = "CREATE TABLE if not exists gridmemo(id integer primary key autoincrement, editdate DATETIME, userdate text, content text, fixed integer, deleted integer, folder_name TEXT, FOREIGN KEY(folder_name) REFERENCES folders(name));";
-    private static final String CREATE_TABLE_HEALTHTRACKER = "CREATE TABLE if not exists healthtracker(id integer primary key autoincrement, editdate DATETIME, userdate text, " +
+    private static final String CREATE_TABLE_DAILYPLAN = "CREATE TABLE if not exists dailyplan(id integer primary key autoincrement, userdate text, contentAm text, contentPm text, weather text, " +
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+
+    private static final String CREATE_TABLE_WEEKLYPLAN = "CREATE TABLE if not exists weeklyplan(id integer primary key autoincrement, userdate text, " +
+            "contentMon text, contentTue text, contentWed text, contentThu text, contentFri text, contentSat text, contentSun text, " +
+            "checkedMon integer, checkedTue integer, checkedWed integer, checkedThu integer, checkedFri integer, checkedSat integer, checkedSun integer, " +
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+
+    private static final String CREATE_TABLE_MONTHLYPLAN = "CREATE TABLE if not exists monthlyplan(id integer primary key autoincrement, userdate text, " +
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+
+    private static final String CREATE_TABLE_YEARLYPLAN = "CREATE TABLE if not exists yearlyplan(id integer primary key autoincrement, userdate text, " +
+            "contentJan text, contentFeb text, contentMar text, contentApr text, contentMay text, contentJun text, contentJul text, contentAug text, contentSep text, contentOct text, contentNov text, contentDec text, " +
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+
+    //윤경 탬플릿
+    private static final String CREATE_TABLE_GRIDMEMO = "CREATE TABLE if not exists gridmemo(id integer primary key autoincrement, userdate text, content text, " +
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+
+    private static final String CREATE_TABLE_HEALTHTRACKER = "CREATE TABLE if not exists healthtracker(id integer primary key autoincrement, userdate text, " +
             "waterCups text, breakfastTime text, breakfastMenu text, lunchTime text, lunchMenu text, snackMenu text, dinnerTime text, dinnerMenu text, exercise integer, aerobic integer, exerciseContent text, comment text, " +
-            "fixed integer, deleted integer, folder_name TEXT, FOREIGN KEY(folder_name) REFERENCES folders(name));";
-    private static final String CREATE_TABLE_MONTHTRACKER = "CREATE TABLE if not exists studytracker(id integer primary key autoincrement, editdate DATETIME, userdate text, " +
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+
+    private static final String CREATE_TABLE_MONTHTRACKER = "CREATE TABLE if not exists studytracker(id integer primary key autoincrement, userdate text, " +
             "goal text, dayCheck text, commet text," +
-            "fixed integer, deleted integer, folder_name TEXT, FOREIGN KEY(folder_name) REFERENCES folders(name));";
-    private static final String CREATE_TABLE_STUDYTRACKER = "CREATE TABLE if not exists monthtracker(id integer primary key autoincrement, editdate DATETIME, userdate text, " +
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+
+    private static final String CREATE_TABLE_STUDYTRACKER = "CREATE TABLE if not exists monthtracker(id integer primary key autoincrement, userdate text, " +
             "studyTimecheck text, commentAll text, commentTime text, " +
-            "fixed integer, deleted integer, folder_name TEXT, FOREIGN KEY(folder_name) REFERENCES folders(name));";
-    private static final String CREATE_TABLE_REVIEW = "CREATE TABLE if not exists review(id integer primary key autoincrement, editdate DATETIME, userdate text, " +
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+
+    private static final String CREATE_TABLE_REVIEW = "CREATE TABLE if not exists review(id integer primary key autoincrement, userdate text, " +
             "categoryCheck integer, categoryName text, starNum integer, score integer, reviewTitle text, reviewContent text, " +
-            "fixed integer, deleted integer, folder_name TEXT, FOREIGN KEY(folder_name) REFERENCES folders(name));";
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
-    //수호
-    public static final String CREATE_TABLE_NONLINE = "CREATE TABLE if not exists nonline(id integer primary key autoincrement, userdate text, content text, " +
-            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folders(name));";
+    //수호 탬플릿
+    private static final String CREATE_TABLE_NONLINEMEMO = "CREATE TABLE if not exists nonlinememo(id integer primary key autoincrement, userdate text, content text, " +
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
+    private static final String CREATE_TABLE_TODOLIST = "CREATE TABLE if not exists todolist(id integer primary key autoincrement, userdate text, content text, done text, " +
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+
+    private static final String CREATE_TABLE_WISHLIST = "CREATE TABLE if not exists wishlist(id integer primary key autoincrement, userdate text, content text, wished text, category text, " +
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+
+    private static final String CREATE_TABLE_SHOPPINGLIST = "CREATE TABLE if not exists shoppinglist(id integer primary key autoincrement, userdate text, content text, bought text, price text, " +
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     // 생성자
     public DBHelper(Context context) {
@@ -66,9 +95,12 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS studytracker");
         db.execSQL("DROP TABLE IF EXISTS review");
         //수호
-        db.execSQL("DROP TABLE if exists nonline");
+        db.execSQL("DROP TABLE if exists nonlinememo");
+        db.execSQL("DROP TABLE if exists todolist");
+        db.execSQL("DROP TABLE if exists wishlist");
+        db.execSQL("DROP TABLE if exists shoppinglist");
         //참조되는 키 있어서 젤 마지막에 삭제
-        db.execSQL("DROP TABLE IF EXISTS folders");
+        db.execSQL("DROP TABLE IF EXISTS folder");
         */
 
         // 외래키 허용
@@ -76,9 +108,9 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("PRAGMA foreign_keys=ON;");
         }
 
-        //쿼리 실행 folders 먼저 생성해주기
-        db.execSQL(CREATE_TABLE_FOLDERS);
-        db.execSQL("INSERT INTO folders('name') VALUES('메모')");
+        //쿼리 실행 folder 먼저 생성해주기
+        db.execSQL(CREATE_TABLE_FOLDER);
+        db.execSQL("INSERT INTO folder('name') VALUES('메모')");
         //재석
         db.execSQL(CREATE_TABLE_LINEMEMO);
         db.execSQL(CREATE_TABLE_DAILYPLAN);
@@ -92,7 +124,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_STUDYTRACKER);
         db.execSQL(CREATE_TABLE_REVIEW);
         //수호
-        db.execSQL(CREATE_TABLE_NONLINE);
+        db.execSQL(CREATE_TABLE_NONLINEMEMO);
+        db.execSQL(CREATE_TABLE_TODOLIST);
+        db.execSQL(CREATE_TABLE_WISHLIST);
+        db.execSQL(CREATE_TABLE_SHOPPINGLIST);
     }
 
     // DB를 열 때 호출한다.
@@ -118,9 +153,12 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE if exists studytracker");
         db.execSQL("DROP TABLE if exists review");
         //수호
-        db.execSQL("DROP TABLE if exists nonline");
+        db.execSQL("DROP TABLE if exists nonlinememo");
+        db.execSQL("DROP TABLE if exists todolist");
+        db.execSQL("DROP TABLE if exists wishlist");
+        db.execSQL("DROP TABLE if exists shoppinglist");
         //참조되는 키 있어서 젤 마지막에 삭제
-        db.execSQL("DROP TABLE if exists folders");
+        db.execSQL("DROP TABLE if exists folder");
 
         onCreate(db);
     }
