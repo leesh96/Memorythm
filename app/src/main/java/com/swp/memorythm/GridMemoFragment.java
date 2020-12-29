@@ -68,8 +68,18 @@ public class GridMemoFragment extends Fragment {
             }
         });
 
-        // TODO: 2020-11-20 파이어베이스 연동
-
         return viewGroup;
+    }
+    public void saveData(){
+        //date, content
+        String date = textViewDate.getText().toString();
+        String content = editTextContent.getText().toString();
+        // TODO: 2020-12-29 SQL에 저장
+    }
+    public void setData(){
+        String date=null, content=null;
+        // TODO: 2020-12-29 SQL에서 불러오기
+        textViewDate.setText(date);
+        editTextContent.setText(content);
     }
 }

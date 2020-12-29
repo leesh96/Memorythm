@@ -180,6 +180,7 @@
                     android:background="#000000" />
 
                 <EditText
+                    android:id="@+id/et_breakfast"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="3"
@@ -236,6 +237,7 @@
                     android:background="#000000" />
 
                 <EditText
+                    android:id="@+id/et_lunch"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="3"
@@ -285,6 +287,7 @@
                     android:background="#000000" />
 
                 <EditText
+                    android:id="@+id/et_snack"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="3"
@@ -341,6 +344,7 @@
                     android:background="#000000" />
 
                 <EditText
+                    android:id="@+id/et_dinner"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="3"
@@ -436,6 +440,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <EditText
+                            android:id="@+id/et_exercise"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
@@ -475,6 +480,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <EditText
+                            android:id="@+id/et_comment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
