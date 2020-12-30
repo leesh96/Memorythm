@@ -1,9 +1,9 @@
 package com.swp.memorythm;
 
-class TopMemoData{
+class TotalMemoData {
     String topMemoTitle;
 
-    public TopMemoData(String topMemoTitle) {
+    public TotalMemoData(String topMemoTitle) {
         this.topMemoTitle = topMemoTitle;
     }
 

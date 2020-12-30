@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private TemplateFragment templateFragment; // 템플릿 프레그먼트
     private WriteFragment writeFragment; // 작성 프레그먼트
     private TrashFragment trashFragment; // 휴지통 프레그먼트
-    private SetFragment setFragment; // 설정 프레그먼트
+    private TotalFragment setFragment; // 설정 프레그먼트
     private ImageButton homeBtn; // 홈으로 가는 버튼
     private Menu menu;
 
@@ -73,30 +72,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
-                    case R.id.folderItem:
+                    case R.id.totalItem:
                         setFrag(1);
                         break;
-                    case R.id.templateItem:
+                    case R.id.folderItem:
                         setFrag(2);
                         break;
-                    case R.id.writeItem:
+                    case R.id.templateItem:
                         setFrag(3);
                         break;
-                    case R.id.trashItem:
+                    case R.id.writeItem:
                         setFrag(4);
                         break;
-                    case R.id.setItem:
+                    case R.id.trashItem:
                         setFrag(5);
                         break;
+
                 }
                 return true;
             }
         });
-        folderFragment = new FolderFragment();
-        templateFragment = new TemplateFragment();
-        writeFragment = new WriteFragment();
-        trashFragment = new TrashFragment();
-        setFragment = new SetFragment();
 //        setFrag(1); // 첫 프레그먼트 지정
 
     }
@@ -111,23 +106,23 @@ public class MainActivity extends AppCompatActivity {
                 ft.commit();
                 break;
             case 1:
-                ft.replace(R.id.mainFrame, new FolderFragment());
+                ft.replace(R.id.mainFrame, new TotalFragment());
                 ft.commit();
                 break;
             case 2:
-                ft.replace(R.id.mainFrame, new TemplateFragment());
+                ft.replace(R.id.mainFrame, new FolderFragment());
                 ft.commit();
                 break;
             case 3:
-                ft.replace(R.id.mainFrame, new WriteFragment());
+                ft.replace(R.id.mainFrame, new TemplateFragment());
                 ft.commit();
                 break;
             case 4:
-                ft.replace(R.id.mainFrame, trashFragment);
+                ft.replace(R.id.mainFrame, new WriteFragment());
                 ft.commit();
                 break;
             case 5:
-                ft.replace(R.id.mainFrame, setFragment);
+                ft.replace(R.id.mainFrame, new TrashFragment());
                 ft.commit();
                 break;
 

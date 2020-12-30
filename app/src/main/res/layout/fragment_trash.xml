@@ -29,28 +29,27 @@
         android:background="@drawable/history_clock"
         app:layout_constraintEnd_toStartOf="@+id/emptyBtn"
         app:layout_constraintHorizontal_bias="0.947"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/trashBg"
+        app:layout_constraintTop_toTopOf="@+id/trashBg" />
 
     <ImageButton
         android:id="@+id/emptyBtn"
         android:layout_width="24dp"
         android:layout_height="26dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/delete"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.956"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/trashBg"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/trashBg"
+        app:layout_constraintTop_toTopOf="@+id/trashBg" />
 
     <ImageView
         android:id="@+id/bg_trash_box"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="15dp"
-        android:layout_marginStart="14dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="14dp"
         android:background="@drawable/bg_trash_box"
         app:layout_constraintEnd_toStartOf="@+id/trashBg"
         app:layout_constraintStart_toEndOf="@+id/trashBg"

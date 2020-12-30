@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -14,6 +17,8 @@ import java.util.ArrayList;
 public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapter.TemplateViewHolder> implements ItemTouchHelperListener {
 
     Context templateContext;
+    private FragmentManager fm;
+    private FragmentTransaction ft;
     ArrayList<Template> dataTemplate = new ArrayList<>();
     public boolean isArray = false;
 
@@ -47,6 +52,14 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
             holder.itemView.setClickable(true);
             holder.templateNum.setVisibility(View.VISIBLE);
         }
+        //프레그먼트 교체
+        holder.itemView.setOnClickListener(view -> {
+            FragmentActivity activity = (FragmentActivity)view.getContext();
+            MemoListFragment memoListFragment = new MemoListFragment();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.templateID,memoListFragment).addToBackStack(null).commit();
+            notifyDataSetChanged();
+        });
+
     }
 
     @Override
@@ -87,5 +100,8 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
 
     public void setArray(boolean array){
         isArray = array;
+    }
+    private void changeFrag(int n){
+
     }
 }
