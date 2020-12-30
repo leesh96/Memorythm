@@ -1,10 +1,12 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
+import android.app.Service;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,8 @@ import java.util.Objects;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class MonthTrackerFragment extends Fragment {
+    //키보드 설정
+    private androidx.constraintlayout.widget.ConstraintLayout parentLayout;
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private TextView textViewDate;
@@ -62,7 +66,9 @@ public class MonthTrackerFragment extends Fragment {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.template_monthtracker, container, false);
         dbHelper = new DBHelper(getContext());
 
+        parentLayout = viewGroup.findViewById(R.id.parentLayout);
         textViewDate = viewGroup.findViewById(R.id.write_date);
+        et_goal = viewGroup.findViewById(R.id.et_goal); et_comment = viewGroup.findViewById(R.id.et_comment);
 
         String packName = Objects.requireNonNull(this.getActivity()).getPackageName();
         for (int i = 1; i < 32; i++) {
@@ -70,8 +76,6 @@ public class MonthTrackerFragment extends Fragment {
             int id = getResources().getIdentifier(name,"id",packName);
             btn_day[i-1]=viewGroup.findViewById(id);
         }
-
-        et_goal = viewGroup.findViewById(R.id.et_goal); et_comment = viewGroup.findViewById(R.id.et_comment);
 
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
         textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
@@ -86,6 +90,9 @@ public class MonthTrackerFragment extends Fragment {
             int finalI = i;
             btn_day[i].setOnClickListener(v-> num_day[finalI]=changeBgColor(btn_day[finalI],num_day[finalI]));
         }
+
+
+
 
         return viewGroup;
     }

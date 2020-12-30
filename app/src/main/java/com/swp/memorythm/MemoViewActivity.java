@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
@@ -142,9 +144,11 @@ public class MemoViewActivity extends AppCompatActivity {
                 Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.template_frame);      // 현재 보여지는 프래그먼트 가져오기
 
                 // 포커스 삭제 및 키보드 내리기
-                /*InputMethodManager manager=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                getCurrentFocus().clearFocus();*/
+                InputMethodManager manager=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                if(getCurrentFocus()!=null){
+                    manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    getCurrentFocus().clearFocus();
+                }
 
                 // 이게 뭔진 잘 모르겠는데 이걸 써야한대
                 AtomicBoolean success = new AtomicBoolean(false);

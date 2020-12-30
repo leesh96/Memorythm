@@ -1,19 +1,28 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
+import android.app.Service;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
@@ -21,6 +30,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class ReviewFragment extends Fragment {
+    //키보드 설정
+    private androidx.constraintlayout.widget.ConstraintLayout parentLayout;
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private TextView textViewDate;
@@ -32,6 +43,7 @@ public class ReviewFragment extends Fragment {
     public static ReviewFragment newInstance() {
         return new ReviewFragment();
     }
+    private boolean isKeyboardOpen;
 
     // 캘린더 객체 생성
     Calendar myCalendar = Calendar.getInstance();
@@ -57,6 +69,7 @@ public class ReviewFragment extends Fragment {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.template_review, container, false);
         dbHelper = new DBHelper(getContext());
 
+        parentLayout = viewGroup.findViewById(R.id.parentLayout);
         textViewDate = viewGroup.findViewById(R.id.write_date);
         tv_reviews[0] = viewGroup.findViewById(R.id.tv_book);
         tv_reviews[1] = viewGroup.findViewById(R.id.tv_concert);
@@ -81,16 +94,7 @@ public class ReviewFragment extends Fragment {
             int finalI = i;
             tv_reviews[i].setOnClickListener(v -> { setBg(pastChoice, tv_reviews[finalI]); pastChoice=finalI; isUser=false;});
         }
-        et_reviewList.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                et_reviewList.setBackgroundResource(R.drawable.bg_selector);
-                tv_reviews[pastChoice].setBackgroundColor(Color.parseColor("#00000000"));
-                isUser=true;
-            } else {
-                return false;
-            }
-            return true;
-        });
+
         //레이팅 바
         rb_review.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
             if(isEdit) isEdit = false;
@@ -99,20 +103,42 @@ public class ReviewFragment extends Fragment {
                 et_scoreReview.setText(string);
             }
         });
-        et_scoreReview.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                isEdit = true;
-                int score = Integer.parseInt(et_scoreReview.getText().toString());
-                rb_review.setRating(Math.round(score / 20.0));
-            } else {
-                return false;
-            }
-            return true;
-        });
+
         textViewDate.setOnClickListener(v -> { // 데이트픽커 띄우기
             new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         });
-        // TODO: 2020-11-20 파이어베이스 연동
+
+
+        final View activityRootView = viewGroup.findViewById(R.id.parentLayout);
+
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            Rect r = new Rect();
+            //r will be populated with the coordinates of your view that area still visible.
+            activityRootView.getWindowVisibleDisplayFrame(r);
+
+            int heightDiff = activityRootView.getRootView().getHeight() - r.height();
+            if (heightDiff > 0.25*activityRootView.getRootView().getHeight()) { // if more than 25% of the screen, its probably a keyboard...... do something here
+                Log.d("키보드 ","나옴?");
+
+            }else{
+                Log.d("키보드 ","내려감?");
+                if (ReviewFragment.this.getActivity().getCurrentFocus() == et_reviewList) {
+                    et_reviewList.setBackgroundResource(R.drawable.bg_selector);
+                    tv_reviews[pastChoice].setBackgroundColor(Color.parseColor("#00000000"));
+                    isUser = true;
+                    et_reviewList.clearFocus();
+                } else if (ReviewFragment.this.getActivity().getCurrentFocus() == et_scoreReview) {
+                    isEdit = true;
+                    if (!et_scoreReview.getText().toString().equals("")) {
+                        int score = Integer.parseInt(et_scoreReview.getText().toString());
+                        rb_review.setRating(Math.round(score / 20.0));
+                        et_scoreReview.clearFocus();
+                    }
+                }else if(ReviewFragment.this.getActivity().getCurrentFocus() == et_content) et_content.clearFocus();
+                else if(ReviewFragment.this.getActivity().getCurrentFocus() == et_title) et_title.clearFocus();
+            }
+        });
+
 
         return viewGroup;
     }
@@ -169,4 +195,13 @@ public class ReviewFragment extends Fragment {
             setBg(pastChoice, tv_reviews[categoryCheck]);
         }
     }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        Log.d("z", String.valueOf(newConfig.keyboardHidden));
+        super.onConfigurationChanged(newConfig);
+        if(newConfig.keyboardHidden == Configuration.KEYBOARDHIDDEN_YES) Log.d("키보드가","YES");
+        else if(newConfig.keyboardHidden == Configuration.KEYBOARDHIDDEN_NO) Log.d("키보드가","NO");
+    }
 }
+
