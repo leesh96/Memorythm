@@ -84,10 +84,6 @@ public class NonlineMemoFragment extends Fragment {
         String Content = editTextContent.getText().toString();
         String Userdate = textViewDate.getText().toString();
 
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editTextContent.getWindowToken(), 0);
-        editTextContent.clearFocus();
-
         switch (Mode) {
             case "write":
                 db.execSQL("INSERT INTO nonlinememo('userdate', 'content') VALUES('" + Userdate + "', '" + Content + "');");

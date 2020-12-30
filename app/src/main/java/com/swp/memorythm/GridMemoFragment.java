@@ -73,10 +73,6 @@ public class GridMemoFragment extends Fragment {
 
         db = dbHelper.getReadableDatabase();
 
-        InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editTextContent.getWindowToken(), 0);
-        editTextContent.clearFocus();
-
         switch (Mode) {
             case "write":
                 db.execSQL("INSERT INTO gridmemo('userdate', 'content') VALUES('" + userdate + "', '" + content + "');");

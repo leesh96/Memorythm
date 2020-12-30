@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
@@ -233,118 +234,32 @@ public class MemoViewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.template_frame);      // 현재 보여지는 프래그먼트 가져오기
 
+                // 포커스 삭제 및 키보드 내리기
+                InputMethodManager manager=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                getCurrentFocus().clearFocus();
+
                 // 프래그먼트 구분
                 // 각 프래그먼트마다 파이어베이스에 저장하는 함수 만들어놓고 아래 처럼 호출
-                if (fragment instanceof NonlineMemoFragment) {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
-                    alert.setMessage("메모를 저장하시겠습니까?");
-                    alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int i) {
-                            try {
-                                ((NonlineMemoFragment) fragment).saveData(Mode);
-                                Mode = "view";
-                                btnDelete.setVisibility(View.VISIBLE);
-                                Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
-                            } catch (Exception e) {
-                                Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
-                            }
-                            dialog.dismiss();
-                        }
-                    });
-                    alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int i) {
-                            dialog.dismiss();
-                        }
-                    });
-                    alert.show();
-                }
-                else if(fragment instanceof GridMemoFragment){
-                    AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
-                    alert.setMessage("메모를 저장하시겠습니까?");
-                    alert.setPositiveButton("확인", (dialog, i) -> {
-                        try {
-                            ((GridMemoFragment) fragment).saveData(Mode);
-                            Mode = "view";
-                            btnDelete.setVisibility(View.VISIBLE);
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
-                        }
-                        dialog.dismiss();
-                    });
-                    alert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
-                    alert.show();
-                }
-                else if(fragment instanceof HealthTrackerFragment){
-                    AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
-                    alert.setMessage("메모를 저장하시겠습니까?");
-                    alert.setPositiveButton("확인", (dialog, i) -> {
-                        try {
-                            ((HealthTrackerFragment) fragment).saveData(Mode);
-                            Mode = "view";
-                            btnDelete.setVisibility(View.VISIBLE);
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
-                        }
-                        dialog.dismiss();
-                    });
-                    alert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
-                    alert.show();
-                }
-                else if(fragment instanceof MonthTrackerFragment){
-                    AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
-                    alert.setMessage("메모를 저장하시겠습니까?");
-                    alert.setPositiveButton("확인", (dialog, i) -> {
-                        try {
-                            ((MonthTrackerFragment) fragment).saveData(Mode);
-                            Mode = "view";
-                            btnDelete.setVisibility(View.VISIBLE);
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
-                        }
-                        dialog.dismiss();
-                    });
-                    alert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
-                    alert.show();
-                }
-                else if(fragment instanceof StudyTrackerFragment){
-                    AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
-                    alert.setMessage("메모를 저장하시겠습니까?");
-                    alert.setPositiveButton("확인", (dialog, i) -> {
-                        try {
-                            ((StudyTrackerFragment) fragment).saveData(Mode);
-                            Mode = "view";
-                            btnDelete.setVisibility(View.VISIBLE);
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
-                        }
-                        dialog.dismiss();
-                    });
-                    alert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
-                    alert.show();
-                }
-                else if(fragment instanceof ReviewFragment){
-                    AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
-                    alert.setMessage("메모를 저장하시겠습니까?");
-                    alert.setPositiveButton("확인", (dialog, i) -> {
-                        try {
-                            ((ReviewFragment) fragment).saveData(Mode);
-                            Mode = "view";
-                            btnDelete.setVisibility(View.VISIBLE);
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
-                        }
-                        dialog.dismiss();
-                    });
-                    alert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
-                    alert.show();
-                }
+                AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                alert.setMessage("메모를 저장하시겠습니까?");
+                alert.setPositiveButton("확인", (dialog, i) -> {
+                    try {
+                        if(fragment instanceof NonlineMemoFragment) ((NonlineMemoFragment) fragment).saveData(Mode);
+                        else if(fragment instanceof HealthTrackerFragment) ((GridMemoFragment) fragment).saveData(Mode);
+                        else if(fragment instanceof MonthTrackerFragment) ((MonthTrackerFragment) fragment).saveData(Mode);
+                        else if(fragment instanceof StudyTrackerFragment) ((StudyTrackerFragment) fragment).saveData(Mode);
+                        else if(fragment instanceof ReviewFragment) ((ReviewFragment) fragment).saveData(Mode);
+                        Mode = "view";
+                        btnDelete.setVisibility(View.VISIBLE);
+                        Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
+                });
+                alert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
+                alert.show();
             }
         });
 
