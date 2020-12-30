@@ -64,7 +64,7 @@ public class TrashFragAdapter extends RecyclerView.Adapter<TrashFragAdapter.View
             holder.itemView.setClickable(false);
         }
         else {
-            holder.checkBox.setVisibility(View.GONE);
+            holder.checkBox.setVisibility(View.INVISIBLE);
             holder.itemView.setClickable(true);
         }
     }
