@@ -3,6 +3,7 @@ package com.swp.memorythm;
 import androidx.appcompat.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,8 @@ public class ShoppingFragment extends Fragment {
     private ImageButton btnAdd;
     private ArrayList<ShoppingData> mArrayList;
     private ShoppingAdapter mAdapter;
+    DBHelper dbHelper;
+    SQLiteDatabase db;
 
     public static ShoppingFragment newInstance() { return new ShoppingFragment(); }
 
@@ -60,6 +63,7 @@ public class ShoppingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_shopping, container, false);
+        dbHelper = new DBHelper(getContext());
 
         textViewDate = rootView.findViewById(R.id.tv_date);
         shoppingRecyclerView = rootView.findViewById(R.id.shopping_rcview);
@@ -156,7 +160,38 @@ public class ShoppingFragment extends Fragment {
         return rootView;
     }
 
-    void testSome() {
-        Toast.makeText(getContext(), "성공", Toast.LENGTH_SHORT).show();
+    public boolean saveData(String Mode, String Bgcolor) {
+        db = dbHelper.getReadableDatabase();
+
+        String Userdate = textViewDate.getText().toString();
+        StringBuilder Content = new StringBuilder();
+        StringBuilder Bought = new StringBuilder();
+        StringBuilder Amount = new StringBuilder();
+
+        for (ShoppingData shoppingData : mArrayList) {
+            Content.append(shoppingData.getContent()).append(",");
+            Bought.append(shoppingData.isBought()).append(",");
+            Amount.append(shoppingData.getAmount()).append(",");
+        }
+
+        if ((Content.equals(""))) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+            alert.setMessage("쇼핑 항목을 추가하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).show();
+            return false;
+        } else {
+            switch (Mode) {
+                case "write":
+                    db.execSQL("INSERT INTO shopping('userdate', 'content', 'bought', 'amount', 'bgcolor') VALUES('" + Userdate + "', '" + Content + "', '" + Bought + "', '" + Amount + "', '" + Bgcolor + "');");
+                    break;
+                case "view":
+                    break;
+            }
+        }
+        return true;
     }
 }

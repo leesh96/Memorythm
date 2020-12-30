@@ -1,28 +1,29 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
-import android.database.SQLException;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-
-import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class NonlineMemoFragment extends Fragment {
     private TextView textViewDate;
@@ -78,20 +79,31 @@ public class NonlineMemoFragment extends Fragment {
         return rootView;
     }
 
-    public void saveData(String Mode) {
+    public boolean saveData(String Mode, String Bgcolor) {
         db = dbHelper.getReadableDatabase();
 
-        String Content = editTextContent.getText().toString();
         String Userdate = textViewDate.getText().toString();
+        String Content = editTextContent.getText().toString();
 
-        switch (Mode) {
-            case "write":
-                db.execSQL("INSERT INTO nonlinememo('userdate', 'content') VALUES('" + Userdate + "', '" + Content + "');");
-                break;
-            case "view":
-                // 쿼리 업데이트 쓰기
-                break;
+        if (Content.equals("") | Content == null) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+            alert.setMessage("내용을 입력하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).show();
+            return false;
+        } else {
+            switch (Mode) {
+                case "write":
+                    db.execSQL("INSERT INTO nonlinememo('userdate', 'content', 'bgcolor') VALUES('" + Userdate + "', '" + Content + "', '" + Bgcolor + "');");
+                    break;
+                case "view":
+                    // 쿼리 업데이트 쓰기
+                    break;
+            }
         }
-        db.close();
+        return true;
     }
 }

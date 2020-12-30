@@ -1,7 +1,9 @@
 package com.swp.memorythm;
 
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,8 @@ public class TodoFragment extends Fragment {
     private ImageButton btnAdd;
     private ArrayList<TodoData> mArrayList;
     private TodoAdapter mAdapter;
+    DBHelper dbHelper;
+    SQLiteDatabase db;
 
     public static TodoFragment newInstance() { return new TodoFragment(); }
 
@@ -32,6 +36,7 @@ public class TodoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_todo, container, false);
+        dbHelper = new DBHelper(getContext());
 
         textViewDate = rootView.findViewById(R.id.tv_date);
         todoRecyclerView = rootView.findViewById(R.id.todo_rcview);
@@ -91,6 +96,7 @@ public class TodoFragment extends Fragment {
                             todoData.setContent(TodoContent);
 
                             mArrayList.add(todoData);
+                            Log.d("list", String.valueOf(mArrayList));
                             mAdapter.notifyDataSetChanged();
 
                             alertDialog.dismiss();
@@ -107,8 +113,40 @@ public class TodoFragment extends Fragment {
             }
         });
 
-        // TODO : 저장, 로드 방법 생각
-
         return rootView;
+    }
+
+    public boolean saveData(String Mode, String Bgcolor) {
+        db = dbHelper.getReadableDatabase();
+
+        String Userdate = textViewDate.getText().toString();
+        StringBuilder Content = new StringBuilder();
+        StringBuilder Done = new StringBuilder();
+
+        for (TodoData todoData : mArrayList) {
+            Content.append(todoData.getContent()).append(",");
+            Done.append(todoData.isDone()).append(",");
+        }
+
+        if (Content.equals("")) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+            alert.setMessage("할 일을 추가하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).show();
+            return false;
+        } else {
+            switch (Mode) {
+            case "write":
+                db.execSQL("INSERT INTO todolist('userdate', 'content', 'done', 'bgcolor') VALUES('" + Userdate + "', '" + Content + "', '" + Done + "', '" + Bgcolor + "');");
+                break;
+            case "view":
+                break;
+            }
+        }
+
+        return true;
     }
 }

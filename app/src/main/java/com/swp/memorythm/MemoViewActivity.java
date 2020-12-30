@@ -7,12 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -20,6 +18,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MemoViewActivity extends AppCompatActivity {
     private FragmentManager fm;
@@ -29,14 +29,15 @@ public class MemoViewActivity extends AppCompatActivity {
     private CheckBox checkBoxFixed;
     private FrameLayout template_frame;
 
-    private String TemplateCase;
-    private String Mode;
-    private boolean isMemoFixed;
+    private String TemplateCase, Mode, MemoBackground;
+    private int isMemoFixed;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memoview);
+
+        Intent intent = getIntent();
 
         btnBack = findViewById(R.id.btn_back);
         btnSelcolor = findViewById(R.id.btn_selColor);
@@ -44,6 +45,8 @@ public class MemoViewActivity extends AppCompatActivity {
         btnDelete = findViewById(R.id.btn_delete);
         checkBoxFixed = findViewById(R.id.checkbox_fixed);
         template_frame = findViewById(R.id.template_frame);
+
+        initMemoView(intent);
 
         // 뒤로가기
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -53,24 +56,205 @@ public class MemoViewActivity extends AppCompatActivity {
             }
         });
 
+        // 색상변경 다이얼로그
+        btnSelcolor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MemoViewActivity.this);
+
+                View dialogView = LayoutInflater.from(MemoViewActivity.this).inflate(R.layout.dialog_colorselect, null, false);
+                builder.setView(dialogView);
+
+                ImageButton btnPink, btnYellow, btnMint, btnSky, btnGray;
+
+                btnYellow = dialogView.findViewById(R.id.btn_bgyellow);
+                btnPink = dialogView.findViewById(R.id.btn_bgpink);
+                btnMint = dialogView.findViewById(R.id.btn_bgmint);
+                btnSky = dialogView.findViewById(R.id.btn_bgsky);
+                btnGray = dialogView.findViewById(R.id.btn_bggray);
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                btnYellow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MemoBackground = "yellow";
+                        setMemoBackground(MemoBackground);
+                        alertDialog.dismiss();
+                    }
+                });
+
+                btnPink.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MemoBackground = "pink";
+                        setMemoBackground(MemoBackground);
+                        alertDialog.dismiss();
+                    }
+                });
+
+                btnMint.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MemoBackground = "mint";
+                        setMemoBackground(MemoBackground);
+                        alertDialog.dismiss();
+                    }
+                });
+
+                btnSky.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MemoBackground = "sky";
+                        setMemoBackground(MemoBackground);
+                        alertDialog.dismiss();
+                    }
+                });
+
+                btnGray.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MemoBackground = "gray";
+                        setMemoBackground(MemoBackground);
+                        alertDialog.dismiss();
+                    }
+                });
+            }
+        });
+
+        // 메모 고정여부 변경
+        checkBoxFixed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    isMemoFixed = 1;
+                } else {
+                    isMemoFixed = 0;
+                }
+            }
+        });
+
+        // 메모 저장
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.template_frame);      // 현재 보여지는 프래그먼트 가져오기
+
+                // 포커스 삭제 및 키보드 내리기
+                /*InputMethodManager manager=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                getCurrentFocus().clearFocus();*/
+
+                // 이게 뭔진 잘 모르겠는데 이걸 써야한대
+                AtomicBoolean success = new AtomicBoolean(false);
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                alert.setMessage("메모를 저장하시겠습니까?");
+                alert.setPositiveButton("확인", (dialog, i) -> {
+                    try {
+                        // 프래그먼트 구분
+                        if(fragment instanceof NonlineMemoFragment) success.set(((NonlineMemoFragment) fragment).saveData(Mode, MemoBackground));
+                        else if(fragment instanceof TodoFragment) success.set(((TodoFragment) fragment).saveData(Mode, MemoBackground));
+                        else if(fragment instanceof ShoppingFragment) success.set(((ShoppingFragment) fragment).saveData(Mode, MemoBackground));
+                        else if(fragment instanceof HealthTrackerFragment) ((GridMemoFragment) fragment).saveData(Mode);
+                        else if(fragment instanceof MonthTrackerFragment) ((MonthTrackerFragment) fragment).saveData(Mode);
+                        else if(fragment instanceof StudyTrackerFragment) ((StudyTrackerFragment) fragment).saveData(Mode);
+                        else if(fragment instanceof ReviewFragment) ((ReviewFragment) fragment).saveData(Mode);
+                        if (success.get()) {
+                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            // 뷰 모드로 변경
+                            Mode = "view";
+                            setVisibility(Mode);
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
+                });
+                alert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
+                alert.show();
+            }
+        });
+
+        // 메모 휴지통으로 보내기
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.template_frame);      // 현재 보여지는 프래그먼트 가져오기
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                alert.setMessage("메모를 삭제하시겠습니까?");
+                alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+                alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
+            }
+        });
+    }
+
+    //휴대폰 버튼으로 뒤로 가기
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        finish();
+    }
+
+    // initActivity
+    private void initMemoView(Intent intent) {
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
 
-        // 메모지 템플릿 종류 받아오기
-        Intent intent = getIntent();
-        TemplateCase = intent.getStringExtra("template");
-        // 작성모드 or 보기모드
+        // 모드 받아오기
         Mode = intent.getStringExtra("mode");
+        setVisibility(Mode);
+
+        // 메모지 템플릿 종류 받아오기
+        TemplateCase = intent.getStringExtra("template");
+        initFragment(TemplateCase);
+
+        // 배경색 설정
+        MemoBackground = "yellow";
+        setMemoBackground(MemoBackground);
+
+        // 고정여부 표시
+        isMemoFixed = intent.getIntExtra("memofixed", 0);
+        switch (isMemoFixed) {
+            case 0:
+                checkBoxFixed.setChecked(false);
+                break;
+            case 1:
+                checkBoxFixed.setChecked(true);
+        }
+    }
+
+    // 모드에 따른 뷰 가시성 세팅
+    private void setVisibility(String Mode) {
         switch (Mode) {
             case "write":
                 btnDelete.setVisibility(View.GONE);
+                checkBoxFixed.setVisibility(View.GONE);
                 break;
             case "view":
                 btnDelete.setVisibility(View.VISIBLE);
+                checkBoxFixed.setVisibility(View.VISIBLE);
                 break;
         }
+    }
 
-        // 템플릿 별로 프래그먼트 다르게 띄우기
+    // 탬플릿 별로 프래그먼트 생성
+    private void initFragment(String Template) {
         switch (TemplateCase) {
             case "nonlinememo":
                 ft.replace(R.id.template_frame, new NonlineMemoFragment());
@@ -143,157 +327,31 @@ public class MemoViewActivity extends AppCompatActivity {
                 ft.commit();
                 break;
         }
-
-        btnSelcolor.setBackgroundResource(R.drawable.ic_bgyellow);
-        template_frame.setBackgroundResource(R.drawable.template_style_bgyellow);
-
-        // 색상변경 다이얼로그
-        btnSelcolor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MemoViewActivity.this);
-
-                View dialogView = LayoutInflater.from(MemoViewActivity.this).inflate(R.layout.dialog_colorselect, null, false);
-                builder.setView(dialogView);
-
-                ImageButton btnPink, btnYellow, btnMint, btnSky, btnGray;
-
-                btnYellow = dialogView.findViewById(R.id.btn_bgyellow);
-                btnPink = dialogView.findViewById(R.id.btn_bgpink);
-                btnMint = dialogView.findViewById(R.id.btn_bgmint);
-                btnSky = dialogView.findViewById(R.id.btn_bgsky);
-                btnGray = dialogView.findViewById(R.id.btn_bggray);
-
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-
-                btnYellow.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        btnSelcolor.setBackgroundResource(R.drawable.ic_bgyellow);
-                        template_frame.setBackgroundResource(R.drawable.template_style_bgyellow);
-
-                        alertDialog.dismiss();
-                    }
-                });
-
-                btnPink.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        btnSelcolor.setBackgroundResource(R.drawable.ic_bgpink);
-                        template_frame.setBackgroundResource(R.drawable.template_style_bgpink);
-
-                        alertDialog.dismiss();
-                    }
-                });
-
-                btnMint.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        btnSelcolor.setBackgroundResource(R.drawable.ic_bgmint);
-                        template_frame.setBackgroundResource(R.drawable.template_style_bgmint);
-
-                        alertDialog.dismiss();
-                    }
-                });
-
-                btnSky.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        btnSelcolor.setBackgroundResource(R.drawable.ic_bgsky);
-                        template_frame.setBackgroundResource(R.drawable.template_style_bgsky);
-
-                        alertDialog.dismiss();
-                    }
-                });
-
-                btnGray.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        btnSelcolor.setBackgroundResource(R.drawable.ic_bggray);
-                        template_frame.setBackgroundResource(R.drawable.template_style_bggray);
-
-                        alertDialog.dismiss();
-                    }
-                });
-            }
-        });
-
-        // 메모지 고정 여부 DB에서 받아오기
-        isMemoFixed = false;
-        checkBoxFixed.setChecked(isMemoFixed);
-        checkBoxFixed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                isMemoFixed = b;
-            }
-        });
-
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.template_frame);      // 현재 보여지는 프래그먼트 가져오기
-
-                // 포커스 삭제 및 키보드 내리기
-                InputMethodManager manager=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                getCurrentFocus().clearFocus();
-
-                // 프래그먼트 구분
-                // 각 프래그먼트마다 파이어베이스에 저장하는 함수 만들어놓고 아래 처럼 호출
-                AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
-                alert.setMessage("메모를 저장하시겠습니까?");
-                alert.setPositiveButton("확인", (dialog, i) -> {
-                    try {
-                        if(fragment instanceof NonlineMemoFragment) ((NonlineMemoFragment) fragment).saveData(Mode);
-                        else if(fragment instanceof HealthTrackerFragment) ((GridMemoFragment) fragment).saveData(Mode);
-                        else if(fragment instanceof MonthTrackerFragment) ((MonthTrackerFragment) fragment).saveData(Mode);
-                        else if(fragment instanceof StudyTrackerFragment) ((StudyTrackerFragment) fragment).saveData(Mode);
-                        else if(fragment instanceof ReviewFragment) ((ReviewFragment) fragment).saveData(Mode);
-                        Mode = "view";
-                        btnDelete.setVisibility(View.VISIBLE);
-                        Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
-                    } catch (Exception e) {
-                        Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
-                    }
-                    dialog.dismiss();
-                });
-                alert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
-                alert.show();
-            }
-        });
-
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.template_frame);      // 현재 보여지는 프래그먼트 가져오기
-
-                AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
-                alert.setMessage("이 메모를 삭제하시겠습니까?");
-                alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        // 서버에 메모 삭제 여부 on으로 표시 (휴지통으로 옮겨짐) 프래그먼트에서 removeitem 다이얼로그 끄고 액티비티 종료
-                        dialog.dismiss();
-                        finish();
-                    }
-                });
-                alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        dialog.dismiss();
-                    }
-                });
-                alert.show();
-            }
-        });
     }
 
-    //휴대폰 버튼으로 뒤로 가기
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        finish();
+    // 메모지 배경색 변경
+    private void setMemoBackground(String BackgroundColor) {
+        switch (BackgroundColor) {
+            case "yellow":
+                btnSelcolor.setBackgroundResource(R.drawable.ic_bgyellow);
+                template_frame.setBackgroundResource(R.drawable.template_style_bgyellow);
+                break;
+            case "pink":
+                btnSelcolor.setBackgroundResource(R.drawable.ic_bgpink);
+                template_frame.setBackgroundResource(R.drawable.template_style_bgpink);
+                break;
+            case "mint":
+                btnSelcolor.setBackgroundResource(R.drawable.ic_bgmint);
+                template_frame.setBackgroundResource(R.drawable.template_style_bgmint);
+                break;
+            case "sky":
+                btnSelcolor.setBackgroundResource(R.drawable.ic_bgsky);
+                template_frame.setBackgroundResource(R.drawable.template_style_bgsky);
+                break;
+            case "gray":
+                btnSelcolor.setBackgroundResource(R.drawable.ic_bggray);
+                template_frame.setBackgroundResource(R.drawable.template_style_bggray);
+                break;
+        }
     }
 }

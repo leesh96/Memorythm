@@ -17,63 +17,64 @@ public class DBHelper extends SQLiteOpenHelper {
     editdate DATETIME DEFAULT (datetime('now', 'localtime')),
     deleted integer DEFAULT 0,
     fixed integer DEFAULT 0,
+    bgcolor text DEFAULT 'yellow',
     folder_name TEXT DEFAULT '메모' FOREIGN KEY(folder_name) REFERENCES folder(name)
     */
 
     //재석 탬플릿
     private static final String CREATE_TABLE_LINEMEMO = "CREATE TABLE if not exists linememo(id integer primary key autoincrement, userdate text, content text, " +
-            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     private static final String CREATE_TABLE_DAILYPLAN = "CREATE TABLE if not exists dailyplan(id integer primary key autoincrement, userdate text, contentAm text, contentPm text, weather text, " +
-            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     private static final String CREATE_TABLE_WEEKLYPLAN = "CREATE TABLE if not exists weeklyplan(id integer primary key autoincrement, userdate text, " +
             "contentMon text, contentTue text, contentWed text, contentThu text, contentFri text, contentSat text, contentSun text, " +
             "checkedMon integer, checkedTue integer, checkedWed integer, checkedThu integer, checkedFri integer, checkedSat integer, checkedSun integer, " +
-            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     private static final String CREATE_TABLE_MONTHLYPLAN = "CREATE TABLE if not exists monthlyplan(id integer primary key autoincrement, userdate text, " +
             "'0' text, '1' text, '2' text, '3' text, '4' text, '5' text, '6' text, '7' text, '8' text, '9' text, '10' text, '11' text, '12' text, '13' text, '14' text, " +
             "'15' text, '16' text, '17' text, '18' text, '19' text, '20' text, '21' text, '22' text, '23' text, '24' text, '25' text, '26' text, '27' text, '28' text, " +
-            "'29' text, '30' text, '31' text, '32' text, '33' text, '34' text, '35' text, '36' text, editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, " +
-            "fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "'29' text, '30' text, '31' text, '32' text, '33' text, '34' text, '35' text, '36' text, " +
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     private static final String CREATE_TABLE_YEARLYPLAN = "CREATE TABLE if not exists yearlyplan(id integer primary key autoincrement, userdate text, " +
             "contentJan text, contentFeb text, contentMar text, contentApr text, contentMay text, contentJun text, contentJul text, contentAug text, contentSep text, contentOct text, contentNov text, contentDec text, " +
-            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     //윤경 탬플릿
     private static final String CREATE_TABLE_GRIDMEMO = "CREATE TABLE if not exists gridmemo(id integer primary key autoincrement, userdate text, content text, " +
-            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     private static final String CREATE_TABLE_HEALTHTRACKER = "CREATE TABLE if not exists healthtracker(id integer primary key autoincrement, userdate text, " +
             "waterCups text, breakfastTime text, breakfastMenu text, lunchTime text, lunchMenu text, snackMenu text, dinnerTime text, dinnerMenu text, exercise integer, aerobic integer, exerciseContent text, comment text, " +
-            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     private static final String CREATE_TABLE_MONTHTRACKER = "CREATE TABLE if not exists monthtracker(id integer primary key autoincrement, userdate text, " +
             "goal text, dayCheck text, comment text," +
-            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     private static final String CREATE_TABLE_STUDYTRACKER = "CREATE TABLE if not exists studytracker(id integer primary key autoincrement, userdate text, " +
             "studyTimecheck text, commentAll text, commentTime text, " +
-            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     private static final String CREATE_TABLE_REVIEW = "CREATE TABLE if not exists review(id integer primary key autoincrement, userdate text, " +
             "categoryCheck integer, categoryName text, starNum integer, score integer, reviewTitle text, reviewContent text, " +
-            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     //수호 탬플릿
     private static final String CREATE_TABLE_NONLINEMEMO = "CREATE TABLE if not exists nonlinememo(id integer primary key autoincrement, userdate text, content text, " +
-            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     private static final String CREATE_TABLE_TODOLIST = "CREATE TABLE if not exists todolist(id integer primary key autoincrement, userdate text, content text, done text, " +
-            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     private static final String CREATE_TABLE_WISHLIST = "CREATE TABLE if not exists wishlist(id integer primary key autoincrement, userdate text, content text, wished text, category text, " +
-            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     private static final String CREATE_TABLE_SHOPPINGLIST = "CREATE TABLE if not exists shoppinglist(id integer primary key autoincrement, userdate text, content text, bought text, price text, " +
-            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     // 생성자
     public DBHelper(Context context) {
