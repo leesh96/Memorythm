@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="메모"
             android:padding="8dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_gravity="center"
             android:textSize="18sp"
             android:fontFamily="@font/nanumsquare_acl"

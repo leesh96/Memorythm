@@ -66,7 +66,7 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
             holder.itemView.setClickable(false);
         }
         else {
-            holder.checkBox.setVisibility(View.GONE);
+            holder.checkBox.setVisibility(View.INVISIBLE);
             holder.itemView.setClickable(true);
         }
 

@@ -63,7 +63,7 @@ public class TotalMemoAdapter extends RecyclerView.Adapter<TotalMemoAdapter.View
             holder.itemView.setClickable(false);
         }
         else {
-            holder.checkBox.setVisibility(View.GONE);
+            holder.checkBox.setVisibility(View.INVISIBLE);
             holder.itemView.setClickable(true);
         }
     }
