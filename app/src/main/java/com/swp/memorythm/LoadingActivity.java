@@ -45,14 +45,6 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-        //GPS 권한 요구, 확인
-        requestLocation();
-
-        // 날짜 받아오기
-        setCurrentDate();
-
         dbHelper = new DBHelper(LoadingActivity.this);
         // 이거 써서 db 접근
         db = dbHelper.getReadableDatabase();
@@ -61,17 +53,14 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
         // dbHelper.getWritableDatabase() : 읽고 쓰기 위해 DB 연다. 권한이 없거나 디스크가 가득 차면 실패
         // db.close() : DB를 닫는다.
 
-        // 로딩화면 3초 전환
-        Handler mHandler = new Handler() {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                intent = new Intent(LoadingActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        };
-        mHandler.sendEmptyMessageDelayed(0, 3000);
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        //GPS 권한 요구, 확인
+        requestLocation();
+
+        // 날짜 받아오기
+        setCurrentDate();
+
     }
 
     private void setCurrentDate() {
@@ -113,14 +102,25 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
     }
 
     private void requestLocation() {
-        //사용자로 부터 위치정보 권한체크
+        //사용자로 부터 위치정보 권한체크, 권한 없으면 권한 요구
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-        } else {
+        } else { //권한 있으면 3초후 메인으로 이동
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1, this);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 1, this);
 
+            // 로딩화면 3초 전환
+            Handler mHandler = new Handler() {
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    super.handleMessage(msg);
+                    intent = new Intent(LoadingActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            };
+            mHandler.sendEmptyMessageDelayed(0, 3000);
         }
     }
 
@@ -168,5 +168,18 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
                 Log.d("weather", "fail");
             }
         });
+    }
+
+    //권한 없을 때 권한 허용, 거부 아무거나 선택하면 메인으로 이동
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == 0) {
+
+            intent = new Intent(LoadingActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }

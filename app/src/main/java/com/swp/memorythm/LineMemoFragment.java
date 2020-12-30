@@ -1,7 +1,10 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,9 @@ import java.util.Locale;
 public class LineMemoFragment extends Fragment {
     private TextView textViewDate;
     private EditText editTextContent;
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
+    private int id;
 
     public static LineMemoFragment newInstance() {
         return new LineMemoFragment();
@@ -56,6 +62,9 @@ public class LineMemoFragment extends Fragment {
         textViewDate = rootView.findViewById(R.id.write_date);
         editTextContent = rootView.findViewById(R.id.memo_content);
 
+        dbHelper = new DBHelper(getActivity());
+        db = dbHelper.getWritableDatabase();
+
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
         Date currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy - MM - dd", Locale.KOREA);
@@ -71,5 +80,35 @@ public class LineMemoFragment extends Fragment {
         // TODO: 2020-11-20 파이어베이스 연동
 
         return rootView;
+    }
+
+    public void saveData(String Mode) {
+
+        String userDate = textViewDate.getText().toString();
+        String content = editTextContent.getText().toString();
+
+        switch (Mode) {
+            case "write":
+                db.execSQL("INSERT INTO linememo('userdate', 'content') VALUES('" + userDate + "', '" + content + "');");
+                final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
+                cursor.moveToFirst();
+                id = cursor.getInt(0); //가장 최근에 삽입된 레코드의 id
+                break;
+            case "view":
+                db.execSQL("UPDATE linememo SET userdate = '" + userDate + "', content = '" + content + "' WHERE id = " + id + ";");
+                break;
+        }
+    }
+
+    public void delete() {
+
+        db.execSQL("UPDATE linememo SET deleted = 1 WHERE id = " + id + ";");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        db.close();
     }
 }
