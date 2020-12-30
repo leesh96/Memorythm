@@ -11,7 +11,6 @@ public class Folder {
         this.title = title;
         this.num = num;
     }
-
     public String getTitle() {
         return title;
     }

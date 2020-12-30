@@ -39,8 +39,8 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
         templateFragAdapter = new TemplateFragAdapter(getContext(),listTemplate);
         templateRecyclerView.setAdapter(templateFragAdapter);
         // 정렬 버튼
-        btnRange = (ImageButton)view.findViewById(R.id.rangeBtn);
-        btnRange.setOnClickListener(this);
+//        btnRange = (ImageButton)view.findViewById(R.id.rangeBtn);
+//        btnRange.setOnClickListener(this);
 
         //ItemTouchHelper 생성
         helper = new ItemTouchHelper(new ItemTouchHelperCallback(templateFragAdapter));
@@ -70,6 +70,7 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        /*
         switch (view.getId()){
             case R.id.rangeBtn:
                 if(click){
@@ -82,6 +83,8 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
 
                 break;
         }
+
+         */
 
     }
 }
