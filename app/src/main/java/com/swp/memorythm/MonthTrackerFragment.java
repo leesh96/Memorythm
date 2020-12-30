@@ -1,16 +1,13 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
-import android.app.Service;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,8 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
-
-import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class MonthTrackerFragment extends Fragment {
     //키보드 설정

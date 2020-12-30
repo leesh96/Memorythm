@@ -1,6 +1,7 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -66,22 +68,27 @@ public class GridMemoFragment extends Fragment {
 
         return viewGroup;
     }
-    public void saveData(String Mode){
+    public Boolean saveData(String Mode){
         //userdate, content
         String userdate = textViewDate.getText().toString();
         String content = editTextContent.getText().toString();
 
         db = dbHelper.getReadableDatabase();
-
-        switch (Mode) {
-            case "write":
-                db.execSQL("INSERT INTO gridmemo('userdate', 'content') VALUES('" + userdate + "', '" + content + "');");
-                break;
-            case "view":
-                // TODO: 쿼리 업데이트 쓰기
-                break;
+        if (content.equals("")) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+            alert.setMessage("내용을 입력하세요!").setPositiveButton("확인", (dialog, which) -> dialog.dismiss()).show();
+            return false;
+        } else {
+            switch (Mode) {
+                case "write":
+                    db.execSQL("INSERT INTO gridmemo('userdate', 'content') VALUES('" + userdate + "', '" + content + "');");
+                    break;
+                case "view":
+                    // TODO: 2020-12-30 쿼리 업데이트 쓰기
+                    break;
+            }
         }
-        db.close();
+        return true;
     }
     public void setData(){
         String userdate=null, content=null;
