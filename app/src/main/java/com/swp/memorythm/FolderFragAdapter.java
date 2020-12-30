@@ -69,15 +69,12 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
 
         //리사이클러뷰 아이템 클릭
         holder.itemView.setTag(position);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 프레그먼트 교체하는 부분
-                FragmentActivity activity = (FragmentActivity)view.getContext();
-                MemoListFragment memoListFragment = new MemoListFragment();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.folderID,memoListFragment).addToBackStack(null).commit();
-                notifyDataSetChanged();
-            }
+        holder.itemView.setOnClickListener(view -> {
+            // 프레그먼트 교체하는 부분
+            FragmentActivity activity = (FragmentActivity)view.getContext();
+            MemoListFragment memoListFragment = new MemoListFragment();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.folderID,memoListFragment).addToBackStack(null).commit();
+            notifyDataSetChanged();
         });
         //삭제
         if(isTrash) {

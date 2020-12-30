@@ -16,11 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class MemoListFragment extends Fragment {
-    private RecyclerView topRecyclerView, memoRecyclerView;
+    private RecyclerView memoRecyclerView;
     private ArrayList<MemoData> listMemo;
-    private ArrayList<TopMemoData> listTopMemo;
     private MemoListAdapter memoListAdapter;
-    private MemoTopListAdapter memoTopListAdapter;
     private ImageButton btnDelete;
     private Boolean check = false;
 
@@ -33,36 +31,25 @@ public class MemoListFragment extends Fragment {
         memoRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         memoListAdapter = new MemoListAdapter(getContext(),listMemo);
         memoRecyclerView.setAdapter(memoListAdapter);
-        //위에 3개 부분
-        topRecyclerView = (RecyclerView)view.findViewById(R.id.memoListTopRV);
-        topRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        memoTopListAdapter = new MemoTopListAdapter(getContext(),listTopMemo);
-        topRecyclerView.setAdapter(memoTopListAdapter);
+
         //삭제버튼
         btnDelete = (ImageButton)view.findViewById(R.id.memoDelBtn);
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(check){
-                    if((memoListAdapter.removeItems() || memoTopListAdapter.removeItems())&&(memoTopListAdapter.removeItems() || memoListAdapter.removeItems())){
-                        Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
-                    }else {
-                        Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
-                    }
-                    memoListAdapter.setVisible(false);
-                    memoTopListAdapter.setVisible(false);
-                    memoListAdapter.notifyDataSetChanged();
-                    memoTopListAdapter.notifyDataSetChanged();
-                    check = false;
+        btnDelete.setOnClickListener(view1 -> {
+            if(check){
+                if((memoListAdapter.removeItems())){
+                    Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
                 }else {
-                    memoListAdapter.setVisible(true);
-                    memoTopListAdapter.setVisible(true);
-                    memoListAdapter.notifyDataSetChanged();
-                    memoTopListAdapter.notifyDataSetChanged();
-                    check = true;
+                    Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
                 }
-
+                memoListAdapter.setVisible(false);
+                memoListAdapter.notifyDataSetChanged();
+                check = false;
+            }else {
+                memoListAdapter.setVisible(true);
+                memoListAdapter.notifyDataSetChanged();
+                check = true;
             }
+
         });
         return view;
     }
@@ -76,11 +63,7 @@ public class MemoListFragment extends Fragment {
         listMemo.add(new MemoData("메모2","2020-11-30"));
         listMemo.add(new MemoData("메모3","2020-11-30"));
         listMemo.add(new MemoData("메모4","2020-11-30"));
-        //위에 3개 부분
-        listTopMemo = new ArrayList<>();
-        listTopMemo.add(new TopMemoData("무지메모1"));
-        listTopMemo.add(new TopMemoData("무지메모2"));
-        listTopMemo.add(new TopMemoData("무지메모3"));
+
     }
 }
 

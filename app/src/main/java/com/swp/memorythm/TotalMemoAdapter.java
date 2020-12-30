@@ -16,34 +16,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MemoTopListAdapter extends RecyclerView.Adapter<MemoTopListAdapter.ViewHolder> {
+public class TotalMemoAdapter extends RecyclerView.Adapter<TotalMemoAdapter.ViewHolder> {
 
     Context mContext;
-    private ArrayList<TopMemoData> listTopMemo;
-    private Map<TopMemoData, Boolean> memoTopCheckedMap = new HashMap<>();
-    private List<TopMemoData> mCheckedMemoTop = new ArrayList<>(); //체크한 항목 저장
+    private ArrayList<TotalMemoData> totalMemo;
+    private Map<TotalMemoData, Boolean> memoTotalCheckedMap = new HashMap<>();
+    private List<TotalMemoData> mCheckedMemoTotal = new ArrayList<>(); //체크한 항목 저장
     public boolean isTrash = false;
 
-    public MemoTopListAdapter(Context mContext, ArrayList<TopMemoData> listTopMemo) {
+    public TotalMemoAdapter(Context mContext, ArrayList<TotalMemoData> listTopMemo) {
         this.mContext = mContext;
-        this.listTopMemo = listTopMemo;
+        this.totalMemo = listTopMemo;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.list_memo_top,parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.list_total_memo,parent, false);
         ViewHolder vHolder = new ViewHolder(view);
         vHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                TopMemoData topMemoData = listTopMemo.get(vHolder.getAdapterPosition());
-                memoTopCheckedMap.put(topMemoData, isChecked);
+                TotalMemoData topMemoData = totalMemo.get(vHolder.getAdapterPosition());
+                memoTotalCheckedMap.put(topMemoData, isChecked);
                 // 체크된거 mCheckedTrash 넣기
                 if(isChecked){
-                    mCheckedMemoTop.add(topMemoData);
+                    mCheckedMemoTotal.add(topMemoData);
                 }else {
-                    mCheckedMemoTop.remove(topMemoData);
+                    mCheckedMemoTotal.remove(topMemoData);
                 }
             }
         });
@@ -52,10 +52,10 @@ public class MemoTopListAdapter extends RecyclerView.Adapter<MemoTopListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        TopMemoData topMemoData = listTopMemo.get(position); //위치 받아오기
-        holder.titleTV.setText(listTopMemo.get(position).getTopMemoTitle());
+        TotalMemoData totalMemoData = totalMemo.get(position); //위치 받아오기
+        holder.titleTV.setText(totalMemo.get(position).getTopMemoTitle());
         //체크박스 체크 여부
-        boolean isChecked = memoTopCheckedMap.get(topMemoData)==null?false:memoTopCheckedMap.get(topMemoData);
+        boolean isChecked = memoTotalCheckedMap.get(totalMemoData)==null?false: memoTotalCheckedMap.get(totalMemoData);
         holder.checkBox.setChecked(isChecked);
         //삭제
         if(isTrash) {
@@ -70,7 +70,7 @@ public class MemoTopListAdapter extends RecyclerView.Adapter<MemoTopListAdapter.
 
     @Override
     public int getItemCount() {
-        return (null != listTopMemo ? listTopMemo.size():0);
+        return (null != totalMemo ? totalMemo.size():0);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -84,7 +84,7 @@ public class MemoTopListAdapter extends RecyclerView.Adapter<MemoTopListAdapter.
     }
     // 아이템 삭제
     public boolean removeItems(){
-        boolean result = listTopMemo.removeAll(mCheckedMemoTop);
+        boolean result = totalMemo.removeAll(mCheckedMemoTotal);
         if(result){ notifyDataSetChanged(); }
         return result;
     }
