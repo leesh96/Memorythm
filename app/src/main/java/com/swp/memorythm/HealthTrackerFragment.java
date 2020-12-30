@@ -2,6 +2,7 @@ package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +23,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class HealthTrackerFragment extends Fragment {
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
     private TextView textViewDate, tv_upperbody, tv_lowerbody, tv_chest, tv_aerobic;
     private EditText et_breakfast, et_lunch, et_snack, et_dinner, et_exercise, et_comment;
     private ImageView iv_health;
@@ -58,6 +61,7 @@ public class HealthTrackerFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.template_healthtracker, container, false);
+        dbHelper = new DBHelper(getContext());
 
         textViewDate = viewGroup.findViewById(R.id.write_date);
         tv_upperbody = viewGroup.findViewById(R.id.tv_upperbody); tv_lowerbody = viewGroup.findViewById(R.id.tv_lowerbody);
@@ -210,9 +214,9 @@ public class HealthTrackerFragment extends Fragment {
             else changeCups(ibtn_cup[i],1);
         }
     }
-    public void saveData(String mode){
+    public void saveData(String Mode){
         //string : userdate, breakfastTime, breakfastMenu, lunchTime, lunchMenu, snackMenu , dinnerTime, dinnerMenu, exerciseContent, comment
-        //int : waterCnt, exercisedata, aerobicdata
+        //int : exercisedata, aerobicdata
         String userdate = textViewDate.getText().toString();
         String breakfastTime = tv_breakfast.getText().toString();
         String lunchTime = tv_lunch.getText().toString();
@@ -227,7 +231,17 @@ public class HealthTrackerFragment extends Fragment {
         for (int value : cups) waterCups.append(value);
         int exercisedata = getExercise();
         int aerobicdata = aerobic;
-        // TODO: 2020-12-29 SQL에 저장
+        db = dbHelper.getReadableDatabase();
+        switch (Mode) {
+            case "write":
+                db.execSQL("INSERT INTO healthtracker('userdate', 'waterCups', 'breakfastTime', 'breakfastMenu', 'lunchTime', 'lunchMenu', 'snackMenu', 'dinnerTime', 'dinnerMenu', 'exerciseContent', 'comment',  'exercise', 'aerobic') " +
+                        "VALUES('" + userdate + "', '"+ waterCups +"', '" + breakfastTime + "', '" + breakfastMenu + "', '" + lunchTime + "', '" + lunchMenu + "', '" + snackMenu + "', '" + dinnerTime + "', '" + dinnerMenu + "', '" + exerciseContent + "', '" + comment + "', '" + exercisedata + "', '" + aerobicdata + "');");
+                break;
+            case "view":
+                // TODO: 쿼리 업데이트 쓰기
+                break;
+        }
+        db.close();
     }
     public void setData(){
         String userdate=null, breakfastTime=null, breakfastMenu=null, lunchTime=null, lunchMenu=null, snackMenu=null, dinnerTime=null, dinnerMenu=null, exerciseContent=null, comment=null, waterCups=null;

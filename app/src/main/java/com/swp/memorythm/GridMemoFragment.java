@@ -1,10 +1,12 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -13,8 +15,13 @@ import androidx.fragment.app.Fragment;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class GridMemoFragment extends Fragment {
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
     private TextView textViewDate;
     private EditText editTextContent;
 
@@ -45,6 +52,7 @@ public class GridMemoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.template_gridmemo, container, false);
+        dbHelper = new DBHelper(getContext());
 
         textViewDate = viewGroup.findViewById(R.id.write_date);
         editTextContent = viewGroup.findViewById(R.id.memo_content);
@@ -58,11 +66,26 @@ public class GridMemoFragment extends Fragment {
 
         return viewGroup;
     }
-    public void saveData(String mode){
+    public void saveData(String Mode){
         //userdate, content
         String userdate = textViewDate.getText().toString();
         String content = editTextContent.getText().toString();
-        // TODO: 2020-12-29 SQL에 저장
+
+        db = dbHelper.getReadableDatabase();
+
+        InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editTextContent.getWindowToken(), 0);
+        editTextContent.clearFocus();
+
+        switch (Mode) {
+            case "write":
+                db.execSQL("INSERT INTO gridmemo('userdate', 'content') VALUES('" + userdate + "', '" + content + "');");
+                break;
+            case "view":
+                // TODO: 쿼리 업데이트 쓰기
+                break;
+        }
+        db.close();
     }
     public void setData(){
         String userdate=null, content=null;

@@ -1,6 +1,7 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class StudyTrackerFragment extends Fragment {
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
     private TextView textViewDate;
     private EditText et_comment;
     private final EditText[] et_comments = new EditText[24];
@@ -51,6 +54,7 @@ public class StudyTrackerFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.template_studytracker, container, false);
+        dbHelper = new DBHelper(getContext());
 
         textViewDate = viewGroup.findViewById(R.id.write_date);
         et_comment = viewGroup.findViewById(R.id.et_comment);
@@ -111,7 +115,7 @@ public class StudyTrackerFragment extends Fragment {
             else changeBgColor(iv_time[i],1);
         }
     }
-    public void saveData(String mode){
+    public void saveData(String Mode){
         //String : userdate, studyTimecheck , commentAll , commentTime
         String userdate = textViewDate.getText().toString();
         StringBuilder studyTimecheck = new StringBuilder();
@@ -123,7 +127,17 @@ public class StudyTrackerFragment extends Fragment {
                 commentTime.append(etComment.getText().toString()).append(",");
             else commentTime.append("null").append(",");
         }
-        // TODO: 2020-12-29 SQL에 저장
+        db = dbHelper.getReadableDatabase();
+        switch (Mode) {
+            case "write":
+                db.execSQL("INSERT INTO studytracker('userdate', 'studyTimecheck', 'commentAll', 'commentTime') " +
+                        "VALUES('" + userdate + "', '" + studyTimecheck + "', '" + commentAll + "', '" + commentTime + "');");
+                break;
+            case "view":
+                // TODO: 쿼리 업데이트 쓰기
+                break;
+        }
+        db.close();
     }
     public void setData(){
         String userdate=null, studyTimecheck=null , commentAll =null, commentTime=null;

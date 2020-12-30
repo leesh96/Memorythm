@@ -1,12 +1,14 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,7 +23,11 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 public class MonthTrackerFragment extends Fragment {
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
     private TextView textViewDate;
     private EditText et_goal, et_comment;
     private final Button[] btn_day = new Button[31] ;
@@ -54,6 +60,7 @@ public class MonthTrackerFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.template_monthtracker, container, false);
+        dbHelper = new DBHelper(getContext());
 
         textViewDate = viewGroup.findViewById(R.id.write_date);
 
@@ -117,7 +124,7 @@ public class MonthTrackerFragment extends Fragment {
             else changeBgColor(btn_day[i],1);
         }
     }
-    public void saveData(String mode){
+    public void saveData(String Mode){
         //String : userdate, goal, dayCheck, comment
         String userdate = textViewDate.getText().toString();
         String goal = et_goal.getText().toString();
@@ -125,7 +132,16 @@ public class MonthTrackerFragment extends Fragment {
         StringBuilder dayCheck = new StringBuilder();
         for (int value : num_day) dayCheck.append(value);
 
-        // TODO: 2020-12-29 SQL에 저장
+        db = dbHelper.getReadableDatabase();
+        switch (Mode) {
+            case "write":
+                db.execSQL("INSERT INTO monthtracker('userdate', 'goal', 'dayCheck', 'comment') VALUES('" + userdate + "', '" + goal + "', '" + dayCheck + "', '" + comment + "');");
+                break;
+            case "view":
+                // TODO: 쿼리 업데이트 쓰기
+                break;
+        }
+        db.close();
     }
     public void setData(){
         String userdate=null, goal=null, dayCheck=null, comment=null;

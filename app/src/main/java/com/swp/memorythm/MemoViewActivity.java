@@ -260,16 +260,91 @@ public class MemoViewActivity extends AppCompatActivity {
                     });
                     alert.show();
                 }
-                else if(fragment instanceof GridMemoFragment)
-                    ((GridMemoFragment) fragment).saveData(Mode);
-                else if(fragment instanceof HealthTrackerFragment)
-                    ((HealthTrackerFragment) fragment).saveData(Mode);
-                else if(fragment instanceof MonthTrackerFragment)
-                    ((MonthTrackerFragment) fragment).saveData(Mode);
-                else if(fragment instanceof StudyTrackerFragment)
-                    ((StudyTrackerFragment) fragment).saveData(Mode);
-                else if(fragment instanceof ReviewFragment)
-                    ((ReviewFragment) fragment).saveData(Mode);
+                else if(fragment instanceof GridMemoFragment){
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                    alert.setMessage("메모를 저장하시겠습니까?");
+                    alert.setPositiveButton("확인", (dialog, i) -> {
+                        try {
+                            ((GridMemoFragment) fragment).saveData(Mode);
+                            Mode = "view";
+                            btnDelete.setVisibility(View.VISIBLE);
+                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
+                    });
+                    alert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
+                    alert.show();
+                }
+                else if(fragment instanceof HealthTrackerFragment){
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                    alert.setMessage("메모를 저장하시겠습니까?");
+                    alert.setPositiveButton("확인", (dialog, i) -> {
+                        try {
+                            ((HealthTrackerFragment) fragment).saveData(Mode);
+                            Mode = "view";
+                            btnDelete.setVisibility(View.VISIBLE);
+                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
+                    });
+                    alert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
+                    alert.show();
+                }
+                else if(fragment instanceof MonthTrackerFragment){
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                    alert.setMessage("메모를 저장하시겠습니까?");
+                    alert.setPositiveButton("확인", (dialog, i) -> {
+                        try {
+                            ((MonthTrackerFragment) fragment).saveData(Mode);
+                            Mode = "view";
+                            btnDelete.setVisibility(View.VISIBLE);
+                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
+                    });
+                    alert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
+                    alert.show();
+                }
+                else if(fragment instanceof StudyTrackerFragment){
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                    alert.setMessage("메모를 저장하시겠습니까?");
+                    alert.setPositiveButton("확인", (dialog, i) -> {
+                        try {
+                            ((StudyTrackerFragment) fragment).saveData(Mode);
+                            Mode = "view";
+                            btnDelete.setVisibility(View.VISIBLE);
+                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
+                    });
+                    alert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
+                    alert.show();
+                }
+                else if(fragment instanceof ReviewFragment){
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                    alert.setMessage("메모를 저장하시겠습니까?");
+                    alert.setPositiveButton("확인", (dialog, i) -> {
+                        try {
+                            ((ReviewFragment) fragment).saveData(Mode);
+                            Mode = "view";
+                            btnDelete.setVisibility(View.VISIBLE);
+                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
+                    });
+                    alert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
+                    alert.show();
+                }
             }
         });
 

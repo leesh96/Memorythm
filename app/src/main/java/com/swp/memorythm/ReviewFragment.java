@@ -1,6 +1,7 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class ReviewFragment extends Fragment {
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
     private TextView textViewDate;
     private EditText et_reviewList, et_scoreReview, et_title, et_content;
     private final TextView[] tv_reviews = new TextView[9];
@@ -52,6 +55,7 @@ public class ReviewFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.template_review, container, false);
+        dbHelper = new DBHelper(getContext());
 
         textViewDate = viewGroup.findViewById(R.id.write_date);
         tv_reviews[0] = viewGroup.findViewById(R.id.tv_book);
@@ -118,7 +122,7 @@ public class ReviewFragment extends Fragment {
         current.setBackgroundResource(R.drawable.bg_selector);
     }
 
-    public void saveData(String mode){
+    public void saveData(String Mode){
         //String : userdate, categoryName, reviewTitle, reviewContent
         //int : categoryCheck, starNum, score
         String userdate = textViewDate.getText().toString();
@@ -136,7 +140,17 @@ public class ReviewFragment extends Fragment {
             categoryName = "null";
             categoryCheck = pastChoice;
         }
-        // TODO: 2020-12-29 SQL에 저장
+        db = dbHelper.getReadableDatabase();
+        switch (Mode) {
+            case "write":
+                db.execSQL("INSERT INTO review('userdate', 'categoryName', 'reviewTitle', 'reviewContent', 'categoryCheck', 'starNum', 'score') " +
+                        "VALUES('" + userdate + "', '" + categoryName + "', '" + reviewTitle + "', '" + reviewContent + "', '" + categoryCheck + "', '" + starNum + "', '" + score + "');");
+                break;
+            case "view":
+                // TODO: 쿼리 업데이트 쓰기
+                break;
+        }
+        db.close();
     }
     public void setData(){
         String userdate=null, categoryName=null, reviewTitle=null, reviewContent=null;
