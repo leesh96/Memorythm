@@ -3,6 +3,7 @@ package com.swp.memorythm;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class NonlineMemoFragment extends Fragment {
@@ -30,6 +32,7 @@ public class NonlineMemoFragment extends Fragment {
     private EditText editTextContent;
     DBHelper dbHelper;
     SQLiteDatabase db;
+    private int id;
 
     public static NonlineMemoFragment newInstance() {
         return new NonlineMemoFragment();
@@ -79,11 +82,14 @@ public class NonlineMemoFragment extends Fragment {
         return rootView;
     }
 
-    public boolean saveData(String Mode, String Bgcolor) {
+    public boolean saveData(String Mode, String Bgcolor, int fixed) {
         db = dbHelper.getReadableDatabase();
 
         String Userdate = textViewDate.getText().toString();
         String Content = editTextContent.getText().toString();
+        //editdate를 위함
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
 
         if (Content.equals("") | Content == null) {
             AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
@@ -98,9 +104,14 @@ public class NonlineMemoFragment extends Fragment {
             switch (Mode) {
                 case "write":
                     db.execSQL("INSERT INTO nonlinememo('userdate', 'content', 'bgcolor') VALUES('" + Userdate + "', '" + Content + "', '" + Bgcolor + "');");
+                    // 최근 삽입한 레코드 id로 바꿔줌
+                    final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
+                    cursor.moveToFirst();
+                    id = cursor.getInt(0);
                     break;
                 case "view":
                     // 쿼리 업데이트 쓰기
+                    db.execSQL("UPDATE nonlinememo SET userdate = '" + Userdate + "', content = '" + Content + "', bgcolor = '" + Bgcolor + "', fixed = '" + fixed + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + id + ";");
                     break;
             }
         }

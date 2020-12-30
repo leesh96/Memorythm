@@ -158,7 +158,7 @@ public class MemoViewActivity extends AppCompatActivity {
                 alert.setPositiveButton("확인", (dialog, i) -> {
                     try {
                         // 프래그먼트 구분
-                        if(fragment instanceof NonlineMemoFragment) success.set(((NonlineMemoFragment) fragment).saveData(Mode, MemoBackground));
+                        if(fragment instanceof NonlineMemoFragment) success.set(((NonlineMemoFragment) fragment).saveData(Mode, MemoBackground, isMemoFixed));
                         else if(fragment instanceof TodoFragment) success.set(((TodoFragment) fragment).saveData(Mode, MemoBackground));
                         else if(fragment instanceof ShoppingFragment) success.set(((ShoppingFragment) fragment).saveData(Mode, MemoBackground));
                         else if(fragment instanceof HealthTrackerFragment) ((GridMemoFragment) fragment).saveData(Mode);
@@ -224,22 +224,27 @@ public class MemoViewActivity extends AppCompatActivity {
         Mode = intent.getStringExtra("mode");
         setVisibility(Mode);
 
-        // 메모지 템플릿 종류 받아오기
-        TemplateCase = intent.getStringExtra("template");
-        initFragment(TemplateCase);
-
-        // 배경색 설정
-        MemoBackground = "yellow";
-        setMemoBackground(MemoBackground);
-
-        // 고정여부 표시
-        isMemoFixed = intent.getIntExtra("memofixed", 0);
-        switch (isMemoFixed) {
-            case 0:
-                checkBoxFixed.setChecked(false);
+        // 배경색, 고정여부 설정
+        switch (Mode) {
+            case "write":
+                TemplateCase = intent.getStringExtra("template");
+                initFragment(TemplateCase);
+                MemoBackground = "yellow";
+                setMemoBackground(MemoBackground);
+                isMemoFixed = 0;
                 break;
-            case 1:
-                checkBoxFixed.setChecked(true);
+            case "view":
+                MemoBackground = intent.getStringExtra("bgcolor");
+                isMemoFixed = intent.getIntExtra("memofixed", 0);
+                setMemoBackground(MemoBackground);
+                switch (isMemoFixed) {
+                    case 0:
+                        checkBoxFixed.setChecked(false);
+                        break;
+                    case 1:
+                        checkBoxFixed.setChecked(true);
+                        break;
+                }
         }
     }
 
