@@ -160,10 +160,4 @@ public class NonlineMemoFragment extends Fragment {
         }
         return true;
     }
-
-    // 영구삭제
-    public boolean completeDelete(int id) {
-
-        return true;
-    }
 }

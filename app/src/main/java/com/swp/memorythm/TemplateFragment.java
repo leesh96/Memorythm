@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-public class TemplateFragment extends Fragment implements View.OnClickListener {
+public class TemplateFragment extends Fragment {
     private View view;
     private RecyclerView templateRecyclerView;
     private ArrayList<Template> listTemplate;
@@ -40,56 +40,30 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT count(*) FROM nonlinememo/* UNION ALL " +
-                "SELECT count(*) FROM linememo UNION ALL " +
-                "SELECT count(*) FROM gridmemo*/", null);
+        Cursor cursor = db.rawQuery("SELECT count(*) FROM nonlinememo WHERE deleted = 0 UNION ALL " +
+                "SELECT count(*) FROM linememo WHERE deleted = 0 UNION ALL " +
+                "SELECT count(*) FROM gridmemo WHERE deleted = 0", null);
+
+        // 무지메모 줄메모 방안메모 투두리스트 위시리스트 쇼핑리스트 리뷰 데일리플랜 위클리플랜 먼슬리플랜 year플랜 헬스트래커 monthtracker 스터디트래커
         listTemplate = new ArrayList<>();
         cursor.moveToFirst();
         listTemplate.add(new Template("무지 메모", cursor.getInt(0)));
-
-        /*while (cursor.moveToNext()) {
-            listTemplate.add(new Template("메모 (줄)", cursor.getInt(0)));
-            listTemplate.add(new Template("메모 (방안)",cursor.getInt(0)));
-        }*/
+        cursor.moveToNext();
+        listTemplate.add(new Template("줄 메모", cursor.getInt(0)));
+        cursor.moveToNext();
+        listTemplate.add(new Template("방안 메모", cursor.getInt(0)));
 
         templateRecyclerView = (RecyclerView)view.findViewById(R.id.templateRV);
         templateRecyclerView.setHasFixedSize(true);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         templateRecyclerView.setLayoutManager(manager);
+
         //어뎁터
         templateFragAdapter = new TemplateFragAdapter(getContext(),listTemplate);
         templateRecyclerView.setAdapter(templateFragAdapter);
-        // 정렬 버튼
-//        btnRange = (ImageButton)view.findViewById(R.id.rangeBtn);
-//        btnRange.setOnClickListener(this);
-
-        //ItemTouchHelper 생성
-        helper = new ItemTouchHelper(new ItemTouchHelperCallback(templateFragAdapter));
-        //RecyclerView에 ItemTouchHelper 붙이기
-        helper.attachToRecyclerView(templateRecyclerView);
 
         templateFragAdapter.setItems(listTemplate);
         return view;
-    }
-
-    @Override
-    public void onClick(View view) {
-        /*
-        switch (view.getId()){
-            case R.id.rangeBtn:
-                if(click){
-                    templateFragAdapter.setArray(false);
-                    click = false;
-                }else{
-                    templateFragAdapter.setArray(true);
-                    click = true;
-                }
-
-                break;
-        }
-
-         */
-
     }
 }

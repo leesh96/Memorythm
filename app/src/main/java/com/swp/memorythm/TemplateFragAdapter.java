@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapter.TemplateViewHolder> implements ItemTouchHelperListener {
+public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapter.TemplateViewHolder> {
 
     Context templateContext;
     private FragmentManager fm;
@@ -38,20 +38,11 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
         return tvHolder;
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull TemplateViewHolder holder, int position) {
         holder.templateTitle.setText(dataTemplate.get(position).getTitle());
         holder.templateNum.setText(String.valueOf(dataTemplate.get(position).getCount()));
 
-        if(isArray){
-            holder.itemView.setClickable(false);
-            holder.templateNum.setVisibility(View.INVISIBLE);
-
-        }else{
-            holder.itemView.setClickable(true);
-            holder.templateNum.setVisibility(View.VISIBLE);
-        }
         //프레그먼트 교체
         holder.itemView.setOnClickListener(view -> {
             FragmentActivity activity = (FragmentActivity)view.getContext();
@@ -72,21 +63,6 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
         dataTemplate = itemList;
         notifyDataSetChanged();
     }
-    // 아이템의 리스트상 현재위치와 움직일 위치를 입력 받음
-    @Override
-    public boolean onItemMove(int from_position, int to_position) {
-        Template template = dataTemplate.get(from_position);
-        dataTemplate.remove(from_position);
-        dataTemplate.add(to_position,template);
-        notifyItemMoved(from_position,to_position); // 데이터가 이동함을 알림
-
-        return true;
-    }
-
-    @Override
-    public void onItemSwipe(int position) {
-
-    }
 
     // 아이템 뷰를 저장하는 뷰홀더 클래스.
     public static class TemplateViewHolder extends RecyclerView.ViewHolder{
@@ -96,12 +72,5 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
             this.templateTitle = (TextView)itemView.findViewById(R.id.templateName);
             this.templateNum = (TextView)itemView.findViewById(R.id.templateNum);
         }
-    }
-
-    public void setArray(boolean array){
-        isArray = array;
-    }
-    private void changeFrag(int n){
-
     }
 }

@@ -412,7 +412,7 @@ public class MemoViewActivity extends AppCompatActivity {
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
 
-        switch (TemplateCase) {
+        switch (Template) {
             case "nonlinememo":
                 ft.replace(R.id.template_frame, new NonlineMemoFragment());
                 ft.addToBackStack(null);
