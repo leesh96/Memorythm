@@ -40,13 +40,16 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT count(*) FROM nonlinememo", null);
+        Cursor cursor = db.rawQuery("SELECT count(*) FROM nonlinememo/* UNION ALL " +
+                "SELECT count(*) FROM linememo UNION ALL " +
+                "SELECT count(*) FROM gridmemo*/", null);
         listTemplate = new ArrayList<>();
-        cursor.moveToFirst();
-        Log.d("cursor : ", String.valueOf(cursor.getInt(0)));
-        listTemplate.add(new Template("무지 메모", cursor.getInt(0)));
-        listTemplate.add(new Template("메모 (줄)", cursor.getInt(1)));
-        listTemplate.add(new Template("메모 (방안)",cursor.getInt(2)));
+        while (cursor.moveToNext()) {
+            listTemplate.add(new Template("무지 메모", cursor.getInt(0)));
+            listTemplate.add(new Template("메모 (줄)", cursor.getInt(0)));
+            listTemplate.add(new Template("메모 (방안)",cursor.getInt(0)));
+        }
+
 
         templateRecyclerView = (RecyclerView)view.findViewById(R.id.templateRV);
         templateRecyclerView.setHasFixedSize(true);
