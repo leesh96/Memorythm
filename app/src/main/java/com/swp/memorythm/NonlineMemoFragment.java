@@ -121,6 +121,7 @@ public class NonlineMemoFragment extends Fragment {
         return memoid;
     }
 
+    // 널 값 검증
     public boolean checkNull() {
         Content = editTextContent.getText().toString();
 
@@ -146,8 +147,9 @@ public class NonlineMemoFragment extends Fragment {
 
         switch (Mode) {
             case "write":
+                // 메모 최초 작성
                 try {
-                    db.execSQL("INSERT INTO nonline('userdate', 'content', 'bgcolor', 'title') VALUES('" + Userdate + "', '" + Content + "', '" + Bgcolor + "', '" + Title + "');");
+                    db.execSQL("INSERT INTO nonlinememo('userdate', 'content', 'bgcolor', 'title') VALUES('" + Userdate + "', '" + Content + "', '" + Bgcolor + "', '" + Title + "');");
                     // 작성하면 view 모드로 바꾸기 위해 최근 삽입한 레코드 id로 바꿔줌
                     final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                     cursor.moveToFirst();
@@ -159,14 +161,14 @@ public class NonlineMemoFragment extends Fragment {
                 break;
             case "view":
                 // 메모 수정
-                if (getArguments() == null) {
+                if (getArguments() == null) { // 작성하고 남아있는 view 모드일 때
                     try {
                         db.execSQL("UPDATE nonlinememo SET userdate = '" + Userdate + "', content = '" + Content + "', Title = '" + Title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
                         success = true;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                } else {
+                } else { // 메모 리스트에서 view 모드로 들어왔을 때
                     memoid = getArguments().getInt("memoid");
                     try {
                         db.execSQL("UPDATE nonlinememo SET userdate = '" + Userdate + "', content = '" + Content + "', Title = '" + Title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
@@ -177,69 +179,6 @@ public class NonlineMemoFragment extends Fragment {
                 }
                 break;
         }
-
         return success;
-
-        /*if (Content.equals("") | Content == null) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-            alert.setMessage("내용을 입력하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alert.create();
-            alertDialog.show();
-            while (alertDialog.isShowing()) {
-                if (!alertDialog.isShowing()) return success;
-            }
-        } else {
-            if (Mode.equals("view")) {
-                MemoTitle = getArguments().getString("memotitle");
-            }
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_title, null, false);
-            builder.setView(dialogView);
-
-            EditText editTextMemoTitle;
-            *//*Button btnApply, btnCancel;*//*
-
-            editTextMemoTitle = dialogView.findViewById(R.id.et_memotitle);
-            *//*btnApply = dialogView.findViewById(R.id.btn_apply);
-            btnCancel = dialogView.findViewById(R.id.btn_cancel);*//*
-
-            editTextMemoTitle.setText(MemoTitle);
-
-            builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    MemoTitle = editTextMemoTitle.getText().toString();
-                    if (MemoTitle.equals("") | MemoTitle == null) {
-                        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-                        alert.setMessage("제목을 입력하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).show();
-                    } else {
-                        dialog.dismiss();
-                    }
-                }
-            });
-            builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-            if (!alertDialog.isShowing()) {
-
-            }
-            return success;
-        }*/
     }
 }

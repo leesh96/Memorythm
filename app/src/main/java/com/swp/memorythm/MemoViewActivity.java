@@ -248,50 +248,13 @@ public class MemoViewActivity extends AppCompatActivity {
                     getCurrentFocus().clearFocus();
                 }
 
-                // 이게 뭔진 잘 모르겠는데 이걸 써야한대
-                AtomicBoolean success = new AtomicBoolean(false);
-
+                // 저장 할건지 확인하는 다이얼로그 만들기만 여기서 이 다이얼로그 안에서 saveData 호출
                 AlertDialog.Builder savealert = new AlertDialog.Builder(MemoViewActivity.this);
                 savealert.setMessage("메모를 저장하시겠습니까?");
                 savealert.setPositiveButton("확인", (dialog, i) -> {
                     // 프래그먼트 구분
-                    if(fragment instanceof NonlineMemoFragment) success.set(((NonlineMemoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle));
-                        /*else if(fragment instanceof TodoFragment) success.set(((TodoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle));
-                        else if(fragment instanceof ShoppingFragment) success.set(((ShoppingFragment) fragment).saveData(Mode, MemoBackground, MemoTitle));
-                        else if(fragment instanceof GridMemoFragment) ((GridMemoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);
-                        else if(fragment instanceof HealthTrackerFragment) ((HealthTrackerFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);
-                        else if(fragment instanceof MonthTrackerFragment) ((MonthTrackerFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);
-                        else if(fragment instanceof StudyTrackerFragment) ((StudyTrackerFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);
-                        else if(fragment instanceof ReviewFragment) ((ReviewFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);*/
-                    if (success.get()) {
-                        Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
-                        // write 모드이면, memo id 받고 view 모드로 설정
-                        if (Mode.equals("write")) {
-                            Mode = "view";
-                            isAfterWrite = true;
-                            setVisibility(Mode);
-                            if(fragment instanceof NonlineMemoFragment) memoid = ((NonlineMemoFragment) fragment).getMemoid();
-                                /*else if(fragment instanceof GridMemoFragment) memoid =  ((GridMemoFragment) fragment).getMemoid();
-                                else if(fragment instanceof HealthTrackerFragment) memoid = ((HealthTrackerFragment) fragment).getMemoid();
-                                else if(fragment instanceof MonthTrackerFragment) memoid = ((MonthTrackerFragment) fragment).getMemoid();
-                                else if(fragment instanceof StudyTrackerFragment) memoid = ((StudyTrackerFragment) fragment).getMemoid();
-                                else if(fragment instanceof ReviewFragment) memoid = ((ReviewFragment) fragment).getMemoid();*/
-                        }
-                    } else {
-                        Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
-                    }
-                    dialog.dismiss();
-                    /*try {
-                        // 프래그먼트 구분
-                        if(fragment instanceof NonlineMemoFragment) success.set(((NonlineMemoFragment) fragment).saveData(Mode, MemoBackground));
-                        *//*else if(fragment instanceof TodoFragment) success.set(((TodoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle));
-                        else if(fragment instanceof ShoppingFragment) success.set(((ShoppingFragment) fragment).saveData(Mode, MemoBackground, MemoTitle));
-                        else if(fragment instanceof GridMemoFragment) ((GridMemoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);
-                        else if(fragment instanceof HealthTrackerFragment) ((HealthTrackerFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);
-                        else if(fragment instanceof MonthTrackerFragment) ((MonthTrackerFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);
-                        else if(fragment instanceof StudyTrackerFragment) ((StudyTrackerFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);
-                        else if(fragment instanceof ReviewFragment) ((ReviewFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);*//*
-                        if (success.get()) {
+                    if(fragment instanceof NonlineMemoFragment) {
+                        if (((NonlineMemoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
                             Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
@@ -299,22 +262,19 @@ public class MemoViewActivity extends AppCompatActivity {
                                 isAfterWrite = true;
                                 setVisibility(Mode);
                                 if(fragment instanceof NonlineMemoFragment) memoid = ((NonlineMemoFragment) fragment).getMemoid();
-                                *//*else if(fragment instanceof GridMemoFragment) memoid =  ((GridMemoFragment) fragment).getMemoid();
-                                else if(fragment instanceof HealthTrackerFragment) memoid = ((HealthTrackerFragment) fragment).getMemoid();
-                                else if(fragment instanceof MonthTrackerFragment) memoid = ((MonthTrackerFragment) fragment).getMemoid();
-                                else if(fragment instanceof StudyTrackerFragment) memoid = ((StudyTrackerFragment) fragment).getMemoid();
-                                else if(fragment instanceof ReviewFragment) memoid = ((ReviewFragment) fragment).getMemoid();*//*
                             }
+                            dialog.dismiss();
+                        } else { // 저장 실패 시
+                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
-                    }*/
+                    } // 여기서 else if로 템플릿 마다 추가할 것!
                 });
                 savealert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
 
+                // 널 값 검증을 제일 먼저 진행, 널 값 검증 필요 없으면 else에 있는 제목 받는거 바로 진행 ㄱㄱ
                 if (fragment instanceof NonlineMemoFragment) {
-                    if (!((NonlineMemoFragment) fragment).checkNull()) {
+                    if (!((NonlineMemoFragment) fragment).checkNull()) { // 널 값 검증 통과 못함 -> 프래그먼트 참조
                         AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
                         alert.setMessage("내용을 입력하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
@@ -324,22 +284,27 @@ public class MemoViewActivity extends AppCompatActivity {
                         });
                         AlertDialog alertDialog = alert.create();
                         alertDialog.show();
-                    } else {
+                    } else { // 널 값 검증 통과하면 제목 받음
                         AlertDialog.Builder builder = new AlertDialog.Builder(MemoViewActivity.this);
                         View dialogView = LayoutInflater.from(MemoViewActivity.this).inflate(R.layout.dialog_title, null, false);
                         builder.setView(dialogView);
 
                         EditText editTextMemoTitle;
+                        Button btnApply, btnCancel;
 
                         editTextMemoTitle = dialogView.findViewById(R.id.et_memotitle);
+                        btnApply = dialogView.findViewById(R.id.btn_apply);
+                        btnCancel = dialogView.findViewById(R.id.btn_cancel);
 
                         if (Mode.equals("view")) editTextMemoTitle.setText(MemoTitle);
 
-                        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        AlertDialog alertDialog = builder.create();
+
+                        btnApply.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(View view) {
                                 MemoTitle = editTextMemoTitle.getText().toString();
-                                if (MemoTitle.equals("") | MemoTitle == null) {
+                                if (MemoTitle.equals("") | MemoTitle == null) { // 제목 입력 안했을 때
                                     AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
                                     alert.setMessage("제목을 입력하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                         @Override
@@ -347,22 +312,22 @@ public class MemoViewActivity extends AppCompatActivity {
                                             dialog.dismiss();
                                         }
                                     }).show();
-                                } else {
-                                    dialog.dismiss();
+                                } else { // 제목까지 입력 받았으면 첨에 만든 저장 할건지 묻는 다이얼로그 출력하고 저장
+                                    alertDialog.dismiss();
                                     savealert.show();
                                 }
                             }
                         });
-                        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        btnCancel.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                            public void onClick(View view) {
+                                alertDialog.dismiss();
                             }
                         });
-                        AlertDialog alertDialog = builder.create();
+
                         alertDialog.show();
                     }
-                }
+                } // 여기서 else if로 템플릿 마다 추가할 것!
             }
         });
 
@@ -375,13 +340,19 @@ public class MemoViewActivity extends AppCompatActivity {
                 alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
-                        db.execSQL("UPDATE "+TemplateCase+" SET deleted = 1 WHERE id = "+memoid+";");
+                        try {
+                            db.execSQL("UPDATE "+TemplateCase+" SET deleted = 1 WHERE id = "+memoid+";");
+                            Toast.makeText(MemoViewActivity.this, "휴지통 이동 성공", Toast.LENGTH_SHORT).show();
+                            if (isAfterWrite) {
+                                Intent newMain = new Intent(MemoViewActivity.this, MainActivity.class);
+                                startActivity(newMain);
+                                finish();
+                            } else finish();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(MemoViewActivity.this, "휴지통 이동 실패", Toast.LENGTH_SHORT).show();
+                        }
                         dialog.dismiss();
-                        if (isAfterWrite) {
-                            Intent newMain = new Intent(MemoViewActivity.this, MainActivity.class);
-                            startActivity(newMain);
-                            finish();
-                        } else finish();
                     }
                 });
                 alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
