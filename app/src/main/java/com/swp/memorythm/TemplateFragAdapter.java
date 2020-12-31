@@ -42,7 +42,7 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
     @Override
     public void onBindViewHolder(@NonNull TemplateViewHolder holder, int position) {
         holder.templateTitle.setText(dataTemplate.get(position).getTitle());
-        holder.templateNum.setText(dataTemplate.get(position).getNum());
+        holder.templateNum.setText(String.valueOf(dataTemplate.get(position).getCount()));
 
         if(isArray){
             holder.itemView.setClickable(false);

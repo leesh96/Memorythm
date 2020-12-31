@@ -3,6 +3,7 @@ package com.swp.memorythm;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -32,7 +33,7 @@ public class NonlineMemoFragment extends Fragment {
     private EditText editTextContent;
     DBHelper dbHelper;
     SQLiteDatabase db;
-    private int id;
+    public int memoid;
 
     public static NonlineMemoFragment newInstance() {
         return new NonlineMemoFragment();
@@ -82,12 +83,18 @@ public class NonlineMemoFragment extends Fragment {
         return rootView;
     }
 
-    public boolean saveData(String Mode, String Bgcolor, int fixed) {
+    // 메모아이디 가져오기
+    public int getMemoid() {
+        return memoid;
+    }
+
+    // 저장 및 수정
+    public boolean saveData(String Mode, String Bgcolor, String title) {
         db = dbHelper.getReadableDatabase();
 
         String Userdate = textViewDate.getText().toString();
         String Content = editTextContent.getText().toString();
-        //editdate를 위함
+        //editdate 컬럼 업데이트 때문에
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
 
@@ -103,18 +110,25 @@ public class NonlineMemoFragment extends Fragment {
         } else {
             switch (Mode) {
                 case "write":
-                    db.execSQL("INSERT INTO nonlinememo('userdate', 'content', 'bgcolor') VALUES('" + Userdate + "', '" + Content + "', '" + Bgcolor + "');");
-                    // 최근 삽입한 레코드 id로 바꿔줌
+                    db.execSQL("INSERT INTO nonlinememo('userdate', 'content', 'bgcolor', 'title') VALUES('"+Userdate+"', '"+Content+"', '"+Bgcolor+"', '"+title+"');");
+                    // 작성하면 view 모드로 바꾸기 위해 최근 삽입한 레코드 id로 바꿔줌
                     final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                     cursor.moveToFirst();
-                    id = cursor.getInt(0);
+                    memoid = cursor.getInt(0);
                     break;
                 case "view":
-                    // 쿼리 업데이트 쓰기
-                    db.execSQL("UPDATE nonlinememo SET userdate = '" + Userdate + "', content = '" + Content + "', bgcolor = '" + Bgcolor + "', fixed = '" + fixed + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + id + ";");
+                    // 메모 수정
+                    memoid = getArguments().getInt("memoid");
+                    db.execSQL("UPDATE nonlinememo SET userdate = '"+Userdate+"', content = '"+Content+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
                     break;
             }
         }
+        return true;
+    }
+
+    // 영구삭제
+    public boolean completeDelete(int id) {
+
         return true;
     }
 }

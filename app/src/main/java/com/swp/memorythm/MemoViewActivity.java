@@ -4,13 +4,15 @@ import androidx.fragment.app.Fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -31,14 +33,21 @@ public class MemoViewActivity extends AppCompatActivity {
     private CheckBox checkBoxFixed;
     private FrameLayout template_frame;
 
-    private String TemplateCase, Mode, MemoBackground;
-    private int isMemoFixed;
+    private String TemplateCase, Mode, MemoBackground, MemoTitle;
+    private int isMemofixed, memoid;
+
+    private boolean isAfterWrite = false;
+
+    DBHelper dbHelper;
+    SQLiteDatabase db;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memoview);
 
+        dbHelper = new DBHelper(MemoViewActivity.this);
+        db = dbHelper.getReadableDatabase();
         Intent intent = getIntent();
 
         btnBack = findViewById(R.id.btn_back);
@@ -48,17 +57,21 @@ public class MemoViewActivity extends AppCompatActivity {
         checkBoxFixed = findViewById(R.id.checkbox_fixed);
         template_frame = findViewById(R.id.template_frame);
 
-        initMemoView(intent);
+        initMemoActivity(intent);
 
         // 뒤로가기
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                if (isAfterWrite) {
+                    Intent newMain = new Intent(MemoViewActivity.this, MainActivity.class);
+                    startActivity(newMain);
+                    finish();
+                } else finish();
             }
         });
 
-        // 색상변경 다이얼로그
+        // 메모지 색상 변경
         btnSelcolor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,58 +94,141 @@ public class MemoViewActivity extends AppCompatActivity {
                 btnYellow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        MemoBackground = "yellow";
-                        setMemoBackground(MemoBackground);
+                        switch (Mode) {
+                            case "write":
+                                MemoBackground = "yellow";
+                                setMemoBackground(MemoBackground);
+                                break;
+                            case "view":
+                                MemoBackground = "yellow";
+                                setMemoBackground(MemoBackground);
+                                try {
+                                    db.execSQL("UPDATE "+TemplateCase+" SET bgcolor = '"+MemoBackground+"' WHERE id = "+memoid+";");
+                                    Toast.makeText(MemoViewActivity.this, "배경색 변경 성공", Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(MemoViewActivity.this, "배경색 변경 실패", Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+                        }
                         alertDialog.dismiss();
                     }
                 });
-
                 btnPink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        MemoBackground = "pink";
-                        setMemoBackground(MemoBackground);
+                        switch (Mode) {
+                            case "write":
+                                MemoBackground = "pink";
+                                setMemoBackground(MemoBackground);
+                                break;
+                            case "view":
+                                MemoBackground = "pink";
+                                setMemoBackground(MemoBackground);
+                                try {
+                                    db.execSQL("UPDATE "+TemplateCase+" SET bgcolor = '"+MemoBackground+"' WHERE id = "+memoid+";");
+                                    Toast.makeText(MemoViewActivity.this, "배경색 변경 성공", Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(MemoViewActivity.this, "배경색 변경 실패", Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+                        }
                         alertDialog.dismiss();
                     }
                 });
-
                 btnMint.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        MemoBackground = "mint";
-                        setMemoBackground(MemoBackground);
+                        switch (Mode) {
+                            case "write":
+                                MemoBackground = "mint";
+                                setMemoBackground(MemoBackground);
+                                break;
+                            case "view":
+                                MemoBackground = "mint";
+                                setMemoBackground(MemoBackground);
+                                try {
+                                    db.execSQL("UPDATE "+TemplateCase+" SET bgcolor = '"+MemoBackground+"' WHERE id = "+memoid+";");
+                                    Toast.makeText(MemoViewActivity.this, "배경색 변경 성공", Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(MemoViewActivity.this, "배경색 변경 실패", Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+                        }
                         alertDialog.dismiss();
                     }
                 });
-
                 btnSky.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        MemoBackground = "sky";
-                        setMemoBackground(MemoBackground);
+                        switch (Mode) {
+                            case "write":
+                                MemoBackground = "sky";
+                                setMemoBackground(MemoBackground);
+                                break;
+                            case "view":
+                                MemoBackground = "sky";
+                                setMemoBackground(MemoBackground);
+                                try {
+                                    db.execSQL("UPDATE "+TemplateCase+" SET bgcolor = '"+MemoBackground+"' WHERE id = "+memoid+";");
+                                    Toast.makeText(MemoViewActivity.this, "배경색 변경 성공", Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(MemoViewActivity.this, "배경색 변경 실패", Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+                        }
                         alertDialog.dismiss();
                     }
                 });
-
                 btnGray.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        MemoBackground = "gray";
-                        setMemoBackground(MemoBackground);
+                        switch (Mode) {
+                            case "write":
+                                MemoBackground = "gray";
+                                setMemoBackground(MemoBackground);
+                                break;
+                            case "view":
+                                MemoBackground = "gray";
+                                setMemoBackground(MemoBackground);
+                                try {
+                                    db.execSQL("UPDATE "+TemplateCase+" SET bgcolor = '"+MemoBackground+"' WHERE id = "+memoid+";");
+                                    Toast.makeText(MemoViewActivity.this, "배경색 변경 성공", Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(MemoViewActivity.this, "배경색 변경 실패", Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+                        }
                         alertDialog.dismiss();
                     }
                 });
             }
         });
 
-        // 메모 고정여부 변경
+        // 메모 고정상태 변경
         checkBoxFixed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    isMemoFixed = 1;
+                    try {
+                        db.execSQL("UPDATE "+TemplateCase+" SET fixed = 1 WHERE id = "+memoid+";");
+                        Toast.makeText(MemoViewActivity.this, "고정 변경 성공", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(MemoViewActivity.this, "고정 변경 실패", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    isMemoFixed = 0;
+                    try {
+                        db.execSQL("UPDATE "+TemplateCase+" SET fixed = 0 WHERE id = "+memoid+";");
+                        Toast.makeText(MemoViewActivity.this, "고정 변경 성공", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(MemoViewActivity.this, "고정 변경 실패", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -150,15 +246,57 @@ public class MemoViewActivity extends AppCompatActivity {
                     getCurrentFocus().clearFocus();
                 }
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(MemoViewActivity.this);
+                AlertDialog.Builder savealert = new AlertDialog.Builder(MemoViewActivity.this);
+
+                View dialogView = LayoutInflater.from(MemoViewActivity.this).inflate(R.layout.dialog_title, null, false);
+                builder.setView(dialogView);
+
+                EditText editTextMemoTitle;
+                Button btnApply, btnCancel;
+
+                editTextMemoTitle = dialogView.findViewById(R.id.et_memotitle);
+                btnApply = dialogView.findViewById(R.id.btn_apply);
+                btnCancel = dialogView.findViewById(R.id.btn_cancel);
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                if (Mode.equals("view")) editTextMemoTitle.setText(MemoTitle);
+
+                btnApply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MemoTitle = editTextMemoTitle.getText().toString();
+                        if (MemoTitle.equals("") | MemoTitle == null) {
+                            AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                            alert.setMessage("제목을 입력하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                        } else {
+                            alertDialog.dismiss();
+                            savealert.show();
+                        }
+                    }
+                });
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
                 // 이게 뭔진 잘 모르겠는데 이걸 써야한대
                 AtomicBoolean success = new AtomicBoolean(false);
 
-                AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
-                alert.setMessage("메모를 저장하시겠습니까?");
-                alert.setPositiveButton("확인", (dialog, i) -> {
+                savealert.setMessage("메모를 저장하시겠습니까?");
+                savealert.setPositiveButton("확인", (dialog, i) -> {
                     try {
                         // 프래그먼트 구분
-                        if(fragment instanceof NonlineMemoFragment) success.set(((NonlineMemoFragment) fragment).saveData(Mode, MemoBackground, isMemoFixed));
+                        if(fragment instanceof NonlineMemoFragment) success.set(((NonlineMemoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle));
                         else if(fragment instanceof TodoFragment) success.set(((TodoFragment) fragment).saveData(Mode, MemoBackground));
                         else if(fragment instanceof ShoppingFragment) success.set(((ShoppingFragment) fragment).saveData(Mode, MemoBackground));
                         else if(fragment instanceof HealthTrackerFragment) ((GridMemoFragment) fragment).saveData(Mode);
@@ -167,17 +305,21 @@ public class MemoViewActivity extends AppCompatActivity {
                         else if(fragment instanceof ReviewFragment) ((ReviewFragment) fragment).saveData(Mode);
                         if (success.get()) {
                             Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
-                            // 뷰 모드로 변경
-                            Mode = "view";
-                            setVisibility(Mode);
+                            // write 모드이면, memo id 받고 view 모드로 설정
+                            if (Mode.equals("write")) {
+                                Mode = "view";
+                                isAfterWrite = true;
+                                setVisibility(Mode);
+                                if(fragment instanceof NonlineMemoFragment) memoid = ((NonlineMemoFragment) fragment).getMemoid();
+                            }
                         }
                     } catch (Exception e) {
+                        e.printStackTrace();
                         Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
                     }
                     dialog.dismiss();
                 });
-                alert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
-                alert.show();
+                savealert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
             }
         });
 
@@ -185,15 +327,18 @@ public class MemoViewActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.template_frame);      // 현재 보여지는 프래그먼트 가져오기
-
                 AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
                 alert.setMessage("메모를 삭제하시겠습니까?");
                 alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
+                        db.execSQL("UPDATE "+TemplateCase+" SET deleted = 1 WHERE id = "+memoid+";");
                         dialog.dismiss();
-                        finish();
+                        if (isAfterWrite) {
+                            Intent newMain = new Intent(MemoViewActivity.this, MainActivity.class);
+                            startActivity(newMain);
+                            finish();
+                        } else finish();
                     }
                 });
                 alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -216,10 +361,7 @@ public class MemoViewActivity extends AppCompatActivity {
     }
 
     // initActivity
-    private void initMemoView(Intent intent) {
-        fm = getSupportFragmentManager();
-        ft = fm.beginTransaction();
-
+    private void initMemoActivity(Intent intent) {
         // 모드 받아오기
         Mode = intent.getStringExtra("mode");
         setVisibility(Mode);
@@ -227,24 +369,23 @@ public class MemoViewActivity extends AppCompatActivity {
         // 배경색, 고정여부 설정
         switch (Mode) {
             case "write":
-                TemplateCase = intent.getStringExtra("template");
-                initFragment(TemplateCase);
                 MemoBackground = "yellow";
                 setMemoBackground(MemoBackground);
-                isMemoFixed = 0;
+                TemplateCase = intent.getStringExtra("template");
+                initFragment(TemplateCase);
                 break;
             case "view":
-                MemoBackground = intent.getStringExtra("bgcolor");
-                isMemoFixed = intent.getIntExtra("memofixed", 0);
+                memoid = intent.getIntExtra("memoid", 0);
+                MemoTitle = intent.getStringExtra("memotitle");
+                /*MemoBackground = db.execSQL();
+                isMemofixed = db.execSQL();*/
                 setMemoBackground(MemoBackground);
-                switch (isMemoFixed) {
-                    case 0:
-                        checkBoxFixed.setChecked(false);
-                        break;
-                    case 1:
-                        checkBoxFixed.setChecked(true);
-                        break;
-                }
+                if (isMemofixed == 1) {
+                    checkBoxFixed.setChecked(true);
+                } else checkBoxFixed.setChecked(false);
+                TemplateCase = intent.getStringExtra("template");
+                viewMemo(TemplateCase, memoid);
+                break;
         }
     }
 
@@ -264,6 +405,9 @@ public class MemoViewActivity extends AppCompatActivity {
 
     // 탬플릿 별로 프래그먼트 생성
     private void initFragment(String Template) {
+        fm = getSupportFragmentManager();
+        ft = fm.beginTransaction();
+
         switch (TemplateCase) {
             case "nonlinememo":
                 ft.replace(R.id.template_frame, new NonlineMemoFragment());
@@ -336,6 +480,14 @@ public class MemoViewActivity extends AppCompatActivity {
                 ft.commit();
                 break;
         }
+    }
+
+    // 메모 보여주기
+    private void viewMemo(String Template, int id) {
+        fm = getSupportFragmentManager();
+        ft = fm.beginTransaction();
+
+
     }
 
     // 메모지 배경색 변경

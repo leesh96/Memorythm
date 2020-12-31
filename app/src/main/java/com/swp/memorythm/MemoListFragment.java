@@ -1,5 +1,8 @@
 package com.swp.memorythm;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,8 @@ public class MemoListFragment extends Fragment {
     private MemoListAdapter memoListAdapter;
     private ImageButton btnDelete;
     private Boolean check = false;
+    DBHelper dbHelper;
+    SQLiteDatabase db;
 
     @Nullable
     @Override
@@ -59,11 +64,23 @@ public class MemoListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         //가운데 부분
         listMemo = new ArrayList<>();
-        listMemo.add(new MemoData("메모1","2020-11-30"));
-        listMemo.add(new MemoData("메모2","2020-11-30"));
-        listMemo.add(new MemoData("메모3","2020-11-30"));
-        listMemo.add(new MemoData("메모4","2020-11-30"));
+        dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
+        try {
+            Cursor cursor = db.rawQuery("SELECT id, title, editdate from nonlinememo WHERE deleted = 0 ORDER BY editdate DESC", null);
+            while (cursor.moveToNext()) {
+                MemoData memoData = new MemoData();
 
+                memoData.setMemoid(cursor.getInt(0));
+                memoData.setMemoTitle(cursor.getString(1));
+                memoData.setMemoDate(cursor.getString(2).substring(0, 10));
+
+                listMemo.add(memoData);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "실패", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 

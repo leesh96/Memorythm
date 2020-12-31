@@ -123,12 +123,12 @@ public class WriteFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        //monthly tracker
+        //monthtracker
         monthlyTBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), MemoViewActivity.class);
-                intent.putExtra("template", "monthlytracker");
+                intent.putExtra("template", "monthtracker");
                 intent.putExtra("mode", "write");
                 startActivity(intent);
             }

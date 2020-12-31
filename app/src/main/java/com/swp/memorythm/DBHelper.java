@@ -67,7 +67,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //수호 탬플릿
     private static final String CREATE_TABLE_NONLINEMEMO = "CREATE TABLE if not exists nonlinememo(id integer primary key autoincrement, userdate text, content text, " +
-            "title text, editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', template_case text DEFAULT 'nonlinememo', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
+            "title text NOT NULL, editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', template_case text DEFAULT 'nonlinememo', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     private static final String CREATE_TABLE_TODOLIST = "CREATE TABLE if not exists todolist(id integer primary key autoincrement, userdate text, content text, done text, " +
             "title text NOT NULL, editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', template_case text DEFAULT 'todolist', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";

@@ -6,6 +6,24 @@ import android.os.Parcelable;
 public class MemoData implements Parcelable {
     private String memoTitle;
     private String memoDate;
+    private String template;
+    private int memoid;
+
+    public String getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(String template) {
+        this.template = template;
+    }
+
+    public int getMemoid() {
+        return memoid;
+    }
+
+    public void setMemoid(int memoid) {
+        this.memoid = memoid;
+    }
 
     public MemoData() {
     }

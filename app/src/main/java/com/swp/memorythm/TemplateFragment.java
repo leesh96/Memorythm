@@ -1,5 +1,7 @@
 package com.swp.memorythm;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +29,25 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
     private ImageButton btnRange;
     private boolean click = false;
 
+    DBHelper dbHelper;
+    SQLiteDatabase db;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_template, container, false);
+
+        dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT count(*) FROM nonlinememo", null);
+        listTemplate = new ArrayList<>();
+        cursor.moveToFirst();
+        Log.d("cursor : ", String.valueOf(cursor.getInt(0)));
+        listTemplate.add(new Template("무지 메모", cursor.getInt(0)));
+        listTemplate.add(new Template("메모 (줄)", cursor.getInt(1)));
+        listTemplate.add(new Template("메모 (방안)",cursor.getInt(2)));
+
         templateRecyclerView = (RecyclerView)view.findViewById(R.id.templateRV);
         templateRecyclerView.setHasFixedSize(true);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
@@ -49,23 +67,6 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
 
         templateFragAdapter.setItems(listTemplate);
         return view;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        listTemplate = new ArrayList<>();
-        listTemplate.add(new Template("무지 메모","0"));
-        listTemplate.add(new Template("메모 (줄)","0"));
-        listTemplate.add(new Template("메모 (방안)","0"));
-        listTemplate.add(new Template("TODO LIST","0"));
-        listTemplate.add(new Template("WISH LIST","0"));
-        listTemplate.add(new Template("SHOPPING LIST","0"));
-        listTemplate.add(new Template("Review LIST","0"));
-        listTemplate.add(new Template("Health Tracker","0"));
-        listTemplate.add(new Template("Study Tracker","0"));
-
     }
 
     @Override
