@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,6 +70,10 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
             holder.checkBox.setVisibility(View.INVISIBLE);
             holder.itemView.setClickable(true);
         }
+        //아이템 클릭 
+        holder.itemView.setOnClickListener(view -> {
+            Toast.makeText(memoContext, "클릭클릭", Toast.LENGTH_SHORT).show();
+        });
 
     }
 

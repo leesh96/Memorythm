@@ -2,32 +2,29 @@ package com.swp.memorythm;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
-import android.view.Menu;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity {
-    private ViewPager viewPager;
-    private ViewPagerAdapter pagerAdapter;
+
     private BottomNavigationView bottomNavigationView; // 바텀네비게이션 뷰
     private FragmentManager fm;
     private FragmentTransaction ft;
-    private FolderFragment folderFragment; // 폴더 프레그먼트
-    private TemplateFragment templateFragment; // 템플릿 프레그먼트
-    private WriteFragment writeFragment; // 작성 프레그먼트
-    private TrashFragment trashFragment; // 휴지통 프레그먼트
-    private TotalFragment setFragment; // 설정 프레그먼트
     private ImageButton homeBtn; // 홈으로 가는 버튼
-    private Menu menu;
+    private ListView listview = null;
 
 
     public MainActivity() {
@@ -93,6 +90,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 //        setFrag(1); // 첫 프레그먼트 지정
+
+        //Navigation Drawer
+        final String[] items = {"Setting"};
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, items) ;
+        listview = (ListView) findViewById(R.id.drawer_menulist) ;
+        listview.setAdapter(adapter) ;
+        //클릭
+        listview.setOnItemClickListener(new ListView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView adapterView, View view, int i, long l) {
+
+
+                //리스트뷰의 아이템을 선택하면 drawer 닫기
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout) ;
+                drawer.closeDrawer(Gravity.LEFT) ;
+            }
+        });
 
     }
 
