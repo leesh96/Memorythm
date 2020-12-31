@@ -216,10 +216,42 @@ public class MemoViewActivity extends AppCompatActivity {
         checkBoxFixed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                int fixedmemocnt = 0;
                 if (b) {
                     try {
-                        db.execSQL("UPDATE "+TemplateCase+" SET fixed = 1 WHERE id = "+memoid+";");
-                        Toast.makeText(MemoViewActivity.this, "고정 변경 성공", Toast.LENGTH_SHORT).show();
+                        Cursor cursor = db.rawQuery("SELECT count(*) FROM nonlinememo WHERE fixed = 1 UNION ALL " +
+                                "SELECT count(*) FROM linememo WHERE fixed = 1 UNION ALL " +
+                                "SELECT count(*) FROM gridmemo WHERE fixed = 1 UNION ALL " +
+                                "SELECT count(*) FROM todolist WHERE fixed = 1 UNION ALL " +
+                                "SELECT count(*) FROM wishlist WHERE fixed = 1 UNION ALL " +
+                                "SELECT count(*) FROM shoppinglist WHERE fixed = 1 UNION ALL " +
+                                "SELECT count(*) FROM review WHERE fixed = 1 UNION ALL " +
+                                "SELECT count(*) FROM dailyplan WHERE fixed = 1 UNION ALL " +
+                                "SELECT count(*) FROM weeklyplan WHERE fixed = 1 UNION ALL " +
+                                "SELECT count(*) FROM monthlyplan WHERE fixed = 1 UNION ALL " +
+                                "SELECT count(*) FROM yearlyplan WHERE fixed = 1 UNION ALL " +
+                                "SELECT count(*) FROM healthtracker WHERE fixed = 1 UNION ALL " +
+                                "SELECT count(*) FROM monthtracker WHERE fixed = 1 UNION ALL " +
+                                "SELECT count(*) FROM studytracker WHERE fixed = 1", null);
+                        while (cursor.moveToNext()) {
+                            fixedmemocnt += cursor.getInt(0);
+                        }
+                        Log.d("fixedmemocount = ", String.valueOf(fixedmemocnt));
+                        if (fixedmemocnt >= 3) {
+                            AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                            alert.setMessage("고정 메모는 3개를 넘을 수 없습니다!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog alertDialog = alert.create();
+                            alertDialog.show();
+                            checkBoxFixed.setChecked(false);
+                        } else {
+                            db.execSQL("UPDATE "+TemplateCase+" SET fixed = 1 WHERE id = "+memoid+";");
+                            Toast.makeText(MemoViewActivity.this, "고정 변경 성공", Toast.LENGTH_SHORT).show();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         Toast.makeText(MemoViewActivity.this, "고정 변경 실패", Toast.LENGTH_SHORT).show();
@@ -334,6 +366,19 @@ public class MemoViewActivity extends AppCompatActivity {
                 });
                 savealert.setNegativeButton("취소", (dialog, i) -> dialog.dismiss());
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(MemoViewActivity.this);
+                View dialogView = LayoutInflater.from(MemoViewActivity.this).inflate(R.layout.dialog_title, null, false);
+                builder.setView(dialogView);
+
+                EditText editTextMemoTitle;
+                Button btnApply, btnCancel;
+
+                editTextMemoTitle = dialogView.findViewById(R.id.et_memotitle);
+                btnApply = dialogView.findViewById(R.id.btn_apply);
+                btnCancel = dialogView.findViewById(R.id.btn_cancel);
+
+                if (Mode.equals("view")) editTextMemoTitle.setText(MemoTitle);
+
                 // 널 값 검증을 제일 먼저 진행, 널 값 검증 필요 없으면 else에 있는 제목 받는거 바로 진행 ㄱㄱ
                 if (fragment instanceof NonlineMemoFragment) {
                     if (!((NonlineMemoFragment) fragment).checkNull()) { // 널 값 검증 통과 못함 -> 프래그먼트 참조
@@ -347,19 +392,6 @@ public class MemoViewActivity extends AppCompatActivity {
                         AlertDialog alertDialog = alert.create();
                         alertDialog.show();
                     } else { // 널 값 검증 통과하면 제목 받음
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MemoViewActivity.this);
-                        View dialogView = LayoutInflater.from(MemoViewActivity.this).inflate(R.layout.dialog_title, null, false);
-                        builder.setView(dialogView);
-
-                        EditText editTextMemoTitle;
-                        Button btnApply, btnCancel;
-
-                        editTextMemoTitle = dialogView.findViewById(R.id.et_memotitle);
-                        btnApply = dialogView.findViewById(R.id.btn_apply);
-                        btnCancel = dialogView.findViewById(R.id.btn_cancel);
-
-                        if (Mode.equals("view")) editTextMemoTitle.setText(MemoTitle);
-
                         AlertDialog alertDialog = builder.create();
 
                         btnApply.setOnClickListener(new View.OnClickListener() {
@@ -396,15 +428,6 @@ public class MemoViewActivity extends AppCompatActivity {
                         AlertDialog alertDialog = alert.create();
                         alertDialog.show();
                     } else { // 널 값 검증 통과하면 제목 받음
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MemoViewActivity.this);
-                        View dialogView = LayoutInflater.from(MemoViewActivity.this).inflate(R.layout.dialog_title, null, false);
-                        builder.setView(dialogView);
-                        EditText editTextMemoTitle;
-                        Button btnApply, btnCancel;
-                        editTextMemoTitle = dialogView.findViewById(R.id.et_memotitle);
-                        btnApply = dialogView.findViewById(R.id.btn_apply);
-                        btnCancel = dialogView.findViewById(R.id.btn_cancel);
-                        if (Mode.equals("view")) editTextMemoTitle.setText(MemoTitle);
                         AlertDialog alertDialog = builder.create();
                         btnApply.setOnClickListener(view12 -> {
                             MemoTitle = editTextMemoTitle.getText().toString();
@@ -426,15 +449,6 @@ public class MemoViewActivity extends AppCompatActivity {
                         AlertDialog alertDialog = alert.create();
                         alertDialog.show();
                     } else { // 널 값 검증 통과하면 제목 받음
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MemoViewActivity.this);
-                        View dialogView = LayoutInflater.from(MemoViewActivity.this).inflate(R.layout.dialog_title, null, false);
-                        builder.setView(dialogView);
-                        EditText editTextMemoTitle;
-                        Button btnApply, btnCancel;
-                        editTextMemoTitle = dialogView.findViewById(R.id.et_memotitle);
-                        btnApply = dialogView.findViewById(R.id.btn_apply);
-                        btnCancel = dialogView.findViewById(R.id.btn_cancel);
-                        if (Mode.equals("view")) editTextMemoTitle.setText(MemoTitle);
                         AlertDialog alertDialog = builder.create();
                         btnApply.setOnClickListener(view12 -> {
                             MemoTitle = editTextMemoTitle.getText().toString();
@@ -450,15 +464,6 @@ public class MemoViewActivity extends AppCompatActivity {
                         alertDialog.show();
                     }
                 }else if (fragment instanceof StudyTrackerFragment) { //널값 검증 안함
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MemoViewActivity.this);
-                    View dialogView = LayoutInflater.from(MemoViewActivity.this).inflate(R.layout.dialog_title, null, false);
-                    builder.setView(dialogView);
-                    EditText editTextMemoTitle;
-                    Button btnApply, btnCancel;
-                    editTextMemoTitle = dialogView.findViewById(R.id.et_memotitle);
-                    btnApply = dialogView.findViewById(R.id.btn_apply);
-                    btnCancel = dialogView.findViewById(R.id.btn_cancel);
-                    if (Mode.equals("view")) editTextMemoTitle.setText(MemoTitle);
                     AlertDialog alertDialog = builder.create();
                     btnApply.setOnClickListener(view12 -> {
                         MemoTitle = editTextMemoTitle.getText().toString();
@@ -473,15 +478,6 @@ public class MemoViewActivity extends AppCompatActivity {
                     btnCancel.setOnClickListener(view1 -> alertDialog.dismiss());
                     alertDialog.show();
                 }else if (fragment instanceof HealthTrackerFragment) { //널값 검증 안함
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MemoViewActivity.this);
-                    View dialogView = LayoutInflater.from(MemoViewActivity.this).inflate(R.layout.dialog_title, null, false);
-                    builder.setView(dialogView);
-                    EditText editTextMemoTitle;
-                    Button btnApply, btnCancel;
-                    editTextMemoTitle = dialogView.findViewById(R.id.et_memotitle);
-                    btnApply = dialogView.findViewById(R.id.btn_apply);
-                    btnCancel = dialogView.findViewById(R.id.btn_cancel);
-                    if (Mode.equals("view")) editTextMemoTitle.setText(MemoTitle);
                     AlertDialog alertDialog = builder.create();
                     btnApply.setOnClickListener(view12 -> {
                         MemoTitle = editTextMemoTitle.getText().toString();
@@ -502,15 +498,6 @@ public class MemoViewActivity extends AppCompatActivity {
                         AlertDialog alertDialog = alert.create();
                         alertDialog.show();
                     } else { // 널 값 검증 통과하면 제목 받음
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MemoViewActivity.this);
-                        View dialogView = LayoutInflater.from(MemoViewActivity.this).inflate(R.layout.dialog_title, null, false);
-                        builder.setView(dialogView);
-                        EditText editTextMemoTitle;
-                        Button btnApply, btnCancel;
-                        editTextMemoTitle = dialogView.findViewById(R.id.et_memotitle);
-                        btnApply = dialogView.findViewById(R.id.btn_apply);
-                        btnCancel = dialogView.findViewById(R.id.btn_cancel);
-                        if (Mode.equals("view")) editTextMemoTitle.setText(MemoTitle);
                         AlertDialog alertDialog = builder.create();
                         btnApply.setOnClickListener(view12 -> {
                             MemoTitle = editTextMemoTitle.getText().toString();
