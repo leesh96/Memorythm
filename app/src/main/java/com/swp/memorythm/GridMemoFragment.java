@@ -2,8 +2,10 @@ package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -24,6 +27,7 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 public class GridMemoFragment extends Fragment {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
+    private int memoid;
     private TextView textViewDate;
     private EditText editTextContent;
 
@@ -68,32 +72,63 @@ public class GridMemoFragment extends Fragment {
 
         return viewGroup;
     }
-    public Boolean saveData(String Mode){
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setData();
+    }
+
+    public int getMemoid() {
+        return memoid;
+    }
+
+    public Boolean saveData(String Mode, String Bgcolor, String title){ //저장 및 수정
         //userdate, content
         String userdate = textViewDate.getText().toString();
         String content = editTextContent.getText().toString();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
 
         db = dbHelper.getReadableDatabase();
         if (content.equals("")) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder alert = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
             alert.setMessage("내용을 입력하세요!").setPositiveButton("확인", (dialog, which) -> dialog.dismiss()).show();
             return false;
         } else {
             switch (Mode) {
                 case "write":
-                    db.execSQL("INSERT INTO gridmemo('userdate', 'content') VALUES('" + userdate + "', '" + content + "');");
+                    db.execSQL("INSERT INTO gridmemo('userdate', 'content', 'bgcolor', 'title') VALUES('" + userdate + "', '" + content + "', '"+Bgcolor+"', '"+title+"');");
+                    // 작성하면 view 모드로 바꾸기 위해 최근 삽입한 레코드 id로 바꿔줌
+                    final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
+                    cursor.moveToFirst();
+                    memoid = cursor.getInt(0);
                     break;
                 case "view":
-                    // TODO: 2020-12-30 쿼리 업데이트 쓰기
+                    if (getArguments() != null) {
+                        memoid = getArguments().getInt("memoid");
+                    }
+                    db.execSQL("UPDATE gridmemo SET userdate = '"+userdate+"', content = '"+content+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
                     break;
             }
         }
         return true;
     }
+
     public void setData(){
         String userdate=null, content=null;
-        // TODO: 2020-12-29 SQL에서 불러오기
-        textViewDate.setText(userdate);
-        editTextContent.setText(content);
+
+        dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
+        if (getArguments() != null) {
+            memoid = getArguments().getInt("memoid");
+            Cursor cursor = db.rawQuery("SELECT userdate, content FROM gridmemo WHERE id = "+memoid+"", null);
+            while (cursor.moveToNext()) {
+                userdate = cursor.getString(0);
+                content = cursor.getString(1);
+            }
+            textViewDate.setText(userdate);
+            editTextContent.setText(content);
+        }
     }
 }

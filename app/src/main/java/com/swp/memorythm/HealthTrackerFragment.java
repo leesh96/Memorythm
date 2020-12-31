@@ -2,9 +2,11 @@ package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +21,14 @@ import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
 public class HealthTrackerFragment extends Fragment {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
+    private int memoid;
     private TextView textViewDate, tv_upperbody, tv_lowerbody, tv_chest, tv_aerobic;
     private EditText et_breakfast, et_lunch, et_snack, et_dinner, et_exercise, et_comment;
     private ImageView iv_health;
@@ -130,16 +134,23 @@ public class HealthTrackerFragment extends Fragment {
             setHealth(iv_health, getExercise(), aerobic);
         });
 
-        // 물컵
-        setCups();
         for (int i = 0; i <ibtn_cup.length ; i++) {
             int finalI = i;
             ibtn_cup[i].setOnClickListener(v -> cups[finalI]= changeCups(ibtn_cup[finalI], cups[finalI]));
         }
-
-
         return viewGroup;
     }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setData();
+    }
+
+    public int getMemoid() {
+        return memoid;
+    }
+
     public int getExercise(){
         if(upperbody&&lowerbody&&chest) return 7;
         else if(upperbody&&lowerbody) return 6;
@@ -214,9 +225,11 @@ public class HealthTrackerFragment extends Fragment {
             else changeCups(ibtn_cup[i],1);
         }
     }
-    public void saveData(String Mode){
+    public Boolean saveData(String Mode, String Bgcolor, String title){
         //string : userdate, breakfastTime, breakfastMenu, lunchTime, lunchMenu, snackMenu , dinnerTime, dinnerMenu, exerciseContent, comment
         //int : exercisedata, aerobicdata
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
         String userdate = textViewDate.getText().toString();
         String breakfastTime = tv_breakfast.getText().toString();
         String lunchTime = tv_lunch.getText().toString();
@@ -234,26 +247,47 @@ public class HealthTrackerFragment extends Fragment {
         db = dbHelper.getReadableDatabase();
         switch (Mode) {
             case "write":
-                db.execSQL("INSERT INTO healthtracker('userdate', 'waterCups', 'breakfastTime', 'breakfastMenu', 'lunchTime', 'lunchMenu', 'snackMenu', 'dinnerTime', 'dinnerMenu', 'exerciseContent', 'comment',  'exercise', 'aerobic') " +
-                        "VALUES('" + userdate + "', '"+ waterCups +"', '" + breakfastTime + "', '" + breakfastMenu + "', '" + lunchTime + "', '" + lunchMenu + "', '" + snackMenu + "', '" + dinnerTime + "', '" + dinnerMenu + "', '" + exerciseContent + "', '" + comment + "', '" + exercisedata + "', '" + aerobicdata + "');");
+                db.execSQL("INSERT INTO healthtracker('userdate', 'waterCups', 'breakfastTime', 'breakfastMenu', 'lunchTime', 'lunchMenu', 'snackMenu', 'dinnerTime', 'dinnerMenu', 'exerciseContent', 'comment',  'exercise', 'aerobic', 'bgcolor', 'title') " +
+                        "VALUES('" + userdate + "', '"+ waterCups +"', '" + breakfastTime + "', '" + breakfastMenu + "', '" + lunchTime + "', '" + lunchMenu + "', '" + snackMenu + "', '" + dinnerTime + "', '" + dinnerMenu + "', '" + exerciseContent + "', '" + comment + "', '" + exercisedata + "', '" + aerobicdata + "', '"+Bgcolor+"', '"+title+"');");
+                final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
+                cursor.moveToFirst();
+                memoid = cursor.getInt(0);
                 break;
             case "view":
-                // TODO: 쿼리 업데이트 쓰기
+                if (getArguments() != null) {
+                    memoid = getArguments().getInt("memoid");
+                }
+                db.execSQL("UPDATE healthtracker SET userdate = '"+userdate+"', waterCups = '"+waterCups+"', breakfastTime = '"+breakfastTime+"', breakfastMenu = '"+breakfastMenu+"', lunchTime = '"+lunchTime+"', " +
+                        "lunchMenu = '"+lunchMenu+"', snackMenu = '"+snackMenu+"', dinnerTime = '"+dinnerTime+"', dinnerMenu = '"+dinnerMenu+"', exerciseContent = '"+exerciseContent+"', comment = '"+comment+"', exercise = '"+exercisedata+"', aerobic = '"+aerobicdata+"'" +
+                        "editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
                 break;
         }
-        db.close();
+        return true;
     }
     public void setData(){
         String userdate=null, breakfastTime=null, breakfastMenu=null, lunchTime=null, lunchMenu=null, snackMenu=null, dinnerTime=null, dinnerMenu=null, exerciseContent=null, comment=null, waterCups=null;
         int exerciseData =0, aerobicData =0;
         String[] array;
-        // TODO: 2020-12-29 SQL에서 불러오기
-        textViewDate.setText(userdate);
-        tv_breakfast.setText(breakfastTime); tv_lunch.setText(lunchTime); tv_dinner.setText(dinnerTime);
-        et_breakfast.setText(breakfastMenu); et_lunch.setText(lunchMenu); et_snack.setText(snackMenu); et_dinner.setText(dinnerMenu);
-        et_exercise.setText(exerciseContent); et_comment.setText(comment);
-        setHealth(iv_health, exerciseData, aerobicData);
-        array = waterCups.split("");
-        for (int i = 0; i <array.length ; i++) cups[i] = Integer.parseInt(array[i]);
+
+        dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
+        if (getArguments() != null) {
+            memoid = getArguments().getInt("memoid");
+            Cursor cursor = db.rawQuery("SELECT userdate, breakfastTime, breakfastMenu, lunchTime, lunchMenu, snackMenu , dinnerTime, dinnerMenu, exerciseContent, comment, exercise, aerobic, waterCups  FROM healthtracker WHERE id = "+memoid+"", null);
+            while (cursor.moveToNext()) {
+                userdate = cursor.getString(0); breakfastTime = cursor.getString(1); breakfastMenu = cursor.getString(2); lunchTime = cursor.getString(3); lunchMenu = cursor.getString(4);
+                snackMenu = cursor.getString(5); dinnerTime = cursor.getString(6); dinnerMenu = cursor.getString(7); exerciseContent = cursor.getString(8); comment = cursor.getString(9);
+                exerciseData = cursor.getInt(10); aerobicData = cursor.getInt(11); waterCups = cursor.getString(12);
+            }
+            textViewDate.setText(userdate);
+            tv_breakfast.setText(breakfastTime); tv_lunch.setText(lunchTime); tv_dinner.setText(dinnerTime);
+            et_breakfast.setText(breakfastMenu); et_lunch.setText(lunchMenu); et_snack.setText(snackMenu); et_dinner.setText(dinnerMenu);
+            et_exercise.setText(exerciseContent); et_comment.setText(comment);
+            setHealth(iv_health, exerciseData, aerobicData);
+            array = waterCups.split("");
+            for (int i = 0; i <array.length ; i++) cups[i] = Integer.parseInt(array[i]);
+            setCups();
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,12 +18,14 @@ import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
 public class StudyTrackerFragment extends Fragment {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
+    private int memoid;
     private TextView textViewDate;
     private EditText et_comment;
     private final EditText[] et_comments = new EditText[24];
@@ -94,11 +97,20 @@ public class StudyTrackerFragment extends Fragment {
             iv_time[i].setOnClickListener(v-> num_time[finalI]=changeBgColor(iv_time[finalI],num_time[finalI]));
         }
 
-        setBgColor();
-        // TODO: 2020-11-20 파이어베이스 연동
 
         return viewGroup;
     }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setData();
+    }
+
+    public int getMemoid() {
+        return memoid;
+    }
+
     //배경색 바꾸는 함수
     public int changeBgColor(ImageView imageView, int n){
         if(n==0){
@@ -115,8 +127,10 @@ public class StudyTrackerFragment extends Fragment {
             else changeBgColor(iv_time[i],1);
         }
     }
-    public void saveData(String Mode){
+    public Boolean saveData(String Mode, String Bgcolor, String title){
         //String : userdate, studyTimecheck , commentAll , commentTime
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
         String userdate = textViewDate.getText().toString();
         StringBuilder studyTimecheck = new StringBuilder();
         for (int value : num_time) studyTimecheck.append(value);
@@ -130,26 +144,39 @@ public class StudyTrackerFragment extends Fragment {
         db = dbHelper.getReadableDatabase();
         switch (Mode) {
             case "write":
-                db.execSQL("INSERT INTO studytracker('userdate', 'studyTimecheck', 'commentAll', 'commentTime') " +
-                        "VALUES('" + userdate + "', '" + studyTimecheck + "', '" + commentAll + "', '" + commentTime + "');");
+                db.execSQL("INSERT INTO studytracker('userdate', 'studyTimecheck', 'commentAll', 'commentTime', 'bgcolor', 'title') " +
+                        "VALUES('" + userdate + "', '" + studyTimecheck + "', '" + commentAll + "', '" + commentTime + "', '"+Bgcolor+"', '"+title+"');");
                 break;
             case "view":
-                // TODO: 쿼리 업데이트 쓰기
+                if (getArguments() != null) {
+                    memoid = getArguments().getInt("memoid");
+                }
+                db.execSQL("UPDATE studytracker SET userdate = '"+userdate+"', studyTimecheck = '"+studyTimecheck+"', commentAll = '"+commentAll+"', commentTime = '"+commentTime+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
                 break;
         }
-        db.close();
+        return true;
     }
     public void setData(){
         String userdate=null, studyTimecheck=null , commentAll =null, commentTime=null;
         String[] array, array1;
-        // TODO: 2020-12-29 SQL에서 불러오기
-        textViewDate.setText(userdate);
-        array = studyTimecheck.split("");
-        for (int i = 0; i <array.length ; i++) num_time[i] = Integer.parseInt(array[i]);
-        et_comment.setText(commentAll);
-        array1 = commentTime.split(",");
-        for (int i = 0; i <array1.length ; i++) {
-            if(!array1[i].equals("null")) et_comments[i].setText(array1[i]);
+        dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
+        if (getArguments() != null) {
+            memoid = getArguments().getInt("memoid");
+            Cursor cursor = db.rawQuery("SELECT userdate, studyTimecheck , commentAll , commentTime  FROM studytracker WHERE id = "+memoid+"", null);
+            while (cursor.moveToNext()) {
+                userdate = cursor.getString(0); studyTimecheck = cursor.getString(1); commentAll = cursor.getString(2); commentTime = cursor.getString(3);
+            }
+            textViewDate.setText(userdate);
+            array = studyTimecheck.split("");
+            for (int i = 0; i <array.length ; i++) num_time[i] = Integer.parseInt(array[i]);
+            et_comment.setText(commentAll);
+            array1 = commentTime.split(",");
+            for (int i = 0; i <array1.length ; i++) {
+                if(!array1[i].equals("null")) et_comments[i].setText(array1[i]);
+            }
+            setBgColor();
         }
+
     }
 }

@@ -1,39 +1,34 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
-import android.app.Service;
-import android.content.res.Configuration;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ReviewFragment extends Fragment {
-    //키보드 설정
-    private androidx.constraintlayout.widget.ConstraintLayout parentLayout;
     private DBHelper dbHelper;
     private SQLiteDatabase db;
+    private int memoid;
     private TextView textViewDate;
     private EditText et_reviewList, et_scoreReview, et_title, et_content;
     private final TextView[] tv_reviews = new TextView[9];
@@ -43,7 +38,6 @@ public class ReviewFragment extends Fragment {
     public static ReviewFragment newInstance() {
         return new ReviewFragment();
     }
-    private boolean isKeyboardOpen;
 
     // 캘린더 객체 생성
     Calendar myCalendar = Calendar.getInstance();
@@ -69,7 +63,6 @@ public class ReviewFragment extends Fragment {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.template_review, container, false);
         dbHelper = new DBHelper(getContext());
 
-        parentLayout = viewGroup.findViewById(R.id.parentLayout);
         textViewDate = viewGroup.findViewById(R.id.write_date);
         tv_reviews[0] = viewGroup.findViewById(R.id.tv_book);
         tv_reviews[1] = viewGroup.findViewById(R.id.tv_concert);
@@ -117,10 +110,7 @@ public class ReviewFragment extends Fragment {
             activityRootView.getWindowVisibleDisplayFrame(r);
 
             int heightDiff = activityRootView.getRootView().getHeight() - r.height();
-            if (heightDiff > 0.25*activityRootView.getRootView().getHeight()) { // if more than 25% of the screen, its probably a keyboard...... do something here
-                Log.d("키보드 ","나옴?");
-
-            }else{
+            if (heightDiff < 0.25*activityRootView.getRootView().getHeight()) {
                 Log.d("키보드 ","내려감?");
                 if (ReviewFragment.this.getActivity().getCurrentFocus() == et_reviewList) {
                     et_reviewList.setBackgroundResource(R.drawable.bg_selector);
@@ -136,26 +126,42 @@ public class ReviewFragment extends Fragment {
                     }
                 }else if(ReviewFragment.this.getActivity().getCurrentFocus() == et_content) et_content.clearFocus();
                 else if(ReviewFragment.this.getActivity().getCurrentFocus() == et_title) et_title.clearFocus();
+
             }
         });
-
-
         return viewGroup;
     }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setData();
+    }
+
+    public int getMemoid() {
+        return memoid;
+    }
+
     public void setBg (int past, TextView current){
         et_reviewList.setBackgroundResource(R.drawable.bg_line);
         tv_reviews[past].setBackgroundColor(Color.parseColor("#00000000"));
         current.setBackgroundResource(R.drawable.bg_selector);
     }
 
-    public void saveData(String Mode){
+    public Boolean saveData(String Mode, String Bgcolor, String title){
         //String : userdate, categoryName, reviewTitle, reviewContent
         //int : categoryCheck, starNum, score
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
         String userdate = textViewDate.getText().toString();
         String reviewTitle = et_title.getText().toString();
         String reviewContent = et_content.getText().toString();
-        int starNum = rb_review.getNumStars();
-        int score = Integer.parseInt(et_scoreReview.getText().toString());
+        int starNum = (int) rb_review.getRating();
+        int score=0;
+        if(!et_scoreReview.getText().toString().equals("")){
+            score = Integer.parseInt(et_scoreReview.getText().toString());
+        }
+
         String categoryName;
         int categoryCheck;
         if(isUser) {
@@ -167,41 +173,58 @@ public class ReviewFragment extends Fragment {
             categoryCheck = pastChoice;
         }
         db = dbHelper.getReadableDatabase();
-        switch (Mode) {
-            case "write":
-                db.execSQL("INSERT INTO review('userdate', 'categoryName', 'reviewTitle', 'reviewContent', 'categoryCheck', 'starNum', 'score') " +
-                        "VALUES('" + userdate + "', '" + categoryName + "', '" + reviewTitle + "', '" + reviewContent + "', '" + categoryCheck + "', '" + starNum + "', '" + score + "');");
-                break;
-            case "view":
-                // TODO: 쿼리 업데이트 쓰기
-                break;
+        if (reviewTitle.equals("")) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+            alert.setMessage("내용을 입력하세요!").setPositiveButton("확인", (dialog, which) -> dialog.dismiss()).show();
+            return false;
+        } else {
+            switch (Mode) {
+                case "write":
+                    db.execSQL("INSERT INTO review('userdate', 'categoryName', 'reviewTitle', 'reviewContent', 'categoryCheck', 'starNum', 'score', 'bgcolor', 'title') " +
+                            "VALUES('" + userdate + "', '" + categoryName + "', '" + reviewTitle + "', '" + reviewContent + "', '" + categoryCheck + "', '" + starNum + "', '" + score + "', '"+Bgcolor+"', '"+title+"');");
+                    final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
+                    cursor.moveToFirst();
+                    memoid = cursor.getInt(0);
+                    break;
+                case "view":
+                    if (getArguments() != null) {
+                        memoid = getArguments().getInt("memoid");
+                    }
+                    db.execSQL("UPDATE review SET userdate = '"+userdate+"', categoryName = '"+categoryName+"', reviewTitle = '"+reviewTitle+"', reviewContent = '"+reviewContent+"', categoryCheck = '"+categoryCheck+"', starNum = '"+starNum+"', score = '"+score+"'," +
+                            "editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    break;
+            }
         }
-        db.close();
+        return true;
     }
     public void setData(){
-        String userdate=null, categoryName=null, reviewTitle=null, reviewContent=null;
+        String userDate =null, categoryName=null, reviewTitle=null, reviewContent=null;
         int categoryCheck=0, starNum=0, score=0;
-        // TODO: 2020-12-29 SQL에서 불러오기
-        textViewDate.setText(userdate);
-        et_title.setText(reviewTitle);
-        et_content.setText(reviewContent);
-        rb_review.setRating(starNum);
-        et_scoreReview.setText(score);
-        if(categoryCheck==9){
-            et_reviewList.setText(categoryName);
-            et_reviewList.setBackgroundResource(R.drawable.bg_selector);
-            tv_reviews[pastChoice].setBackgroundColor(Color.parseColor("#00000000"));
-        }else{
-            setBg(pastChoice, tv_reviews[categoryCheck]);
+        dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
+        if (getArguments() != null) {
+            memoid = getArguments().getInt("memoid");
+            Cursor cursor = db.rawQuery("SELECT userdate, categoryName, reviewTitle, reviewContent, categoryCheck, starNum, score FROM review WHERE id = "+memoid+"", null);
+            while (cursor.moveToNext()) {
+                userDate = cursor.getString(0); categoryName = cursor.getString(1); reviewTitle = cursor.getString(2); reviewContent = cursor.getString(3);
+                categoryCheck = cursor.getInt(4); starNum = cursor.getInt(5); score = cursor.getInt(6);
+            }
+            textViewDate.setText(userDate);
+            et_title.setText(reviewTitle);
+            et_content.setText(reviewContent);
+            rb_review.setRating(starNum);
+            isEdit = true;
+            et_scoreReview.setText(Integer.toString(score));
+            isEdit = false;
+            if(categoryCheck==9){
+                et_reviewList.setText(categoryName);
+                et_reviewList.setBackgroundResource(R.drawable.bg_selector);
+                tv_reviews[pastChoice].setBackgroundColor(Color.parseColor("#00000000"));
+            }else{
+                setBg(pastChoice, tv_reviews[categoryCheck]);
+            }
         }
-    }
 
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        Log.d("z", String.valueOf(newConfig.keyboardHidden));
-        super.onConfigurationChanged(newConfig);
-        if(newConfig.keyboardHidden == Configuration.KEYBOARDHIDDEN_YES) Log.d("키보드가","YES");
-        else if(newConfig.keyboardHidden == Configuration.KEYBOARDHIDDEN_NO) Log.d("키보드가","NO");
     }
 }
 
