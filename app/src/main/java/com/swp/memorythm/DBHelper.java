@@ -52,7 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
             "title text NOT NULL, editdate DATETIME DEFAULT(datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', template_case text DEFAULT 'monthtracker', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     private static final String CREATE_TABLE_STUDYTRACKER = "CREATE TABLE if not exists studytracker(id integer primary key autoincrement, userdate text, " +
-            "studyTimecheck text, commentAll text, commentTime text, splitKey text" +
+            "studyTimecheck text, commentAll text, commentTime text, splitKey text, " +
             "title text NOT NULL, editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', template_case text DEFAULT 'studytracker', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     private static final String CREATE_TABLE_REVIEW = "CREATE TABLE if not exists review(id integer primary key autoincrement, userdate text, " +
