@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -23,6 +24,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+
+import com.google.gson.internal.$Gson$Preconditions;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -38,7 +41,7 @@ public class NonlineMemoFragment extends Fragment {
     DBHelper dbHelper;
     SQLiteDatabase db;
     public int memoid;
-    private String Userdate, Content;
+    private String Userdate, Content, MemoTitle;
 
     public static NonlineMemoFragment newInstance() {
         return new NonlineMemoFragment();
@@ -118,45 +121,125 @@ public class NonlineMemoFragment extends Fragment {
         return memoid;
     }
 
+    public boolean checkNull() {
+        Content = editTextContent.getText().toString();
+
+        if (Content.equals("") | Content == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     // 저장 및 수정
-    public boolean saveData(String Mode, String Bgcolor, String title) {
+    public boolean saveData(String Mode, String Bgcolor, String Title) {
         db = dbHelper.getReadableDatabase();
+
+        boolean success = false;
 
         Userdate = textViewDate.getText().toString();
         Content = editTextContent.getText().toString();
+
         //editdate 컬럼 업데이트 때문에
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
 
-        if (Content.equals("") | Content == null) {
+        switch (Mode) {
+            case "write":
+                try {
+                    db.execSQL("INSERT INTO nonline('userdate', 'content', 'bgcolor', 'title') VALUES('" + Userdate + "', '" + Content + "', '" + Bgcolor + "', '" + Title + "');");
+                    // 작성하면 view 모드로 바꾸기 위해 최근 삽입한 레코드 id로 바꿔줌
+                    final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
+                    cursor.moveToFirst();
+                    memoid = cursor.getInt(0);
+                    success = true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "view":
+                // 메모 수정
+                if (getArguments() == null) {
+                    try {
+                        db.execSQL("UPDATE nonlinememo SET userdate = '" + Userdate + "', content = '" + Content + "', Title = '" + Title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
+                        success = true;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    memoid = getArguments().getInt("memoid");
+                    try {
+                        db.execSQL("UPDATE nonlinememo SET userdate = '" + Userdate + "', content = '" + Content + "', Title = '" + Title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
+                        success = true;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+        }
+
+        return success;
+
+        /*if (Content.equals("") | Content == null) {
             AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
             alert.setMessage("내용을 입력하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                 }
-            }).show();
-            return false;
-        } else {
-            switch (Mode) {
-                case "write":
-                    db.execSQL("INSERT INTO nonlinememo('userdate', 'content', 'bgcolor', 'title') VALUES('"+Userdate+"', '"+Content+"', '"+Bgcolor+"', '"+title+"');");
-                    // 작성하면 view 모드로 바꾸기 위해 최근 삽입한 레코드 id로 바꿔줌
-                    final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
-                    cursor.moveToFirst();
-                    memoid = cursor.getInt(0);
-                    break;
-                case "view":
-                    // 메모 수정
-                    if (getArguments() == null) {
-                        db.execSQL("UPDATE nonlinememo SET userdate = '"+Userdate+"', content = '"+Content+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
-                    } else {
-                        memoid = getArguments().getInt("memoid");
-                        db.execSQL("UPDATE nonlinememo SET userdate = '"+Userdate+"', content = '"+Content+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
-                    }
-                    break;
+            });
+            AlertDialog alertDialog = alert.create();
+            alertDialog.show();
+            while (alertDialog.isShowing()) {
+                if (!alertDialog.isShowing()) return success;
             }
-        }
-        return true;
+        } else {
+            if (Mode.equals("view")) {
+                MemoTitle = getArguments().getString("memotitle");
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_title, null, false);
+            builder.setView(dialogView);
+
+            EditText editTextMemoTitle;
+            *//*Button btnApply, btnCancel;*//*
+
+            editTextMemoTitle = dialogView.findViewById(R.id.et_memotitle);
+            *//*btnApply = dialogView.findViewById(R.id.btn_apply);
+            btnCancel = dialogView.findViewById(R.id.btn_cancel);*//*
+
+            editTextMemoTitle.setText(MemoTitle);
+
+            builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    MemoTitle = editTextMemoTitle.getText().toString();
+                    if (MemoTitle.equals("") | MemoTitle == null) {
+                        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                        alert.setMessage("제목을 입력하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    } else {
+                        dialog.dismiss();
+                    }
+                }
+            });
+            builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            if (!alertDialog.isShowing()) {
+
+            }
+            return success;
+        }*/
     }
 }
