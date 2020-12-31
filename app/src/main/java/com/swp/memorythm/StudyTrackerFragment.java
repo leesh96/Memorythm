@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -206,6 +207,20 @@ public class StudyTrackerFragment extends Fragment {
                 if(!array1[i].equals(" ")) et_comments[i].setText(array1[i]);
             }
             setBgColor();
+            // 데이트픽커 다이얼로그에 userdate로 뜨게 하는 코드
+            String toDate = textViewDate.getText().toString();
+            SimpleDateFormat stringtodate = new SimpleDateFormat("yyyy - MM - dd");
+            try {
+                Date fromString = stringtodate.parse(toDate);
+                myCalendar.setTime(fromString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            // 데이트픽커 띄우기
+            textViewDate.setOnClickListener(v -> {
+                // 뷰 모드면 날짜 맞게 해줘야댐
+                new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            });
         }
 
     }

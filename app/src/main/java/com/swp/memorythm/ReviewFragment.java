@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -173,27 +174,21 @@ public class ReviewFragment extends Fragment {
             categoryCheck = pastChoice;
         }
         db = dbHelper.getReadableDatabase();
-        if (reviewTitle.equals("")) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-            alert.setMessage("내용을 입력하세요!").setPositiveButton("확인", (dialog, which) -> dialog.dismiss()).show();
-            return false;
-        } else {
-            switch (Mode) {
-                case "write":
-                    db.execSQL("INSERT INTO review('userdate', 'categoryName', 'reviewTitle', 'reviewContent', 'categoryCheck', 'starNum', 'score', 'bgcolor', 'title') " +
-                            "VALUES('" + userdate + "', '" + categoryName + "', '" + reviewTitle + "', '" + reviewContent + "', '" + categoryCheck + "', '" + starNum + "', '" + score + "', '"+Bgcolor+"', '"+title+"');");
-                    final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
-                    cursor.moveToFirst();
-                    memoid = cursor.getInt(0);
-                    break;
-                case "view":
-                    if (getArguments() != null) {
-                        memoid = getArguments().getInt("memoid");
-                    }
-                    db.execSQL("UPDATE review SET userdate = '"+userdate+"', categoryName = '"+categoryName+"', reviewTitle = '"+reviewTitle+"', reviewContent = '"+reviewContent+"', categoryCheck = '"+categoryCheck+"', starNum = '"+starNum+"', score = '"+score+"'," +
-                            "editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
-                    break;
-            }
+        switch (Mode) {
+            case "write":
+                db.execSQL("INSERT INTO review('userdate', 'categoryName', 'reviewTitle', 'reviewContent', 'categoryCheck', 'starNum', 'score', 'bgcolor', 'title') " +
+                        "VALUES('" + userdate + "', '" + categoryName + "', '" + reviewTitle + "', '" + reviewContent + "', '" + categoryCheck + "', '" + starNum + "', '" + score + "', '"+Bgcolor+"', '"+title+"');");
+                final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
+                cursor.moveToFirst();
+                memoid = cursor.getInt(0);
+                break;
+            case "view":
+                if (getArguments() != null) {
+                    memoid = getArguments().getInt("memoid");
+                }
+                db.execSQL("UPDATE review SET userdate = '"+userdate+"', categoryName = '"+categoryName+"', reviewTitle = '"+reviewTitle+"', reviewContent = '"+reviewContent+"', categoryCheck = '"+categoryCheck+"', starNum = '"+starNum+"', score = '"+score+"'," +
+                        "editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                break;
         }
         return true;
     }
@@ -220,11 +215,29 @@ public class ReviewFragment extends Fragment {
                 et_reviewList.setText(categoryName);
                 et_reviewList.setBackgroundResource(R.drawable.bg_selector);
                 tv_reviews[pastChoice].setBackgroundColor(Color.parseColor("#00000000"));
-            }else{
-                setBg(pastChoice, tv_reviews[categoryCheck]);
+            }else setBg(pastChoice, tv_reviews[categoryCheck]);
+
+            // 데이트픽커 다이얼로그에 userdate로 뜨게 하는 코드
+            String toDate = textViewDate.getText().toString();
+            SimpleDateFormat stringtodate = new SimpleDateFormat("yyyy - MM - dd");
+            try {
+                Date fromString = stringtodate.parse(toDate);
+                myCalendar.setTime(fromString);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
+            // 데이트픽커 띄우기
+            textViewDate.setOnClickListener(v -> {
+                // 뷰 모드면 날짜 맞게 해줘야댐
+                new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            });
         }
 
+    }
+    // 널 값 검증
+    public boolean checkNull() {
+        String reviewTitle = et_title.getText().toString();
+        return !(reviewTitle.equals("") | reviewTitle == null);
     }
 }
 
