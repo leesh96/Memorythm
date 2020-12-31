@@ -26,8 +26,8 @@ public class TemplateFragment extends Fragment {
     private ArrayList<Template> listTemplate;
     private TemplateFragAdapter templateFragAdapter;
 
-    DBHelper dbHelper;
-    SQLiteDatabase db;
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,7 +52,6 @@ public class TemplateFragment extends Fragment {
                 "SELECT count(*) FROM monthtracker WHERE deleted = 0 UNION ALL " +
                 "SELECT count(*) FROM studytracker WHERE deleted = 0 ", null);
 
-        // 무지메모 줄메모 방안메모 투두리스트 위시리스트 쇼핑리스트 리뷰 데일리플랜 위클리플랜 먼슬리플랜 year플랜 헬스트래커 monthtracker 스터디트래커
         listTemplate = new ArrayList<>();
         cursor.moveToFirst();
         listTemplate.add(new Template("무지 메모","nonlinememo" ,cursor.getInt(0)));
@@ -82,8 +81,6 @@ public class TemplateFragment extends Fragment {
         listTemplate.add(new Template("Month Tracker","monthtracker", cursor.getInt(0)));
         cursor.moveToLast();
         listTemplate.add(new Template("Study Tracker","studytracker", cursor.getInt(0)));
-
-
 
         templateRecyclerView = (RecyclerView)view.findViewById(R.id.templateRV);
         templateRecyclerView.setHasFixedSize(true);

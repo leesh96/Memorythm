@@ -4,10 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class MemoData implements Parcelable {
+    private int memoid;
     private String memoTitle;
     private String memoDate;
     private String template;
-    private int memoid;
 
     public String getTemplate() {
         return template;

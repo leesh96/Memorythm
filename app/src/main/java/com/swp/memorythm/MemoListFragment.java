@@ -24,8 +24,8 @@ public class MemoListFragment extends Fragment {
     private MemoListAdapter memoListAdapter;
     private ImageButton btnDelete;
     private Boolean check = false;
-    DBHelper dbHelper;
-    SQLiteDatabase db;
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
 
     @Nullable
     @Override

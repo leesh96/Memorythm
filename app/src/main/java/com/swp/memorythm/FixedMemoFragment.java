@@ -14,6 +14,11 @@ public class FixedMemoFragment extends Fragment {
     private ViewPager viewPager;
     private ViewPagerAdapter pagerAdapter;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -27,10 +32,4 @@ public class FixedMemoFragment extends Fragment {
         viewPager.setAdapter(pagerAdapter);
         return view;
     }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
 }

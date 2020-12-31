@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHolder> {
-
     Context memoContext;
     private ArrayList<MemoData> listMemo;
     private Map<MemoData, Boolean> memoCheckedMap = new HashMap<>();

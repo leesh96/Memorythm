@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView listview = null;
 
     public MainActivity() {
+
     }
 
     @Override
