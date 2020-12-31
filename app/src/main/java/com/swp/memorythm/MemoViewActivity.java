@@ -301,7 +301,8 @@ public class MemoViewActivity extends AppCompatActivity {
                         if(fragment instanceof NonlineMemoFragment) success.set(((NonlineMemoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle));
                         else if(fragment instanceof TodoFragment) success.set(((TodoFragment) fragment).saveData(Mode, MemoBackground));
                         else if(fragment instanceof ShoppingFragment) success.set(((ShoppingFragment) fragment).saveData(Mode, MemoBackground));
-                        else if(fragment instanceof HealthTrackerFragment) ((GridMemoFragment) fragment).saveData(Mode);
+                        else if(fragment instanceof GridMemoFragment) ((GridMemoFragment) fragment).saveData(Mode);
+                        else if(fragment instanceof HealthTrackerFragment) ((HealthTrackerFragment) fragment).saveData(Mode);
                         else if(fragment instanceof MonthTrackerFragment) ((MonthTrackerFragment) fragment).saveData(Mode);
                         else if(fragment instanceof StudyTrackerFragment) ((StudyTrackerFragment) fragment).saveData(Mode);
                         else if(fragment instanceof ReviewFragment) ((ReviewFragment) fragment).saveData(Mode);
@@ -313,6 +314,11 @@ public class MemoViewActivity extends AppCompatActivity {
                                 isAfterWrite = true;
                                 setVisibility(Mode);
                                 if(fragment instanceof NonlineMemoFragment) memoid = ((NonlineMemoFragment) fragment).getMemoid();
+                                else if(fragment instanceof GridMemoFragment) memoid =  ((GridMemoFragment) fragment).getMemoid();
+                                else if(fragment instanceof HealthTrackerFragment) memoid = ((HealthTrackerFragment) fragment).getMemoid();
+                                else if(fragment instanceof MonthTrackerFragment) memoid = ((MonthTrackerFragment) fragment).getMemoid();
+                                else if(fragment instanceof StudyTrackerFragment) memoid = ((StudyTrackerFragment) fragment).getMemoid();
+                                else if(fragment instanceof ReviewFragment) memoid = ((ReviewFragment) fragment).getMemoid();
                             }
                         }
                     } catch (Exception e) {
@@ -490,14 +496,59 @@ public class MemoViewActivity extends AppCompatActivity {
     private void viewMemo(String Template, int id) {
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
-
+        Bundle bundle;
         switch (Template) {
             case "nonlinememo":
                 NonlineMemoFragment nonlineMemoFragment = new NonlineMemoFragment();
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putInt("memoid", id);
                 nonlineMemoFragment.setArguments(bundle);
                 ft.replace(R.id.template_frame, nonlineMemoFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "gridmemo":
+                GridMemoFragment gridMemoFragment = new GridMemoFragment();
+                bundle = new Bundle();
+                bundle.putInt("memoid", id);
+                gridMemoFragment.setArguments(bundle);
+                ft.replace(R.id.template_frame, gridMemoFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "review":
+                ReviewFragment reviewFragment = new ReviewFragment();
+                bundle = new Bundle();
+                bundle.putInt("memoid", id);
+                reviewFragment.setArguments(bundle);
+                ft.replace(R.id.template_frame, reviewFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "healthtracker":
+                HealthTrackerFragment healthTrackerFragment = new HealthTrackerFragment();
+                bundle = new Bundle();
+                bundle.putInt("memoid", id);
+                healthTrackerFragment.setArguments(bundle);
+                ft.replace(R.id.template_frame, healthTrackerFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "studytracker":
+                StudyTrackerFragment studyTrackerFragment = new StudyTrackerFragment();
+                bundle = new Bundle();
+                bundle.putInt("memoid", id);
+                studyTrackerFragment.setArguments(bundle);
+                ft.replace(R.id.template_frame, studyTrackerFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "monthlytracker":
+                MonthTrackerFragment monthTrackerFragment = new MonthTrackerFragment();
+                bundle = new Bundle();
+                bundle.putInt("memoid", id);
+                monthTrackerFragment.setArguments(bundle);
+                ft.replace(R.id.template_frame, monthTrackerFragment);
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
