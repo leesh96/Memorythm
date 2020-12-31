@@ -40,8 +40,8 @@ public class MemoViewActivity extends AppCompatActivity {
 
     private boolean isAfterWrite = false;
 
-    DBHelper dbHelper;
-    SQLiteDatabase db;
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +50,7 @@ public class MemoViewActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(MemoViewActivity.this);
         db = dbHelper.getReadableDatabase();
+
         Intent intent = getIntent();
 
         btnBack = findViewById(R.id.btn_back);

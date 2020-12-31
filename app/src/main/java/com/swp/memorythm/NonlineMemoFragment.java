@@ -39,8 +39,8 @@ import java.util.Locale;
 public class NonlineMemoFragment extends Fragment {
     private TextView textViewDate;
     private EditText editTextContent;
-    DBHelper dbHelper;
-    SQLiteDatabase db;
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
     public int memoid;
     private String Userdate, Content;
 
@@ -62,12 +62,15 @@ public class NonlineMemoFragment extends Fragment {
         }
     };
 
-    // 텍스트뷰 날짜 업데이트
-    private void updateLabel() {
-        String DateFormat = "yyyy - MM - dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(DateFormat, Locale.KOREA);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        dbHelper = new DBHelper(getContext());
 
-        textViewDate.setText(sdf.format(myCalendar.getTime()));
+        if (getArguments() != null) {
+            memoid = getArguments().getInt("memoid");
+            getData(memoid);
+        }
     }
 
     @Nullable
@@ -107,24 +110,12 @@ public class NonlineMemoFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        dbHelper = new DBHelper(getContext());
-        db = dbHelper.getReadableDatabase();
-        if (getArguments() != null) {
-            memoid = getArguments().getInt("memoid");
-            Cursor cursor = db.rawQuery("SELECT userdate, content FROM nonlinememo WHERE id = "+memoid+"", null);
-            while (cursor.moveToNext()) {
-                Userdate = cursor.getString(0);
-                Content = cursor.getString(1);
-            }
-        }
-    }
+    // 텍스트뷰 날짜 업데이트
+    private void updateLabel() {
+        String DateFormat = "yyyy - MM - dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(DateFormat, Locale.KOREA);
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        textViewDate.setText(sdf.format(myCalendar.getTime()));
     }
 
     // 메모아이디 가져오기
@@ -191,5 +182,22 @@ public class NonlineMemoFragment extends Fragment {
                 break;
         }
         return success;
+    }
+
+    // 데이터 로드
+    private void getData(int id) {
+        db = dbHelper.getReadableDatabase();
+        Cursor cursor;
+        try {
+            cursor = db.rawQuery("SELECT userdate, content FROM nonlinememo WHERE id = "+memoid+"", null);
+            while (cursor.moveToNext()) {
+                Userdate = cursor.getString(0);
+                Content = cursor.getString(1);
+            }
+            Toast.makeText(getContext(), "데이터 로드 성공", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "데이터 로드 실패", Toast.LENGTH_SHORT).show();
+        }
     }
 }
