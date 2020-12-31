@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import com.google.gson.internal.$Gson$Preconditions;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -41,7 +42,7 @@ public class NonlineMemoFragment extends Fragment {
     DBHelper dbHelper;
     SQLiteDatabase db;
     public int memoid;
-    private String Userdate, Content, MemoTitle;
+    private String Userdate, Content;
 
     public static NonlineMemoFragment newInstance() {
         return new NonlineMemoFragment();
@@ -85,6 +86,16 @@ public class NonlineMemoFragment extends Fragment {
             textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
         }
 
+        // 데이트픽커 다이얼로그에 userdate로 뜨게 하는 코드
+        String toDate = textViewDate.getText().toString();
+        SimpleDateFormat stringtodate = new SimpleDateFormat("yyyy - MM - dd");
+        try {
+            Date fromString = stringtodate.parse(toDate);
+            myCalendar.setTime(fromString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         textViewDate.setOnClickListener(new View.OnClickListener() { // 데이트픽커 띄우기
             @Override
             public void onClick(View v) {
@@ -103,11 +114,11 @@ public class NonlineMemoFragment extends Fragment {
         db = dbHelper.getReadableDatabase();
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
-        }
-        Cursor cursor = db.rawQuery("SELECT userdate, content FROM nonlinememo WHERE id = "+memoid+"", null);
-        while (cursor.moveToNext()) {
-            Userdate = cursor.getString(0);
-            Content = cursor.getString(1);
+            Cursor cursor = db.rawQuery("SELECT userdate, content FROM nonlinememo WHERE id = "+memoid+"", null);
+            while (cursor.moveToNext()) {
+                Userdate = cursor.getString(0);
+                Content = cursor.getString(1);
+            }
         }
     }
 
