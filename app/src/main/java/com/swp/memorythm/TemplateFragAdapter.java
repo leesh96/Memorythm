@@ -18,10 +18,7 @@ import java.util.ArrayList;
 public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapter.TemplateViewHolder> {
 
     Context templateContext;
-    private FragmentManager fm;
-    private FragmentTransaction ft;
     ArrayList<Template> dataTemplate = new ArrayList<>();
-    public boolean isArray = false;
 
     public TemplateFragAdapter() { }
 
@@ -54,7 +51,6 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.templateID,memoListFragment).addToBackStack(null).commit();
             notifyDataSetChanged();
         });
-
     }
 
     @Override

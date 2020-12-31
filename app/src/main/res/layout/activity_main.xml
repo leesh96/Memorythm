@@ -50,7 +50,7 @@
     <ListView
         android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:background="@color/background"
         android:id="@+id/drawer_menulist" />
 

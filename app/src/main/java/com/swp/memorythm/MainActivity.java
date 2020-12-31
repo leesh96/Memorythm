@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton homeBtn; // 홈으로 가는 버튼
     private ListView listview = null;
 
-
     public MainActivity() {
     }
 
@@ -35,9 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setFrag(0);
-
-        // 홈버튼 누르면 메인화면으로 돌아가기
+        // 홈버튼 누르면 고정 메모 프레그먼트 띄우기
         homeBtn = (ImageButton)findViewById(R.id.homeButton);
         homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,25 +43,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //뷰페이저에 페이저어댑터 지정
-/*      viewPager = (ViewPager)findViewById(R.id.pager);
-        viewPager.setOffscreenPageLimit(3);
-        pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());*/
-/*
-        NonlineMemoFragment f1 = new NonlineMemoFragment();
-        pagerAdapter.addItem(f1);
-        MonthlyPlanFragment f2 = new MonthlyPlanFragment();
-        pagerAdapter.addItem(f2);
-        MonthTrackerFragment f3 = new MonthTrackerFragment();
-        pagerAdapter.addItem(f3);
-        viewPager.setAdapter(pagerAdapter);
-
- */
-
-        //바닥네비게이션 사용
-
+        //바텀 네비게이션 사용
         bottomNavigationView  = findViewById(R.id.bottomNavi);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -84,14 +64,14 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.trashItem:
                         setFrag(5);
                         break;
-
                 }
                 return true;
             }
         });
-//        setFrag(1); // 첫 프레그먼트 지정
 
-        //Navigation Drawer
+        setFrag(0); // 첫 프레그먼트 지정
+
+        //Navigation Drawer(왼쪽에 있음, 드래그하면 나타남)
         final String[] items = {"Setting"};
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, items) ;
         listview = (ListView) findViewById(R.id.drawer_menulist) ;
@@ -101,13 +81,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView adapterView, View view, int i, long l) {
 
+                //(나중에 아이템 추가할거 있으면 추가하기)
 
                 //리스트뷰의 아이템을 선택하면 drawer 닫기
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout) ;
                 drawer.closeDrawer(Gravity.LEFT) ;
             }
         });
-
     }
 
     //프레그먼트 교체
@@ -139,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
                 ft.replace(R.id.mainFrame, new TrashFragment());
                 ft.commit();
                 break;
-
         }
     }
 }
