@@ -44,11 +44,13 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
                 "SELECT count(*) FROM linememo UNION ALL " +
                 "SELECT count(*) FROM gridmemo*/", null);
         listTemplate = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            listTemplate.add(new Template("무지 메모", cursor.getInt(0)));
+        cursor.moveToFirst();
+        listTemplate.add(new Template("무지 메모", cursor.getInt(0)));
+
+        /*while (cursor.moveToNext()) {
             listTemplate.add(new Template("메모 (줄)", cursor.getInt(0)));
             listTemplate.add(new Template("메모 (방안)",cursor.getInt(0)));
-        }
+        }*/
 
 
         templateRecyclerView = (RecyclerView)view.findViewById(R.id.templateRV);
