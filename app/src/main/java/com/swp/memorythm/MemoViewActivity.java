@@ -299,13 +299,13 @@ public class MemoViewActivity extends AppCompatActivity {
                     try {
                         // 프래그먼트 구분
                         if(fragment instanceof NonlineMemoFragment) success.set(((NonlineMemoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle));
-                        else if(fragment instanceof TodoFragment) success.set(((TodoFragment) fragment).saveData(Mode, MemoBackground));
-                        else if(fragment instanceof ShoppingFragment) success.set(((ShoppingFragment) fragment).saveData(Mode, MemoBackground));
-                        else if(fragment instanceof GridMemoFragment) ((GridMemoFragment) fragment).saveData(Mode);
-                        else if(fragment instanceof HealthTrackerFragment) ((HealthTrackerFragment) fragment).saveData(Mode);
-                        else if(fragment instanceof MonthTrackerFragment) ((MonthTrackerFragment) fragment).saveData(Mode);
-                        else if(fragment instanceof StudyTrackerFragment) ((StudyTrackerFragment) fragment).saveData(Mode);
-                        else if(fragment instanceof ReviewFragment) ((ReviewFragment) fragment).saveData(Mode);
+                        else if(fragment instanceof TodoFragment) success.set(((TodoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle));
+                        else if(fragment instanceof ShoppingFragment) success.set(((ShoppingFragment) fragment).saveData(Mode, MemoBackground, MemoTitle));
+                        else if(fragment instanceof GridMemoFragment) ((GridMemoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);
+                        else if(fragment instanceof HealthTrackerFragment) ((HealthTrackerFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);
+                        else if(fragment instanceof MonthTrackerFragment) ((MonthTrackerFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);
+                        else if(fragment instanceof StudyTrackerFragment) ((StudyTrackerFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);
+                        else if(fragment instanceof ReviewFragment) ((ReviewFragment) fragment).saveData(Mode, MemoBackground, MemoTitle);
                         if (success.get()) {
                             Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
