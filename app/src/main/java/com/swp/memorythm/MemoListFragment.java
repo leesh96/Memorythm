@@ -66,21 +66,24 @@ public class MemoListFragment extends Fragment {
         listMemo = new ArrayList<>();
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
-        try {
-            Cursor cursor = db.rawQuery("SELECT id, title, editdate from nonlinememo WHERE deleted = 0 ORDER BY editdate DESC", null);
-            while (cursor.moveToNext()) {
-                MemoData memoData = new MemoData();
+        if (getArguments() != null) {
+            String Template = getArguments().getString("template");
+            try {
+                Cursor cursor = db.rawQuery("SELECT id, title, editdate from "+Template+" WHERE deleted = 0 ORDER BY editdate DESC", null);
+                while (cursor.moveToNext()) {
+                    MemoData memoData = new MemoData();
 
-                memoData.setMemoid(cursor.getInt(0));
-                memoData.setMemoTitle(cursor.getString(1));
-                memoData.setMemoDate(cursor.getString(2).substring(0, 10));
-                memoData.setTemplate("nonlinememo");
+                    memoData.setMemoid(cursor.getInt(0));
+                    memoData.setMemoTitle(cursor.getString(1));
+                    memoData.setMemoDate(cursor.getString(2).substring(0, 10));
+                    memoData.setTemplate(Template);
 
-                listMemo.add(memoData);
+                    listMemo.add(memoData);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "실패", Toast.LENGTH_SHORT).show();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), "실패", Toast.LENGTH_SHORT).show();
         }
     }
 }

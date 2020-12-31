@@ -25,4 +25,12 @@ public class Template {
     public void setCount(int count) {
         this.count = count;
     }
+
+    public String getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(String template) {
+        this.template = template;
+    }
 }

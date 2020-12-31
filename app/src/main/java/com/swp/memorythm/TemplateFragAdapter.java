@@ -1,6 +1,7 @@
 package com.swp.memorythm;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,9 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
         holder.itemView.setOnClickListener(view -> {
             FragmentActivity activity = (FragmentActivity)view.getContext();
             MemoListFragment memoListFragment = new MemoListFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("template", dataTemplate.get(position).getTemplate());
+            memoListFragment.setArguments(bundle);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.templateID,memoListFragment).addToBackStack(null).commit();
             notifyDataSetChanged();
         });

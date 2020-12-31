@@ -24,7 +24,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -71,22 +74,23 @@ public class NonlineMemoFragment extends Fragment {
         textViewDate = rootView.findViewById(R.id.write_date);
         editTextContent = rootView.findViewById(R.id.nonlinememo_content);
 
-        /*// 텍스트뷰 초기 날짜 현재 날짜로 설정
-            textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));*/
+        if (getArguments() != null) {
+            textViewDate.setText(Userdate);
+            editTextContent.setText(Content);
+        } else {
+            // 텍스트뷰 초기 날짜 현재 날짜로 설정
+            textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
+        }
 
         textViewDate.setOnClickListener(new View.OnClickListener() { // 데이트픽커 띄우기
             @Override
             public void onClick(View v) {
+                // 뷰 모드면 날짜 맞게 해줘야댐
                 new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
         return rootView;
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
     }
 
     @Override
@@ -96,22 +100,17 @@ public class NonlineMemoFragment extends Fragment {
         db = dbHelper.getReadableDatabase();
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
-            Log.d("id : ", String.valueOf(memoid));
         }
         Cursor cursor = db.rawQuery("SELECT userdate, content FROM nonlinememo WHERE id = "+memoid+"", null);
         while (cursor.moveToNext()) {
             Userdate = cursor.getString(0);
             Content = cursor.getString(1);
-            Log.d("data : ", Userdate + Content);
         }
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        textViewDate.setText(Userdate);
-        editTextContent.setText(Content);
     }
 
     // 메모아이디 가져오기

@@ -552,6 +552,7 @@ public class MemoViewActivity extends AppCompatActivity {
                 ft.addToBackStack(null);
                 ft.commit();
                 break;
+            case "linememo":
         }
     }
 
