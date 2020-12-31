@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 
 public class StudyTrackerFragment extends Fragment {
     private DBHelper dbHelper;
@@ -127,53 +129,81 @@ public class StudyTrackerFragment extends Fragment {
             else changeBgColor(iv_time[i],1);
         }
     }
+    public String makeKey(String txt){
+        StringBuilder key = new StringBuilder();
+        Random random = new Random();
+        do {
+            for (int i = 0; i < 8; i++) {
+                int rIndex = random.nextInt(3);
+                switch (rIndex) {
+                    case 0:
+                        // a-z
+                        key.append((char) ((int) (random.nextInt(26)) + 97));
+                        break;
+                    case 1:
+                        // A-Z
+                        key.append((char) ((int) (random.nextInt(26)) + 65));
+                        break;
+                    case 2:
+                        // 0-9
+                        key.append(random.nextInt(10));
+                        break;
+                }
+            }
+        } while (txt.contains(key));
+        return key.toString();
+    }
+
     public Boolean saveData(String Mode, String Bgcolor, String title){
-        //String : userdate, studyTimecheck , commentAll , commentTime
+        //String : userdate, studyTimecheck , commentAll , commentTime, splitKey
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         String userdate = textViewDate.getText().toString();
         StringBuilder studyTimecheck = new StringBuilder();
         for (int value : num_time) studyTimecheck.append(value);
         String commentAll = et_comment.getText().toString();
+        StringBuilder txt = new StringBuilder(); //edit text 모두 합쳐서 넣을 String
+        for (EditText etComment : et_comments) txt.append(etComment.getText().toString());
+        String splitKey = makeKey(txt.toString());
         StringBuilder commentTime = new StringBuilder();
         for (EditText etComment : et_comments) {
             if (!etComment.getText().toString().equals(""))
-                commentTime.append(etComment.getText().toString()).append(",");
-            else commentTime.append("null").append(",");
+                commentTime.append(etComment.getText().toString()).append(splitKey);
+            else commentTime.append(" ").append(splitKey);
         }
         db = dbHelper.getReadableDatabase();
         switch (Mode) {
             case "write":
-                db.execSQL("INSERT INTO studytracker('userdate', 'studyTimecheck', 'commentAll', 'commentTime', 'bgcolor', 'title') " +
-                        "VALUES('" + userdate + "', '" + studyTimecheck + "', '" + commentAll + "', '" + commentTime + "', '"+Bgcolor+"', '"+title+"');");
+                db.execSQL("INSERT INTO studytracker('userdate', 'studyTimecheck', 'commentAll', 'commentTime', 'splitKey', 'bgcolor', 'title') " +
+                        "VALUES('" + userdate + "', '" + studyTimecheck + "', '" + commentAll + "', '" + commentTime + "','"+ splitKey +"', '"+Bgcolor+"', '"+title+"');");
                 break;
             case "view":
                 if (getArguments() != null) {
                     memoid = getArguments().getInt("memoid");
                 }
-                db.execSQL("UPDATE studytracker SET userdate = '"+userdate+"', studyTimecheck = '"+studyTimecheck+"', commentAll = '"+commentAll+"', commentTime = '"+commentTime+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                db.execSQL("UPDATE studytracker SET userdate = '"+userdate+"', studyTimecheck = '"+studyTimecheck+"', commentAll = '"+commentAll+"', commentTime = '"+commentTime+"', splitKey = '"+splitKey+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
                 break;
         }
         return true;
     }
     public void setData(){
-        String userdate=null, studyTimecheck=null , commentAll =null, commentTime=null;
+        String userdate=null, studyTimecheck=null , commentAll =null, commentTime=null, splitKey=null;
         String[] array, array1;
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
-            Cursor cursor = db.rawQuery("SELECT userdate, studyTimecheck , commentAll , commentTime  FROM studytracker WHERE id = "+memoid+"", null);
+            Cursor cursor = db.rawQuery("SELECT userdate, studyTimecheck , commentAll , commentTime, splitKey  FROM studytracker WHERE id = "+memoid+"", null);
             while (cursor.moveToNext()) {
-                userdate = cursor.getString(0); studyTimecheck = cursor.getString(1); commentAll = cursor.getString(2); commentTime = cursor.getString(3);
+                userdate = cursor.getString(0); studyTimecheck = cursor.getString(1); commentAll = cursor.getString(2); commentTime = cursor.getString(3); splitKey = cursor.getString(4);
             }
             textViewDate.setText(userdate);
             array = studyTimecheck.split("");
             for (int i = 0; i <array.length ; i++) num_time[i] = Integer.parseInt(array[i]);
             et_comment.setText(commentAll);
-            array1 = commentTime.split(",");
+            array1 = commentTime.split(splitKey);
             for (int i = 0; i <array1.length ; i++) {
-                if(!array1[i].equals("null")) et_comments[i].setText(array1[i]);
+                if(!array1[i].equals(" ")) et_comments[i].setText(array1[i]);
             }
             setBgColor();
         }
