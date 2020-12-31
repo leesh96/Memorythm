@@ -1,11 +1,12 @@
 package com.swp.memorythm;
 
 public class Template {
-    private String title;
+    private String title, template;
     private int count;
 
-    public Template(String title, int count) {
+    public Template(String title, String template, int count) {
         this.title = title;
+        this.template = template;
         this.count = count;
     }
 

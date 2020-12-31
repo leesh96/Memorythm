@@ -55,33 +55,33 @@ public class TemplateFragment extends Fragment {
         // 무지메모 줄메모 방안메모 투두리스트 위시리스트 쇼핑리스트 리뷰 데일리플랜 위클리플랜 먼슬리플랜 year플랜 헬스트래커 monthtracker 스터디트래커
         listTemplate = new ArrayList<>();
         cursor.moveToFirst();
-        listTemplate.add(new Template("무지 메모", cursor.getInt(0)));
+        listTemplate.add(new Template("무지 메모","nonlinememo" ,cursor.getInt(0)));
         cursor.moveToNext();
-        listTemplate.add(new Template("메모 (줄) ", cursor.getInt(0)));
+        listTemplate.add(new Template("메모 (줄) ","linememo", cursor.getInt(0)));
         cursor.moveToNext();
-        listTemplate.add(new Template("메모 (방안) ", cursor.getInt(0)));
+        listTemplate.add(new Template("메모 (방안) ","gridmemo" ,cursor.getInt(0)));
         cursor.moveToNext();
-        listTemplate.add(new Template("TODO LIST", cursor.getInt(0)));
+        listTemplate.add(new Template("TODO LIST","todolist", cursor.getInt(0)));
         cursor.moveToNext();
-        listTemplate.add(new Template("WISH LIST", cursor.getInt(0)));
+        listTemplate.add(new Template("WISH LIST","wishlist", cursor.getInt(0)));
         cursor.moveToNext();
-        listTemplate.add(new Template("SHOPPING LIST", cursor.getInt(0)));
+        listTemplate.add(new Template("SHOPPING LIST","shoppinglist", cursor.getInt(0)));
         cursor.moveToNext();
-        listTemplate.add(new Template("Review", cursor.getInt(0)));
+        listTemplate.add(new Template("Review","review", cursor.getInt(0)));
         cursor.moveToNext();
-        listTemplate.add(new Template("Daily Plan", cursor.getInt(0)));
+        listTemplate.add(new Template("Daily Plan","dailyplan", cursor.getInt(0)));
         cursor.moveToNext();
-        listTemplate.add(new Template("Weekly Plan", cursor.getInt(0)));
+        listTemplate.add(new Template("Weekly Plan","weeklyplan", cursor.getInt(0)));
         cursor.moveToNext();
-        listTemplate.add(new Template("Monthly Plan", cursor.getInt(0)));
+        listTemplate.add(new Template("Monthly Plan","monthlyplan", cursor.getInt(0)));
         cursor.moveToNext();
-        listTemplate.add(new Template("Yearly Plan", cursor.getInt(0)));
+        listTemplate.add(new Template("Yearly Plan","yearlyplan", cursor.getInt(0)));
         cursor.moveToNext();
-        listTemplate.add(new Template("Health Tracker", cursor.getInt(0)));
+        listTemplate.add(new Template("Health Tracker","healthtracker", cursor.getInt(0)));
         cursor.moveToNext();
-        listTemplate.add(new Template("Month Tracker", cursor.getInt(0)));
+        listTemplate.add(new Template("Month Tracker","monthtracker", cursor.getInt(0)));
         cursor.moveToLast();
-        listTemplate.add(new Template("Study Tracker", cursor.getInt(0)));
+        listTemplate.add(new Template("Study Tracker","studytracker", cursor.getInt(0)));
 
 
 
