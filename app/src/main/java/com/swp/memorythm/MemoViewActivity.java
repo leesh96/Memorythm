@@ -4,8 +4,10 @@ import androidx.fragment.app.Fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -375,15 +377,17 @@ public class MemoViewActivity extends AppCompatActivity {
                 initFragment(TemplateCase);
                 break;
             case "view":
+                TemplateCase = intent.getStringExtra("template");
                 memoid = intent.getIntExtra("memoid", 0);
                 MemoTitle = intent.getStringExtra("memotitle");
-                /*MemoBackground = db.execSQL();
-                isMemofixed = db.execSQL();*/
+                Cursor cursor = db.rawQuery("SELECT bgcolor, fixed FROM "+TemplateCase+" WHERE id = "+memoid+"", null);
+                cursor.moveToFirst();
+                MemoBackground = cursor.getString(0);
+                isMemofixed = cursor.getInt(1);
                 setMemoBackground(MemoBackground);
                 if (isMemofixed == 1) {
                     checkBoxFixed.setChecked(true);
                 } else checkBoxFixed.setChecked(false);
-                TemplateCase = intent.getStringExtra("template");
                 viewMemo(TemplateCase, memoid);
                 break;
         }
@@ -487,7 +491,17 @@ public class MemoViewActivity extends AppCompatActivity {
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
 
-
+        switch (Template) {
+            case "nonlinememo":
+                NonlineMemoFragment nonlineMemoFragment = new NonlineMemoFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("memoid", id);
+                nonlineMemoFragment.setArguments(bundle);
+                ft.replace(R.id.template_frame, nonlineMemoFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+        }
     }
 
     // 메모지 배경색 변경

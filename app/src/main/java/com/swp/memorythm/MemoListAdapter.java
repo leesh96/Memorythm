@@ -70,9 +70,15 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
             holder.checkBox.setVisibility(View.INVISIBLE);
             holder.itemView.setClickable(true);
         }
+
         //아이템 클릭 
         holder.itemView.setOnClickListener(view -> {
-            Toast.makeText(memoContext, "클릭클릭", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(memoContext, MemoViewActivity.class);
+            intent.putExtra("memoid", listMemo.get(position).getMemoid());
+            intent.putExtra("memotitle", listMemo.get(position).getMemoTitle());
+            intent.putExtra("template", listMemo.get(position).getTemplate());
+            intent.putExtra("mode", "view");
+            memoContext.startActivity(intent);
         });
 
     }

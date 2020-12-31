@@ -52,7 +52,6 @@ public class TemplateFragment extends Fragment implements View.OnClickListener {
             listTemplate.add(new Template("메모 (방안)",cursor.getInt(0)));
         }*/
 
-
         templateRecyclerView = (RecyclerView)view.findViewById(R.id.templateRV);
         templateRecyclerView.setHasFixedSize(true);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());

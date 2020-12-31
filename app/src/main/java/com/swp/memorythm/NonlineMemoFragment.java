@@ -2,6 +2,7 @@ package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -34,6 +35,7 @@ public class NonlineMemoFragment extends Fragment {
     DBHelper dbHelper;
     SQLiteDatabase db;
     public int memoid;
+    private String Userdate, Content;
 
     public static NonlineMemoFragment newInstance() {
         return new NonlineMemoFragment();
@@ -65,13 +67,12 @@ public class NonlineMemoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_nonlinememo, container, false);
-        dbHelper = new DBHelper(getContext());
 
         textViewDate = rootView.findViewById(R.id.write_date);
         editTextContent = rootView.findViewById(R.id.nonlinememo_content);
 
-        // 텍스트뷰 초기 날짜 현재 날짜로 설정
-        textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
+        /*// 텍스트뷰 초기 날짜 현재 날짜로 설정
+            textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));*/
 
         textViewDate.setOnClickListener(new View.OnClickListener() { // 데이트픽커 띄우기
             @Override
@@ -83,6 +84,36 @@ public class NonlineMemoFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
+        if (getArguments() != null) {
+            memoid = getArguments().getInt("memoid");
+            Log.d("id : ", String.valueOf(memoid));
+        }
+        Cursor cursor = db.rawQuery("SELECT userdate, content FROM nonlinememo WHERE id = "+memoid+"", null);
+        while (cursor.moveToNext()) {
+            Userdate = cursor.getString(0);
+            Content = cursor.getString(1);
+            Log.d("data : ", Userdate + Content);
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        textViewDate.setText(Userdate);
+        editTextContent.setText(Content);
+    }
+
     // 메모아이디 가져오기
     public int getMemoid() {
         return memoid;
@@ -92,8 +123,8 @@ public class NonlineMemoFragment extends Fragment {
     public boolean saveData(String Mode, String Bgcolor, String title) {
         db = dbHelper.getReadableDatabase();
 
-        String Userdate = textViewDate.getText().toString();
-        String Content = editTextContent.getText().toString();
+        Userdate = textViewDate.getText().toString();
+        Content = editTextContent.getText().toString();
         //editdate 컬럼 업데이트 때문에
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
@@ -118,8 +149,12 @@ public class NonlineMemoFragment extends Fragment {
                     break;
                 case "view":
                     // 메모 수정
-                    memoid = getArguments().getInt("memoid");
-                    db.execSQL("UPDATE nonlinememo SET userdate = '"+Userdate+"', content = '"+Content+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    if (getArguments() == null) {
+                        db.execSQL("UPDATE nonlinememo SET userdate = '"+Userdate+"', content = '"+Content+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    } else {
+                        memoid = getArguments().getInt("memoid");
+                        db.execSQL("UPDATE nonlinememo SET userdate = '"+Userdate+"', content = '"+Content+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    }
                     break;
             }
         }

@@ -74,6 +74,7 @@ public class MemoListFragment extends Fragment {
                 memoData.setMemoid(cursor.getInt(0));
                 memoData.setMemoTitle(cursor.getString(1));
                 memoData.setMemoDate(cursor.getString(2).substring(0, 10));
+                memoData.setTemplate("nonlinememo");
 
                 listMemo.add(memoData);
             }
