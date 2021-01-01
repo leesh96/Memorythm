@@ -18,6 +18,8 @@ import java.util.Calendar;
 public class MonthAdapter extends BaseAdapter {
     Calendar cal, cal_sun;
     Context mContext;
+    EditText[] editTexts;
+    String[] setContent;
     ArrayList<Integer> dayList = new ArrayList<Integer>();
     int curYear;
     int curMonth;
@@ -26,13 +28,15 @@ public class MonthAdapter extends BaseAdapter {
         super();
         mContext = context;
         this.cal = cal;
+        this.setContent = null;
         init();
     }
 
-    public MonthAdapter(Context context, Calendar cal, AttributeSet attrs){
+    public MonthAdapter(Context context, Calendar cal, String[] setContent){
         super();
         mContext = context;
         this.cal = cal;
+        this.setContent = setContent;
         init();
     }
 
@@ -65,6 +69,7 @@ public class MonthAdapter extends BaseAdapter {
 
         curYear = cal.get(Calendar.YEAR);
         curMonth = cal.get(Calendar.MONTH);
+        editTexts = new EditText[dayList.size()];
     }
 
     @Override
@@ -73,9 +78,9 @@ public class MonthAdapter extends BaseAdapter {
     }
 
     // 전개된 뷰의 참조값을 저장할 객체
-    private class ViewHolder {
+    public class ViewHolder {
         private TextView textView;
-        private EditText editText;
+        public EditText editText;
     }
 
     @Override
@@ -93,6 +98,7 @@ public class MonthAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.item_calendar_gridview, parent, false);
             viewHolder.textView = (TextView) convertView.findViewById(R.id.tv_date);
             viewHolder.editText = (EditText) convertView.findViewById(R.id.memo_content);
+            editTexts[position] = viewHolder.editText;
 
             // View의 태그에 Holder 객체를 저장
             convertView.setTag(viewHolder);
@@ -100,6 +106,7 @@ public class MonthAdapter extends BaseAdapter {
             // convertView가 null이 아니면 뷰를 생성할때 태그에 저장했던 Holder 객체가 존재
             // 이 Holder 객체는 자신을 inflating한 참조값(다시 전개할 필요가 없다.)
             viewHolder = (ViewHolder) convertView.getTag();
+            editTexts[position] = viewHolder.editText;
         }
 
         int day = dayList.get(position); //몇일
@@ -114,6 +121,11 @@ public class MonthAdapter extends BaseAdapter {
         }
 
         viewHolder.textView.setText(date); //날짜 값이 0이면 ""으로, 아니면 날짜값으로 TextView의 Text 지정
+
+        if(setContent != null) {
+
+            viewHolder.editText.setText(setContent[position]);
+        }
 
         cal_sun = Calendar.getInstance();
         cal_sun.set(Calendar.YEAR, curYear);
@@ -136,8 +148,8 @@ public class MonthAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
-        return dayList.get(position);
+    public Object getItem(int i) {
+        return null;
     }
 
     @Override
@@ -153,4 +165,5 @@ public class MonthAdapter extends BaseAdapter {
         return curMonth;
     }
 
+    public EditText[] getEditTexts() { return editTexts; }
 }

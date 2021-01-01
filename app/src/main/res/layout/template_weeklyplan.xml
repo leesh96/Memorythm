@@ -58,16 +58,34 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp">
 
-            <CheckBox
-                android:id="@+id/checkBox_mon"
+            <TextView
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@null"
-                android:buttonTint="#000000"
-                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="월"
-                android:theme="@style/CheckTheme" />
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/day_mon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_weight="0.05"
+                android:background="@drawable/bg_bracket"
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="2"
+                android:paddingStart="4.5dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="4.5dp"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/memo_content_mon"
@@ -94,16 +112,34 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp">
 
-            <CheckBox
-                android:id="@+id/checkBox_tue"
+            <TextView
+                android:id="@+id/textView16"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@null"
-                android:buttonTint="#000000"
-                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="화"
-                android:theme="@style/CheckTheme" />
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/day_tue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_weight="0.05"
+                android:background="@drawable/bg_bracket"
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="2"
+                android:paddingStart="4.5dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="4.5dp"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/memo_content_tue"
@@ -130,16 +166,34 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp">
 
-            <CheckBox
-                android:id="@+id/checkBox_wed"
+            <TextView
+                android:id="@+id/textView18"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@null"
-                android:buttonTint="#000000"
-                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="수"
-                android:theme="@style/CheckTheme" />
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/day_wed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_weight="0.05"
+                android:background="@drawable/bg_bracket"
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="2"
+                android:paddingStart="4.5dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="4.5dp"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/memo_content_wed"
@@ -166,16 +220,34 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp">
 
-            <CheckBox
-                android:id="@+id/checkBox_thu"
+            <TextView
+                android:id="@+id/textView19"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@null"
-                android:buttonTint="#000000"
-                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="목"
-                android:theme="@style/CheckTheme" />
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/day_thu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_weight="0.05"
+                android:background="@drawable/bg_bracket"
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="2"
+                android:paddingStart="4.5dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="4.5dp"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/memo_content_thu"
@@ -202,16 +274,34 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp">
 
-            <CheckBox
-                android:id="@+id/checkBox_fri"
+            <TextView
+                android:id="@+id/textView20"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@null"
-                android:buttonTint="#000000"
-                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="금"
-                android:theme="@style/CheckTheme" />
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/day_fri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_weight="0.05"
+                android:background="@drawable/bg_bracket"
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="2"
+                android:paddingStart="4.5dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="4.5dp"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/memo_content_fri"
@@ -238,16 +328,34 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp">
 
-            <CheckBox
-                android:id="@+id/checkBox_sat"
+            <TextView
+                android:id="@+id/textView21"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@null"
-                android:buttonTint="#000000"
-                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="토"
-                android:theme="@style/CheckTheme" />
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/day_sat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_weight="0.05"
+                android:background="@drawable/bg_bracket"
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="2"
+                android:paddingStart="4.5dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="4.5dp"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/memo_content_sat"
@@ -274,16 +382,34 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp">
 
-            <CheckBox
-                android:id="@+id/checkBox_sun"
+            <TextView
+                android:id="@+id/textView22"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@null"
-                android:buttonTint="#000000"
-                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="일"
-                android:theme="@style/CheckTheme" />
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/day_sun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_weight="0.05"
+                android:background="@drawable/bg_bracket"
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="2"
+                android:paddingStart="4.5dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="4.5dp"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/memo_content_sun"

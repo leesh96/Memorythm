@@ -63,6 +63,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="JAN"
                 android:textColor="@color/black" />
@@ -77,6 +79,8 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -94,6 +98,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="FEB"
                 android:textColor="@color/black" />
@@ -108,6 +114,8 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -125,6 +133,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="MAR"
                 android:textColor="@color/black" />
@@ -139,6 +149,8 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -156,6 +168,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="APR"
                 android:textColor="@color/black" />
@@ -170,6 +184,8 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -187,6 +203,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="MAY"
                 android:textColor="@color/black" />
@@ -201,6 +219,8 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -218,6 +238,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="JUN"
                 android:textColor="@color/black" />
@@ -232,6 +254,8 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -249,6 +273,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:paddingStart="0dp"
                 android:paddingEnd="3dp"
@@ -265,6 +291,8 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -282,6 +310,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="AUG"
                 android:textColor="@color/black" />
@@ -296,6 +326,8 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -313,6 +345,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:paddingStart="0dp"
                 android:paddingEnd="3dp"
@@ -329,6 +363,8 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -346,6 +382,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="OCT"
                 android:textColor="@color/black" />
@@ -360,6 +398,8 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -377,6 +417,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="NOV"
                 android:textColor="@color/black" />
@@ -391,6 +433,8 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -408,6 +452,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="3dp"
                 android:fontFamily="@font/sdkukdetopokki_l"
                 android:text="DEC"
                 android:textColor="@color/black" />
@@ -422,6 +468,8 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:textSize="14sp" />
         </TableRow>
 

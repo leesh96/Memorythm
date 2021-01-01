@@ -200,6 +200,10 @@ public class DailyPlanFragment extends Fragment {
         contentPm = editTextContentPm.getText().toString();
         weather = radioGroup.getCheckedRadioButtonId();
 
+        //작은 따옴표 이스케이프 시키기
+        contentAm = contentAm.replaceAll("'", "''");
+        contentPm = contentPm.replaceAll("'", "''");
+
         //editdate 컬럼 업데이트 때문에
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();

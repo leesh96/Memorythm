@@ -131,6 +131,10 @@ public class LineMemoFragment extends Fragment {
 
         userDate = textViewDate.getText().toString();
         content = editTextContent.getText().toString();
+
+        //작은 따옴표 이스케이프 시키기
+        content = content.replaceAll("'", "''");
+
         //editdate 컬럼 업데이트 때문에
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
