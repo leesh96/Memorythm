@@ -10,7 +10,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // 테이블 생성 쿼리
     // 폴더 테이블
-    private static final String CREATE_TABLE_FOLDER = "CREATE TABLE if not exists folder(name TEXT primary key);";
+    private static final String CREATE_TABLE_FOLDER = "CREATE TABLE if not exists folder(name TEXT primary key, sequence integer unique not null);";
 
     /* 테이블마다 공통 컬럼
     id integer primary key autoincrement,
@@ -110,7 +110,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //쿼리 실행 folder 먼저 생성해주기
         db.execSQL(CREATE_TABLE_FOLDER);
-        db.execSQL("INSERT INTO folder('name') VALUES('메모')");
+        db.execSQL("INSERT INTO folder('name', 'sequence') VALUES('메모', 0)");
         //재석
         db.execSQL(CREATE_TABLE_LINEMEMO);
         db.execSQL(CREATE_TABLE_DAILYPLAN);
