@@ -361,6 +361,70 @@ public class MemoViewActivity extends AppCompatActivity {
                             }
                         } else Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
+                    }else if(fragment instanceof LineMemoFragment) {
+                        if (((LineMemoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
+                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            // write 모드이면, memo id 받고 view 모드로 설정
+                            if (Mode.equals("write")) {
+                                Mode = "view";
+                                isAfterWrite = true;
+                                setVisibility(Mode);
+                                memoid = ((LineMemoFragment) fragment).getMemoid();
+                            }
+                        } else Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }else if(fragment instanceof DailyPlanFragment) {
+                        if (((DailyPlanFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
+                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            // write 모드이면, memo id 받고 view 모드로 설정
+                            if (Mode.equals("write")) {
+                                Mode = "view";
+                                isAfterWrite = true;
+                                setVisibility(Mode);
+                                memoid = ((DailyPlanFragment) fragment).getMemoid();
+                            }
+                        } else
+                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }else if(fragment instanceof WeeklyPlanFragment) {
+                        if (((WeeklyPlanFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
+                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            // write 모드이면, memo id 받고 view 모드로 설정
+                            if (Mode.equals("write")) {
+                                Mode = "view";
+                                isAfterWrite = true;
+                                setVisibility(Mode);
+                                memoid = ((WeeklyPlanFragment) fragment).getMemoid();
+                            }
+                        } else
+                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }else if(fragment instanceof MonthlyPlanFragment) {
+                        if (((MonthlyPlanFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
+                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            // write 모드이면, memo id 받고 view 모드로 설정
+                            if (Mode.equals("write")) {
+                                Mode = "view";
+                                isAfterWrite = true;
+                                setVisibility(Mode);
+                                memoid = ((MonthlyPlanFragment) fragment).getMemoid();
+                            }
+                        } else
+                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }else if(fragment instanceof YearlyPlanFragment) {
+                        if (((YearlyPlanFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
+                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            // write 모드이면, memo id 받고 view 모드로 설정
+                            if (Mode.equals("write")) {
+                                Mode = "view";
+                                isAfterWrite = true;
+                                setVisibility(Mode);
+                                memoid = ((YearlyPlanFragment) fragment).getMemoid();
+                            }
+                        } else
+                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
                     }
                     // TODO: 여기서 else if로 템플릿 마다 추가할 것!
                 });
@@ -512,6 +576,90 @@ public class MemoViewActivity extends AppCompatActivity {
                         btnCancel.setOnClickListener(view1 -> alertDialog.dismiss());
                         alertDialog.show();
                     }
+                }else if (fragment instanceof LineMemoFragment) {
+                    if (!((LineMemoFragment) fragment).checkNull()) { // 널 값 검증 통과 못함 -> 프래그먼트 참조
+                        AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                        alert.setMessage("내용을 입력하세요!").setPositiveButton("확인", (dialog, which) -> dialog.dismiss());
+                        AlertDialog alertDialog = alert.create();
+                        alertDialog.show();
+                    } else { // 널 값 검증 통과하면 제목 받음
+                        AlertDialog alertDialog = builder.create();
+                        btnApply.setOnClickListener(view12 -> {
+                            MemoTitle = editTextMemoTitle.getText().toString();
+                            if (MemoTitle.equals("") | MemoTitle == null) { // 제목 입력 안했을 때
+                                AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                                alert.setMessage("제목을 입력하세요!").setPositiveButton("확인", (dialog, which) -> dialog.dismiss()).show();
+                            } else { // 제목까지 입력 받았으면 첨에 만든 저장 할건지 묻는 다이얼로그 출력하고 저장
+                                alertDialog.dismiss();
+                                savealert.show();
+                            }
+                        });
+                        btnCancel.setOnClickListener(view1 -> alertDialog.dismiss());
+                        alertDialog.show();
+                    }
+                }else if (fragment instanceof DailyPlanFragment) {
+                    if (!((DailyPlanFragment) fragment).checkNull()) { // 널 값 검증 통과 못함 -> 프래그먼트 참조
+                        AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                        alert.setMessage("내용을 입력하세요!").setPositiveButton("확인", (dialog, which) -> dialog.dismiss());
+                        AlertDialog alertDialog = alert.create();
+                        alertDialog.show();
+                    } else { // 널 값 검증 통과하면 제목 받음
+                        AlertDialog alertDialog = builder.create();
+                        btnApply.setOnClickListener(view12 -> {
+                            MemoTitle = editTextMemoTitle.getText().toString();
+                            if (MemoTitle.equals("") | MemoTitle == null) { // 제목 입력 안했을 때
+                                AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                                alert.setMessage("제목을 입력하세요!").setPositiveButton("확인", (dialog, which) -> dialog.dismiss()).show();
+                            } else { // 제목까지 입력 받았으면 첨에 만든 저장 할건지 묻는 다이얼로그 출력하고 저장
+                                alertDialog.dismiss();
+                                savealert.show();
+                            }
+                        });
+                        btnCancel.setOnClickListener(view1 -> alertDialog.dismiss());
+                        alertDialog.show();
+                    }
+                }else if (fragment instanceof WeeklyPlanFragment) { //널값 검증 안함
+                    AlertDialog alertDialog = builder.create();
+                    btnApply.setOnClickListener(view12 -> {
+                        MemoTitle = editTextMemoTitle.getText().toString();
+                        if (MemoTitle.equals("") | MemoTitle == null) { // 제목 입력 안했을 때
+                            AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                            alert.setMessage("제목을 입력하세요!").setPositiveButton("확인", (dialog, which) -> dialog.dismiss()).show();
+                        } else { // 제목까지 입력 받았으면 첨에 만든 저장 할건지 묻는 다이얼로그 출력하고 저장
+                            alertDialog.dismiss();
+                            savealert.show();
+                        }
+                    });
+                    btnCancel.setOnClickListener(view1 -> alertDialog.dismiss());
+                    alertDialog.show();
+                }else if (fragment instanceof MonthlyPlanFragment) { //널값 검증 안함
+                    AlertDialog alertDialog = builder.create();
+                    btnApply.setOnClickListener(view12 -> {
+                        MemoTitle = editTextMemoTitle.getText().toString();
+                        if (MemoTitle.equals("") | MemoTitle == null) { // 제목 입력 안했을 때
+                            AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                            alert.setMessage("제목을 입력하세요!").setPositiveButton("확인", (dialog, which) -> dialog.dismiss()).show();
+                        } else { // 제목까지 입력 받았으면 첨에 만든 저장 할건지 묻는 다이얼로그 출력하고 저장
+                            alertDialog.dismiss();
+                            savealert.show();
+                        }
+                    });
+                    btnCancel.setOnClickListener(view1 -> alertDialog.dismiss());
+                    alertDialog.show();
+                }else if (fragment instanceof YearlyPlanFragment) { //널값 검증 안함
+                    AlertDialog alertDialog = builder.create();
+                    btnApply.setOnClickListener(view12 -> {
+                        MemoTitle = editTextMemoTitle.getText().toString();
+                        if (MemoTitle.equals("") | MemoTitle == null) { // 제목 입력 안했을 때
+                            AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                            alert.setMessage("제목을 입력하세요!").setPositiveButton("확인", (dialog, which) -> dialog.dismiss()).show();
+                        } else { // 제목까지 입력 받았으면 첨에 만든 저장 할건지 묻는 다이얼로그 출력하고 저장
+                            alertDialog.dismiss();
+                            savealert.show();
+                        }
+                    });
+                    btnCancel.setOnClickListener(view1 -> alertDialog.dismiss());
+                    alertDialog.show();
                 }
                 // TODO: 여기서 else if로 템플릿 마다 추가할 것!
             }
@@ -745,6 +893,50 @@ public class MemoViewActivity extends AppCompatActivity {
                 ft.commit();
                 break;
             case "linememo":
+                LineMemoFragment lineMemoFragment = new LineMemoFragment();
+                bundle = new Bundle();
+                bundle.putInt("memoid", id);
+                lineMemoFragment.setArguments(bundle);
+                ft.replace(R.id.template_frame, lineMemoFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "dailyplan":
+                DailyPlanFragment dailyPlanFragment = new DailyPlanFragment();
+                bundle = new Bundle();
+                bundle.putInt("memoid", id);
+                dailyPlanFragment.setArguments(bundle);
+                ft.replace(R.id.template_frame, dailyPlanFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "weeklyplan":
+                WeeklyPlanFragment weeklyPlanFragment = new WeeklyPlanFragment();
+                bundle = new Bundle();
+                bundle.putInt("memoid", id);
+                weeklyPlanFragment.setArguments(bundle);
+                ft.replace(R.id.template_frame, weeklyPlanFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "monthlyplan":
+                MonthlyPlanFragment monthlyPlanFragment = new MonthlyPlanFragment();
+                bundle = new Bundle();
+                bundle.putInt("memoid", id);
+                monthlyPlanFragment.setArguments(bundle);
+                ft.replace(R.id.template_frame, monthlyPlanFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
+            case "yearlyplan":
+                YearlyPlanFragment yearlyPlanFragment = new YearlyPlanFragment();
+                bundle = new Bundle();
+                bundle.putInt("memoid", id);
+                yearlyPlanFragment.setArguments(bundle);
+                ft.replace(R.id.template_frame, yearlyPlanFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+                break;
         }
     }
 

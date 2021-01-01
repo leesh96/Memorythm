@@ -3,7 +3,10 @@ package com.swp.memorythm;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,12 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -48,7 +53,11 @@ public class DailyPlanFragment extends Fragment {
     private TextView textViewDate;
     private EditText editTextContentAm, editTextContentPm;
     private String currentWeather;
-    private int id;
+    private int id, weather;
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
+    public int memoid;
+    private String userDate, contentAm, contentPm;
 
     public static DailyPlanFragment newInstance() {
         return new DailyPlanFragment();
@@ -74,6 +83,25 @@ public class DailyPlanFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat(DateFormat, Locale.KOREA);
 
         textViewDate.setText(sdf.format(myCalendar.getTime()));
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
+
+        if (getArguments() != null) {
+            memoid = getArguments().getInt("memoid");
+        }
+        Cursor cursor = db.rawQuery("SELECT userdate, contentAm, contentPm, weather FROM dailyplan WHERE id = "+memoid+"", null);
+        while (cursor.moveToNext()) {
+            userDate = cursor.getString(0);
+            contentAm = cursor.getString(1);
+            contentPm = cursor.getString(2);
+            weather = cursor.getInt(3);
+        }
     }
 
     @Nullable
@@ -130,8 +158,77 @@ public class DailyPlanFragment extends Fragment {
             }
         });
 
-        // TODO: 2020-11-20 파이어베이스 연동
-
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if(getArguments() != null) {
+
+            textViewDate.setText(userDate);
+            editTextContentAm.setText(contentAm);
+            editTextContentPm.setText(contentPm);
+            radioGroup.check(weather);
+        }
+    }
+
+    // 메모아이디 가져오기
+    public int getMemoid() {
+        return memoid;
+    }
+
+    // 널 값 검증
+    public boolean checkNull() {
+        contentAm = editTextContentAm.getText().toString();
+        contentPm = editTextContentPm.getText().toString();
+
+        if ((contentAm.equals("") | contentAm == null) && (contentPm.equals("") | contentPm == null)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // 저장 및 수정
+    public boolean saveData(String Mode, String Bgcolor, String title) {
+        db = dbHelper.getReadableDatabase();
+
+        userDate = textViewDate.getText().toString();
+        contentAm = editTextContentAm.getText().toString();
+        contentPm = editTextContentPm.getText().toString();
+        weather = radioGroup.getCheckedRadioButtonId();
+
+        //editdate 컬럼 업데이트 때문에
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+
+        switch (Mode) {
+            case "write":
+                db.execSQL("INSERT INTO dailyplan('userdate', 'contentAm', 'contentPm', 'weather', 'title', 'bgcolor') VALUES('" + userDate + "', '" + contentAm + "', '" + contentPm + "', '" + weather + "', '" + title + "', '" + Bgcolor + "');");
+                // 작성하면 view 모드로 바꾸기 위해 최근 삽입한 레코드 id로 바꿔줌
+                final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
+                cursor.moveToFirst();
+                memoid = cursor.getInt(0);
+                break;
+            case "view":
+                // 메모 수정
+                if (getArguments() == null) {
+                    db.execSQL("UPDATE dailyplan SET userdate = '"+userDate+"', contentAm = '"+contentAm+"', contentPm = '"+contentPm+"', weather = '"+weather+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                } else {
+                    memoid = getArguments().getInt("memoid");
+                    db.execSQL("UPDATE dailyplan SET userdate = '"+userDate+"', contentAm = '"+contentAm+"', contentPm = '"+contentPm+"', weather = '"+weather+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                }
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        db.close();
     }
 }

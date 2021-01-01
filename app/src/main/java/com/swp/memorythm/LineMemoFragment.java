@@ -1,6 +1,7 @@
 package com.swp.memorythm;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
@@ -26,7 +29,8 @@ public class LineMemoFragment extends Fragment {
     private EditText editTextContent;
     private DBHelper dbHelper;
     private SQLiteDatabase db;
-    private int id;
+    public int memoid;
+    private String userDate, content;
 
     public static LineMemoFragment newInstance() {
         return new LineMemoFragment();
@@ -54,6 +58,23 @@ public class LineMemoFragment extends Fragment {
         textViewDate.setText(sdf.format(myCalendar.getTime()));
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
+
+        if (getArguments() != null) {
+            memoid = getArguments().getInt("memoid");
+        }
+        Cursor cursor = db.rawQuery("SELECT userdate, content FROM linememo WHERE id = "+memoid+"", null);
+        while (cursor.moveToNext()) {
+            userDate = cursor.getString(0);
+            content = cursor.getString(1);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,9 +82,6 @@ public class LineMemoFragment extends Fragment {
 
         textViewDate = rootView.findViewById(R.id.write_date);
         editTextContent = rootView.findViewById(R.id.memo_content);
-
-        dbHelper = new DBHelper(getActivity());
-        db = dbHelper.getWritableDatabase();
 
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
         Date currentTime = Calendar.getInstance().getTime();
@@ -77,32 +95,65 @@ public class LineMemoFragment extends Fragment {
             }
         });
 
-        // TODO: 2020-11-20 파이어베이스 연동
-
         return rootView;
     }
 
-    public void saveData(String Mode) {
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        String userDate = textViewDate.getText().toString();
-        String content = editTextContent.getText().toString();
+        if(getArguments() != null) {
 
-        switch (Mode) {
-            case "write":
-                db.execSQL("INSERT INTO linememo('userdate', 'content') VALUES('" + userDate + "', '" + content + "');");
-                final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
-                cursor.moveToFirst();
-                id = cursor.getInt(0); //가장 최근에 삽입된 레코드의 id
-                break;
-            case "view":
-                db.execSQL("UPDATE linememo SET userdate = '" + userDate + "', content = '" + content + "' WHERE id = " + id + ";");
-                break;
+            textViewDate.setText(userDate);
+            editTextContent.setText(content);
         }
     }
 
-    public void delete() {
+    // 메모아이디 가져오기
+    public int getMemoid() {
+        return memoid;
+    }
 
-        db.execSQL("UPDATE linememo SET deleted = 1 WHERE id = " + id + ";");
+    // 널 값 검증
+    public boolean checkNull() {
+        content = editTextContent.getText().toString();
+
+        if (content.equals("") | content == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // 저장 및 수정
+    public boolean saveData(String Mode, String Bgcolor, String title) {
+        db = dbHelper.getReadableDatabase();
+
+        userDate = textViewDate.getText().toString();
+        content = editTextContent.getText().toString();
+        //editdate 컬럼 업데이트 때문에
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+
+        switch (Mode) {
+            case "write":
+                db.execSQL("INSERT INTO linememo('userdate', 'content', 'bgcolor', 'title') VALUES('" + userDate + "', '" + content + "', '" + Bgcolor + "', '" + title + "');");
+                // 작성하면 view 모드로 바꾸기 위해 최근 삽입한 레코드 id로 바꿔줌
+                final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
+                cursor.moveToFirst();
+                memoid = cursor.getInt(0);
+                break;
+            case "view":
+                // 메모 수정
+                if (getArguments() == null) {
+                    db.execSQL("UPDATE linememo SET userdate = '"+userDate+"', content = '"+content+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                } else {
+                    memoid = getArguments().getInt("memoid");
+                    db.execSQL("UPDATE linememo SET userdate = '"+userDate+"', content = '"+content+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                }
+                break;
+        }
+        return true;
     }
 
     @Override
