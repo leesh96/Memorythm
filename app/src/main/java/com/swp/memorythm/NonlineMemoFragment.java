@@ -39,10 +39,13 @@ import java.util.Locale;
 public class NonlineMemoFragment extends Fragment {
     private TextView textViewDate;
     private EditText editTextContent;
-    private DBHelper dbHelper;
-    private SQLiteDatabase db;
+
     public int memoid;
     private String Userdate, Content;
+
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
+
 
     public static NonlineMemoFragment newInstance() {
         return new NonlineMemoFragment();
@@ -143,15 +146,14 @@ public class NonlineMemoFragment extends Fragment {
         Userdate = textViewDate.getText().toString();
         Content = editTextContent.getText().toString();
 
-        //editdate 컬럼 업데이트 때문에
+        // editdate 컬럼 업데이트 때문에
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
 
         switch (Mode) {
-            case "write":
-                // 메모 최초 작성
+            case "write":   // 메모 최초 작성
                 try {
-                    db.execSQL("INSERT INTO nonlinememo('userdate', 'content', 'bgcolor', 'title') VALUES('" + Userdate + "', '" + Content + "', '" + Bgcolor + "', '" + Title + "');");
+                    db.execSQL("INSERT INTO nonlinememo('userdate', 'content', 'bgcolor', 'title') VALUES('"+Userdate+"', '"+Content+"', '"+Bgcolor+"', '"+Title+"');");
                     // 작성하면 view 모드로 바꾸기 위해 최근 삽입한 레코드 id로 바꿔줌
                     final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                     cursor.moveToFirst();
@@ -161,26 +163,19 @@ public class NonlineMemoFragment extends Fragment {
                     e.printStackTrace();
                 }
                 break;
-            case "view":
-                // 메모 수정
-                if (getArguments() == null) { // 작성하고 남아있는 view 모드일 때
-                    try {
-                        db.execSQL("UPDATE nonlinememo SET userdate = '" + Userdate + "', content = '" + Content + "', Title = '" + Title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
-                        success = true;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else { // 메모 리스트에서 view 모드로 들어왔을 때
+            case "view":    // 메모 수정
+                if (getArguments() != null) {   // 메모리스트에서 view 모드로 넘어왔을 때  id 업데이트
                     memoid = getArguments().getInt("memoid");
-                    try {
-                        db.execSQL("UPDATE nonlinememo SET userdate = '" + Userdate + "', content = '" + Content + "', Title = '" + Title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
-                        success = true;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                }
+                try {
+                    db.execSQL("UPDATE nonlinememo SET userdate = '"+Userdate+"', content = '"+Content+"', Title = '"+Title+"', editdate = '"+dateFormat.format(date.getTime())+"' WHERE id = "+memoid+";");
+                    success = true;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 break;
         }
+
         return success;
     }
 
@@ -190,10 +185,9 @@ public class NonlineMemoFragment extends Fragment {
         Cursor cursor;
         try {
             cursor = db.rawQuery("SELECT userdate, content FROM nonlinememo WHERE id = "+memoid+"", null);
-            while (cursor.moveToNext()) {
-                Userdate = cursor.getString(0);
-                Content = cursor.getString(1);
-            }
+            cursor.moveToFirst();
+            Userdate = cursor.getString(0);
+            Content = cursor.getString(1);
             Toast.makeText(getContext(), "데이터 로드 성공", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();

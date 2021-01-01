@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -136,6 +137,13 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         viewHolder.todoCheckBox.setChecked(mArrayList.get(position).isDone());
         viewHolder.textViewTodo.setText(mArrayList.get(position).getContent());
+
+        viewHolder.todoCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                mArrayList.get(position).setDone(b);
+            }
+        });
     }
 
     @Override
