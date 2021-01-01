@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -105,29 +106,34 @@ public class ReviewFragment extends Fragment {
 
         final View activityRootView = viewGroup.findViewById(R.id.parentLayout);
 
-        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-            Rect r = new Rect();
-            //r will be populated with the coordinates of your view that area still visible.
-            activityRootView.getWindowVisibleDisplayFrame(r);
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                //r will be populated with the coordinates of your view that area still visible.
+                activityRootView.getWindowVisibleDisplayFrame(r);
 
-            int heightDiff = activityRootView.getRootView().getHeight() - r.height();
-            if (heightDiff < 0.25*activityRootView.getRootView().getHeight()) {
-                Log.d("키보드 ","내려감?");
-                if (ReviewFragment.this.getActivity().getCurrentFocus() == et_reviewList) {
-                    et_reviewList.setBackgroundResource(R.drawable.bg_selector);
-                    tv_reviews[pastChoice].setBackgroundColor(Color.parseColor("#00000000"));
-                    isUser = true;
-                    et_reviewList.clearFocus();
-                } else if (ReviewFragment.this.getActivity().getCurrentFocus() == et_scoreReview) {
-                    isEdit = true;
-                    if (!et_scoreReview.getText().toString().equals("")) {
-                        int score = Integer.parseInt(et_scoreReview.getText().toString());
-                        rb_review.setRating(Math.round(score / 20.0));
-                        et_scoreReview.clearFocus();
-                    }
-                }else if(ReviewFragment.this.getActivity().getCurrentFocus() == et_content) et_content.clearFocus();
-                else if(ReviewFragment.this.getActivity().getCurrentFocus() == et_title) et_title.clearFocus();
+                int heightDiff = activityRootView.getRootView().getHeight() - r.height();
+                if (heightDiff < 0.25 * activityRootView.getRootView().getHeight()) {
+                    Log.d("키보드 ", "내려감?");
+                    if (ReviewFragment.this.getActivity().getCurrentFocus() == et_reviewList) {
+                        et_reviewList.setBackgroundResource(R.drawable.bg_selector);
+                        tv_reviews[pastChoice].setBackgroundColor(Color.parseColor("#00000000"));
+                        isUser = true;
+                        et_reviewList.clearFocus();
+                    } else if (ReviewFragment.this.getActivity().getCurrentFocus() == et_scoreReview) {
+                        isEdit = true;
+                        if (!et_scoreReview.getText().toString().equals("")) {
+                            int score = Integer.parseInt(et_scoreReview.getText().toString());
+                            rb_review.setRating(Math.round(score / 20.0));
+                            et_scoreReview.clearFocus();
+                        }
+                    } else if (ReviewFragment.this.getActivity().getCurrentFocus() == et_content)
+                        et_content.clearFocus();
+                    else if (ReviewFragment.this.getActivity().getCurrentFocus() == et_title)
+                        et_title.clearFocus();
 
+                }
             }
         });
         return viewGroup;

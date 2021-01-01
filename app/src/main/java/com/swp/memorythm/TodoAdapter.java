@@ -2,6 +2,7 @@ package com.swp.memorythm;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -142,6 +143,8 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 mArrayList.get(position).setDone(b);
+                if (b) viewHolder.textViewTodo.setPaintFlags(viewHolder.textViewTodo.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                else viewHolder.textViewTodo.setPaintFlags(0);
             }
         });
     }

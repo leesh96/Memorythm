@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/parentLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -51,7 +52,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
+            android:background="@drawable/bg_selector"
             android:fontFamily="@font/sdkukdetopokki_b"
+            android:gravity="center"
             android:text="Activity"
             android:textAlignment="center"
             android:textColor="@color/text_color"
@@ -153,6 +156,8 @@
 
         <EditText
             android:id="@+id/et_customcate"
+            android:inputType="text"
+            android:imeOptions="actionDone"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_movie"
@@ -161,7 +166,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/border_d"
             android:fontFamily="@font/sdkukdetopokki_b"
-            android:maxLength="8"
+            android:maxLength="6"
             android:textAlignment="center"
             android:textColor="@color/text_color"
             android:textSize="14dp" />
