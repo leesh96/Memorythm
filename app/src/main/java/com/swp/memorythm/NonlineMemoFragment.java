@@ -113,6 +113,13 @@ public class NonlineMemoFragment extends Fragment {
         return rootView;
     }
 
+    // DB 닫기
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        db.close();
+    }
+
     // 텍스트뷰 날짜 업데이트
     private void updateLabel() {
         String DateFormat = "yyyy - MM - dd";

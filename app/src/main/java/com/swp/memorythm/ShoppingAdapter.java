@@ -2,6 +2,7 @@ package com.swp.memorythm;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -151,6 +153,21 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
         viewHolder.shoppingCheckBox.setChecked(mArrayList.get(position).isBought());
         viewHolder.textViewShopping.setText(mArrayList.get(position).getContent());
         viewHolder.textViewAmount.setText(mArrayList.get(position).getAmount());
+
+        // 할일 완료 체크
+        viewHolder.shoppingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mArrayList.get(position).setBought(isChecked);
+                if (isChecked) {
+                    viewHolder.textViewShopping.setPaintFlags(viewHolder.textViewShopping.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    viewHolder.textViewAmount.setPaintFlags(viewHolder.textViewAmount.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    viewHolder.textViewShopping.setPaintFlags(0);
+                    viewHolder.textViewAmount.setPaintFlags(0);
+                }
+            }
+        });
     }
 
     @Override

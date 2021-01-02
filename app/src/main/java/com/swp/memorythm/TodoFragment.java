@@ -180,6 +180,13 @@ public class TodoFragment extends Fragment {
         return rootView;
     }
 
+    // DB 닫기
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        db.close();
+    }
+
     // 텍스트뷰 날짜 업데이트
     private void updateLabel() {
         String DateFormat = "yyyy - MM - dd";
@@ -195,8 +202,6 @@ public class TodoFragment extends Fragment {
 
     // 널 값 검증
     public boolean checkNull() {
-        Userdate = textViewDate.getText().toString();
-
         if (mArrayList.size() == 0) {
             return false;
         } else return true;
@@ -234,6 +239,7 @@ public class TodoFragment extends Fragment {
 
         boolean success = false;
 
+        Userdate = textViewDate.getText().toString();
         Content = new StringBuilder();
         Done = new StringBuilder();
 
@@ -273,7 +279,7 @@ public class TodoFragment extends Fragment {
                     memoid = getArguments().getInt("memoid");
                 }
                 try {
-                    db.execSQL("UPDATE todolist SET userdate = '"+Userdate+"', content = '"+Content+"', done = '"+Done+"', Title = '"+Title+"', splitkey = '"+splitkey+"', editdate = '"+dateFormat.format(date.getTime())+"' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE todolist SET userdate = '"+Userdate+"', content = '"+Content+"', done = '"+Done+"', title = '"+Title+"', splitkey = '"+splitkey+"', editdate = '"+dateFormat.format(date.getTime())+"' WHERE id = "+memoid+";");
                     success = true;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -293,12 +299,12 @@ public class TodoFragment extends Fragment {
             cursor.moveToFirst();
 
             Userdate = cursor.getString(0);
-            String content = cursor.getString(1);
-            String done = cursor.getString(2);
+            String allContent = cursor.getString(1);
+            String allDone = cursor.getString(2);
             String splitkey = cursor.getString(3);
 
-            String[] array = content.split(splitkey);
-            String[] array2 = done.split(splitkey);
+            String[] array = allContent.split(splitkey);
+            String[] array2 = allDone.split(splitkey);
 
             for (int i = 0; i < array.length; i++) {
                 TodoData todoData = new TodoData();
@@ -312,7 +318,6 @@ public class TodoFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(getContext(), "데이터 로드 실패", Toast.LENGTH_SHORT).show();
-
         }
     }
 }

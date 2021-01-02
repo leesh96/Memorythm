@@ -139,6 +139,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
         viewHolder.todoCheckBox.setChecked(mArrayList.get(position).isDone());
         viewHolder.textViewTodo.setText(mArrayList.get(position).getContent());
 
+        // 할 일 완료 체크
         viewHolder.todoCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

@@ -10,7 +10,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // 테이블 생성 쿼리
     // 폴더 테이블
-    private static final String CREATE_TABLE_FOLDER = "CREATE TABLE if not exists folder(name TEXT primary key, sequence integer unique not null);";
+    private static final String CREATE_TABLE_FOLDER = "CREATE TABLE if not exists folder(name TEXT primary key, sequence integer not null, count integer default 0);";
 
     /* 테이블마다 공통 컬럼
     id integer primary key autoincrement,
@@ -69,7 +69,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_WISHLIST = "CREATE TABLE if not exists wishlist(id integer primary key autoincrement, userdate text, content text, wished text, category text, splitkey text, " +
             "title text NOT NULL, editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', template_case text DEFAULT 'wishlist', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
-    private static final String CREATE_TABLE_SHOPPINGLIST = "CREATE TABLE if not exists shoppinglist(id integer primary key autoincrement, userdate text, content text, bought text, price text, splitkey text, " +
+    private static final String CREATE_TABLE_SHOPPINGLIST = "CREATE TABLE if not exists shoppinglist(id integer primary key autoincrement, userdate text, content text, bought text, amount text, splitkey text, " +
             "title text NOT NULL, editdate DATETIME DEFAULT (datetime('now', 'localtime')), deleted integer DEFAULT 0, fixed integer DEFAULT 0, bgcolor text DEFAULT 'yellow', template_case text DEFAULT 'shoppinglist', folder_name TEXT DEFAULT '메모', FOREIGN KEY(folder_name) REFERENCES folder(name));";
 
     // 생성자

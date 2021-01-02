@@ -318,6 +318,22 @@ public class MemoViewActivity extends AppCompatActivity {
                             dialog.dismiss();
                         }
                     }
+                    else if(fragment instanceof ShoppingFragment) {
+                        if (((ShoppingFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) {
+                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            // write 모드이면, memo id 받고 view 모드로 설정
+                            if (Mode.equals("write")) {
+                                Mode = "view";
+                                isAfterWrite = true;
+                                setVisibility(Mode);
+                                memoid = ((ShoppingFragment) fragment).getMemoid();
+                            }
+                            dialog.dismiss();
+                        } else {    // 저장 실패 시
+                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    }
                     else if(fragment instanceof GridMemoFragment) {
                         if (((GridMemoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
                             Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
@@ -470,7 +486,7 @@ public class MemoViewActivity extends AppCompatActivity {
 
                 // 널 값 검증을 제일 먼저 진행, 널 값 검증 필요 없으면 else에 있는 제목 받는거 바로 진행 ㄱㄱ
                 if (fragment instanceof NonlineMemoFragment) {
-                    if (!((NonlineMemoFragment) fragment).checkNull()) { // 널 값 검증 통과 못함 -> 프래그먼트 참조
+                    if (!((NonlineMemoFragment) fragment).checkNull()) {    // 널 값 검증 통과 못함 -> 프래그먼트 참조
                         AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
                         alert.setMessage("내용을 입력하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
@@ -480,7 +496,7 @@ public class MemoViewActivity extends AppCompatActivity {
                         });
                         AlertDialog alertDialog = alert.create();
                         alertDialog.show();
-                    } else { // 널 값 검증 통과하면 제목 받음
+                    } else {    // 널 값 검증 통과하면 제목 받음
                         AlertDialog alertDialog = builder.create();
 
                         btnApply.setOnClickListener(new View.OnClickListener() {
@@ -515,6 +531,48 @@ public class MemoViewActivity extends AppCompatActivity {
                     if (!((TodoFragment) fragment).checkNull()) {   // 널 값 검증
                         AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
                         alert.setMessage("할 일을 추가하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = alert.create();
+                        alertDialog.show();
+                    } else {    // 널 값 검증 통과하면 제목 받음
+                        AlertDialog alertDialog = builder.create();
+
+                        btnApply.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                MemoTitle = editTextMemoTitle.getText().toString();
+                                if (MemoTitle.equals("") | MemoTitle == null) { // 제목 입력 안했을 때
+                                    AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                                    alert.setMessage("제목을 입력하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                } else { // 제목까지 입력 받았으면 첨에 만든 저장 할건지 묻는 다이얼로그 출력하고 저장
+                                    alertDialog.dismiss();
+                                    savealert.show();
+                                }
+                            }
+                        });
+                        btnCancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                alertDialog.dismiss();
+                            }
+                        });
+
+                        alertDialog.show();
+                    }
+                }
+                else if (fragment instanceof ShoppingFragment) {
+                    if (!((ShoppingFragment) fragment).checkNull()) {   // 널 값 검증
+                        AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
+                        alert.setMessage("쇼핑 항목을 추가하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -775,6 +833,13 @@ public class MemoViewActivity extends AppCompatActivity {
                 alert.show();
             }
         });
+    }
+
+    // DB 닫기
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
     }
 
     //휴대폰 버튼으로 뒤로 가기
