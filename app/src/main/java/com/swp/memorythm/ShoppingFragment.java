@@ -64,6 +64,7 @@ public class ShoppingFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
 
         mArrayList = new ArrayList<>();
 
@@ -77,7 +78,6 @@ public class ShoppingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_shopping, container, false);
-        dbHelper = new DBHelper(getContext());
 
         textViewDate = rootView.findViewById(R.id.tv_date);
         shoppingRecyclerView = rootView.findViewById(R.id.shopping_rcview);
@@ -243,9 +243,8 @@ public class ShoppingFragment extends Fragment {
         return key.toString();
     }
 
+    // 저장 및 수정
     public boolean saveData(String Mode, String Bgcolor, String Title) {
-        db = dbHelper.getReadableDatabase();
-
         boolean success = false;
 
         Userdate = textViewDate.getText().toString();
@@ -281,6 +280,7 @@ public class ShoppingFragment extends Fragment {
                     final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                     cursor.moveToFirst();
                     memoid = cursor.getInt(0);
+                    db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '메모';");
                     success = true;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -304,7 +304,6 @@ public class ShoppingFragment extends Fragment {
 
     // 데이터 로드
     private void getData(int id) {
-        db = dbHelper.getReadableDatabase();
         Cursor cursor;
         try {
             cursor = db.rawQuery("SELECT userdate, content, bought, amount, splitkey FROM shoppinglist WHERE id = "+memoid+"", null);

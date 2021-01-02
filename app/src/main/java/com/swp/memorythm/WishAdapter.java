@@ -2,6 +2,7 @@ package com.swp.memorythm;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -135,6 +137,18 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         viewHolder.wishCheckBox.setChecked(mArrayList.get(position).isWished());
         viewHolder.textViewWish.setText(mArrayList.get(position).getContent());
+
+        viewHolder.wishCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mArrayList.get(position).setWished(isChecked);
+                if (isChecked) {
+                    viewHolder.textViewWish.setPaintFlags(viewHolder.textViewWish.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    viewHolder.textViewWish.setPaintFlags(0);
+                }
+            }
+        });
     }
 
     @Override

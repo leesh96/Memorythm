@@ -65,6 +65,7 @@ public class TodoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
 
         mArrayList = new ArrayList<>();
 
@@ -235,8 +236,6 @@ public class TodoFragment extends Fragment {
 
     // 저장 및 수정
     public boolean saveData(String Mode, String Bgcolor, String Title) {
-        db = dbHelper.getReadableDatabase();
-
         boolean success = false;
 
         Userdate = textViewDate.getText().toString();
@@ -293,7 +292,6 @@ public class TodoFragment extends Fragment {
 
     // 데이터 로드
    private void getData(int id) {
-        db = dbHelper.getReadableDatabase();
         Cursor cursor;
         try {
             cursor = db.rawQuery("SELECT userdate, content, done, splitkey FROM todolist WHERE id = "+memoid+"", null);

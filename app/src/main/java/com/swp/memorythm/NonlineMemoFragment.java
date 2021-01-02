@@ -69,6 +69,7 @@ public class NonlineMemoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
 
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
@@ -146,8 +147,6 @@ public class NonlineMemoFragment extends Fragment {
 
     // 저장 및 수정
     public boolean saveData(String Mode, String Bgcolor, String Title) {
-        db = dbHelper.getReadableDatabase();
-
         boolean success = false;
 
         Userdate = textViewDate.getText().toString();
@@ -189,7 +188,6 @@ public class NonlineMemoFragment extends Fragment {
 
     // 데이터 로드
     private void getData(int id) {
-        db = dbHelper.getReadableDatabase();
         Cursor cursor;
         try {
             cursor = db.rawQuery("SELECT userdate, content FROM nonlinememo WHERE id = "+memoid+"", null);

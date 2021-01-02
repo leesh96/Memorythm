@@ -36,6 +36,151 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
+    <TableLayout
+        android:id="@+id/tablelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border_ud"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_date">
+
+        <TableRow
+            android:layout_marginTop="5dp">
+            <TextView
+                android:id="@+id/tv_activity"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:background="@drawable/bg_selector"
+                android:fontFamily="@font/sdkukdetopokki_b"
+                android:gravity="center"
+                android:text="Activity"
+                android:textColor="@color/text_color"
+                android:textSize="10dp" />
+
+            <TextView
+                android:id="@+id/tv_concert"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:fontFamily="@font/sdkukdetopokki_b"
+                android:gravity="center"
+                android:text="Concert"
+                android:textColor="@color/text_color"
+                android:textSize="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_product"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:fontFamily="@font/sdkukdetopokki_b"
+                android:gravity="center"
+                android:text="Product"
+                android:textColor="@color/text_color"
+                android:textSize="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_book"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:fontFamily="@font/sdkukdetopokki_b"
+                android:gravity="center"
+                android:text="Book"
+                android:textColor="@color/text_color"
+                android:textSize="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_food"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:fontFamily="@font/sdkukdetopokki_b"
+                android:gravity="center"
+                android:text="Food"
+                android:textColor="@color/text_color"
+                android:textSize="10dp"/>
+
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
+            <TextView
+                android:id="@+id/tv_trip"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:fontFamily="@font/sdkukdetopokki_b"
+                android:gravity="center"
+                android:text="Trip"
+                android:textColor="@color/text_color"
+                android:textSize="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_cloth"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:fontFamily="@font/sdkukdetopokki_b"
+                android:gravity="center"
+                android:text="Cloth"
+                android:textColor="@color/text_color"
+                android:textSize="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_movie"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:fontFamily="@font/sdkukdetopokki_b"
+                android:gravity="center"
+                android:text="Movie"
+                android:textColor="@color/text_color"
+                android:textSize="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_study"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:fontFamily="@font/sdkukdetopokki_b"
+                android:gravity="center"
+                android:text="Study"
+                android:textColor="@color/text_color"
+                android:textSize="10dp"/>
+
+            <EditText
+                android:id="@+id/et_customcate"
+                android:inputType="text"
+                android:imeOptions="actionDone"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:background="@drawable/border_d"
+                android:fontFamily="@font/sdkukdetopokki_b"
+                android:maxLength="6"
+                android:textAlignment="center"
+                android:textColor="@color/text_color"
+                android:textSize="14dp" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <!--
     <RelativeLayout
         android:id="@+id/relativelayout"
         android:layout_width="match_parent"
@@ -52,7 +197,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/bg_selector"
             android:fontFamily="@font/sdkukdetopokki_b"
             android:gravity="center"
             android:text="Activity"
@@ -172,6 +316,7 @@
             android:textSize="14dp" />
 
     </RelativeLayout>
+    -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/wish_rcview"
@@ -181,7 +326,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btn_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativelayout" />
+        app:layout_constraintTop_toBottomOf="@+id/tablelayout" />
 
     <ImageButton
         android:id="@+id/btn_add"
