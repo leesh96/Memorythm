@@ -7,13 +7,17 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -143,6 +147,55 @@ public class WeeklyPlanFragment extends Fragment {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy - MM", Locale.KOREA);
         textViewDate.setText(simpleDateFormat.format(currentTime));
 
+        final View activityRootView = rootView.findViewById(R.id.frame);
+
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                //r will be populated with the coordinates of your view that area still visible.
+                activityRootView.getWindowVisibleDisplayFrame(r);
+
+                int heightDiff = activityRootView.getRootView().getHeight() - r.height();
+                if ((heightDiff < 0.25 * activityRootView.getRootView().getHeight()) && WeeklyPlanFragment.this.getActivity() != null) {
+                    Log.d("키보드 ", "내려감?");
+                    if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[0]) {
+
+                        calculateDay(0);
+                        dayView[0].clearFocus();
+                    } else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[1]) {
+
+                        calculateDay(1);
+                        dayView[1].clearFocus();
+                    } else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[2]) {
+
+                        calculateDay(2);
+                        dayView[2].clearFocus();
+                    }
+                    else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[3]) {
+
+                        calculateDay(3);
+                        dayView[3].clearFocus();
+                    }
+                    else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[4]) {
+
+                        calculateDay(4);
+                        dayView[4].clearFocus();
+                    }
+                    else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[5]) {
+
+                        calculateDay(5);
+                        dayView[5].clearFocus();
+                    }
+                    else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[6]) {
+
+                        calculateDay(6);
+                        dayView[6].clearFocus();
+                    }
+                }
+            }
+        });
+
         textViewDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // 데이트픽커 띄우기
@@ -259,6 +312,25 @@ public class WeeklyPlanFragment extends Fragment {
             }
         }
         return key.toString();
+    }
+
+    public void calculateDay(int index) {
+
+        int std, diff, day;
+        String input;
+
+        std = Integer.parseInt(dayView[index].getText().toString());
+
+        for(int i = 0; i < dayView.length; i++) {
+
+            diff = i - index;
+            day = std + diff;
+            input = Integer.toString(day);
+
+            if(i == index) continue;
+            if((day < 1) || (day > myCalendar.getActualMaximum(Calendar.DATE))) continue;
+            dayView[i].setText(input);
+        }
     }
 
     @Override
