@@ -854,7 +854,6 @@ public class MemoViewActivity extends AppCompatActivity {
                     btnCancel.setOnClickListener(view1 -> alertDialog.dismiss());
                     alertDialog.show();
                 }
-                // TODO: 여기서 else if로 템플릿 마다 추가할 것!
             }
         });
 
@@ -868,7 +867,11 @@ public class MemoViewActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
                         try {
+                            Cursor cursor = db.rawQuery("SELECT folder_name FROM "+TemplateCase+" WHERE id = "+memoid+";", null);
+                            cursor.moveToFirst();
+                            String whereMemoIn = cursor.getString(0);
                             db.execSQL("UPDATE "+TemplateCase+" SET deleted = 1 WHERE id = "+memoid+";");
+                            db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '"+whereMemoIn+"';");
                             Toast.makeText(MemoViewActivity.this, "휴지통 이동 성공", Toast.LENGTH_SHORT).show();
                             if (isAfterWrite) {
                                 Intent newMain = new Intent(MemoViewActivity.this, MainActivity.class);
