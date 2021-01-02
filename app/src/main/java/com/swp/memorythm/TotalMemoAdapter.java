@@ -1,6 +1,7 @@
 package com.swp.memorythm;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,8 @@ public class TotalMemoAdapter extends RecyclerView.Adapter<TotalMemoAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TotalMemoData totalMemoData = totalMemo.get(position); //위치 받아오기
-        holder.titleTV.setText(totalMemo.get(position).getTopMemoTitle());
+        holder.titleTV.setText(totalMemo.get(position).getTotalTitle());
+        holder.dataTV.setText(totalMemo.get(position).getTotalDate());
         //체크박스 체크 여부
         boolean isChecked = memoTotalCheckedMap.get(totalMemoData)==null?false: memoTotalCheckedMap.get(totalMemoData);
         holder.checkBox.setChecked(isChecked);
@@ -69,6 +71,12 @@ public class TotalMemoAdapter extends RecyclerView.Adapter<TotalMemoAdapter.View
         }
         //아이템 클릭
         holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(mContext, MemoViewActivity.class);
+            intent.putExtra("memoid", totalMemo.get(position).getTotalID());
+            intent.putExtra("memotitle", totalMemo.get(position).getTotalTitle());
+            intent.putExtra("template", totalMemo.get(position).getTemplate());
+            intent.putExtra("mode", "view");
+            mContext.startActivity(intent);
             Toast.makeText(mContext, "클릭클릭", Toast.LENGTH_SHORT).show();
         });
     }
@@ -79,12 +87,13 @@ public class TotalMemoAdapter extends RecyclerView.Adapter<TotalMemoAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTV;
+        TextView titleTV, dataTV;
         CheckBox checkBox;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.titleTV = (TextView)itemView.findViewById(R.id.memoTopName);
-            this.checkBox = (CheckBox)itemView.findViewById(R.id.memoTopCheckBox);
+            this.titleTV = (TextView)itemView.findViewById(R.id.memoTotalName);
+            this.checkBox = (CheckBox)itemView.findViewById(R.id.memoTotalCheckBox);
+            this.dataTV = (TextView)itemView.findViewById(R.id.totalDate);
         }
     }
     // 아이템 삭제
@@ -96,5 +105,9 @@ public class TotalMemoAdapter extends RecyclerView.Adapter<TotalMemoAdapter.View
     //체크박스 숨김에 사용
     public void setVisible(boolean trash){
         isTrash = trash;
+    }
+
+    public List<TotalMemoData> setCheckBox(){
+        return mCheckedMemoTotal;
     }
 }

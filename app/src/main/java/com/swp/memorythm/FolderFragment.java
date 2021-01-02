@@ -1,5 +1,7 @@
 package com.swp.memorythm;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -16,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //폴더 프레그먼트
 public class FolderFragment extends Fragment implements View.OnClickListener {
@@ -26,12 +29,32 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
     private ImageButton addBtn, deleteBtn;
     private ItemTouchHelper helper;
     private Boolean check = false;
+    Cursor cursor;
+
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_folder, container, false);
+        dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
+
+        cursor = db.rawQuery("SELECT name, count FROM folder ORDER BY sequence ", null);
+        listFolder= new ArrayList<>();
+        cursor.moveToFirst();
+        String name = cursor.getString(0);
+        int count = cursor.getInt(1);
+        listFolder.add(new Folder(name, count));
+
+        while(cursor.moveToNext()) {
+            // 기본폴더 생성
+            name = cursor.getString(0);
+            count = cursor.getInt(1);
+            listFolder.add(new Folder(name, count));
+        }
 
         folderRecyclerView = (RecyclerView)view.findViewById(R.id.folderRV);
         folderRecyclerView.setHasFixedSize(true);
@@ -39,7 +62,9 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         folderRecyclerView.setLayoutManager(manager);
-        listFolder = new ArrayList<>();
+        //기본폴더 생성
+
+//        listFolder.add(new Folder("메모",cursor.getInt(0)));
         //어뎁터 연결
         folderFragAdapter = new FolderFragAdapter(getContext(),listFolder);
         folderRecyclerView.setAdapter(folderFragAdapter);
@@ -82,9 +107,8 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
                 //다이얼로그에서 받아온 데이터
                 dialog.setFolderDialogResult(new FragmentDialog.FolderDialogResult(){
                     @Override
-                    public void finish(String result) {
-                        Folder folder = new Folder(result,"1");
-                        listFolder.add(folder);
+                    public void finish(String foldername) {
+                        listFolder.add(new Folder(foldername,0));
                         folderFragAdapter.notifyDataSetChanged();
                     }
                 });
@@ -93,6 +117,28 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
             case R.id.deleteFolderBtn:
                 if(check){
                     if(folderFragAdapter.removeItems()){
+                        List<Folder> list = folderFragAdapter.setCheckBox();
+
+                        for (Folder folder : list) {
+                            String table = folder.getTitle();
+                            int num = folder.getCount();
+                            db.execSQL("UPDATE nonlinememo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
+                            db.execSQL("UPDATE linememo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
+                            db.execSQL("UPDATE gridmemo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
+                            db.execSQL("UPDATE todolist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
+                            db.execSQL("UPDATE wishlist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
+                            db.execSQL("UPDATE shoppinglist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
+                            db.execSQL("UPDATE review SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
+                            db.execSQL("UPDATE dailyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
+                            db.execSQL("UPDATE weeklyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
+                            db.execSQL("UPDATE monthlyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
+                            db.execSQL("UPDATE yearlyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
+                            db.execSQL("UPDATE healthtracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
+                            db.execSQL("UPDATE monthtracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
+                            db.execSQL("UPDATE studytracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
+                            db.execSQL("UPDATE folder SET count = count + '"+ num +"' WHERE name = '메모';");
+                            db.execSQL("DELETE FROM folder WHERE name = '"+ table +"';");
+                        }
                         Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
@@ -107,9 +153,7 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
 
-
-
         }
     }
 
-    }
+}

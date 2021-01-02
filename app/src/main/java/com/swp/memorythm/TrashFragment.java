@@ -1,5 +1,7 @@
 package com.swp.memorythm;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -14,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TrashFragment extends Fragment implements View.OnClickListener {
     private RecyclerView trashRecyclerView;
@@ -22,10 +25,44 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
     private ArrayList<MemoData> trashList;
     private Boolean check = false;
 
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_trash, container, false);
+        dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT id, title, editdate, template_case FROM nonlinememo WHERE deleted = 1 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM linememo WHERE deleted = 1 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM gridmemo WHERE deleted = 1 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM todolist WHERE deleted = 1 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM wishlist WHERE deleted = 1 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM shoppinglist WHERE deleted = 1 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM review WHERE deleted = 1 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM dailyplan WHERE deleted = 1 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM weeklyplan WHERE deleted = 1 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM monthlyplan WHERE deleted = 1 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM yearlyplan WHERE deleted = 1 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM healthtracker WHERE deleted = 1 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM monthtracker WHERE deleted = 1 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM studytracker WHERE deleted = 1 ",null);
+
+        trashList = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            MemoData memoData = new MemoData();
+
+            memoData.setMemoid(cursor.getInt(0));
+            memoData.setMemoTitle(cursor.getString(1));
+            memoData.setMemoDate(cursor.getString(2).substring(0, 10));
+            memoData.setTemplate(cursor.getString(3));
+
+            trashList.add(memoData);
+        }
+
         //복구 버튼
         btnRestore = (ImageButton) view.findViewById(R.id.restoreBtn);
         btnRestore.setOnClickListener(this);
@@ -46,12 +83,6 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        trashList = new ArrayList<>();
-        trashList.add(new MemoData("메모1", "2020-11-30"));
-        trashList.add(new MemoData("메모2", "2020-11-30"));
-        trashList.add(new MemoData("메모3", "2020-11-30"));
-        trashList.add(new MemoData("메모4", "2020-11-30"));
-
     }
 
     @Override
@@ -60,9 +91,16 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
             case R.id.emptyBtn:
                 if(check){
                     if(trashAdapter.removeItems()){
+                        List<MemoData> list = trashAdapter.setCheckBox();
+
+                        for (MemoData memoData : list) {
+                            String table = memoData.getTemplate();
+                            int tableID = memoData.getMemoid();
+                            db.execSQL("DELETE FROM '"+table+"' WHERE id = '"+ tableID +"';");
+                        }
                         Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
                     }else {
-                        Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "삭제할 메모를 선택하세요", Toast.LENGTH_SHORT).show();
                     }
                     trashAdapter.setVisible(false);
                     btnRestore.setVisibility(View.VISIBLE);
@@ -79,9 +117,16 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
             case R.id.restoreBtn:
                 if(check){
                     if(trashAdapter.removeItems()){
+                        List<MemoData> list = trashAdapter.setCheckBox();
+
+                        for (MemoData memoData : list) {
+                            String table = memoData.getTemplate();
+                            int tableID = memoData.getMemoid();
+                            db.execSQL("UPDATE '"+table+"' SET deleted = 0 WHERE id = '"+ tableID +"';");
+                        }
                         Toast.makeText(getContext(), "복구버튼 눌렀음", Toast.LENGTH_SHORT).show();
                     }else {
-                        Toast.makeText(getContext(), "복구할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "복구할 메모를 선택하세요", Toast.LENGTH_SHORT).show();
                     }
                     trashAdapter.setVisible(false);
                     btnEmpty.setVisibility(View.VISIBLE);

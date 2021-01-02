@@ -100,4 +100,9 @@ public class TrashFragAdapter extends RecyclerView.Adapter<TrashFragAdapter.View
     public void setVisible(boolean trash){
         isTrash = trash;
     }
+    //체크한 항목 전달
+    public List<MemoData> setCheckBox(){
+        return mCheckedTrash;
+    }
+
 }

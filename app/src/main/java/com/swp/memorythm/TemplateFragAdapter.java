@@ -47,6 +47,7 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
             MemoListFragment memoListFragment = new MemoListFragment();
             Bundle bundle = new Bundle();
             bundle.putString("template", dataTemplate.get(position).getTemplate());
+            bundle.putString("case", "template");
             memoListFragment.setArguments(bundle);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.templateID, memoListFragment).addToBackStack(null).commit();
             notifyDataSetChanged();

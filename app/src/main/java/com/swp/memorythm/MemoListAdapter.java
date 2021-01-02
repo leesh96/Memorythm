@@ -108,5 +108,9 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
         isTrash = trash;
     }
 
+    public List<MemoData> setCheckBox(){
+        return mCheckedMemo;
+    }
+
 }
 

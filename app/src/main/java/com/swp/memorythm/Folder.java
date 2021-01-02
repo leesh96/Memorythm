@@ -2,28 +2,27 @@ package com.swp.memorythm;
 
 public class Folder {
     private String title;
-    private String num;
+    private int count;
 
     public Folder() {
     }
 
-    public Folder(String title, String num) {
+    public Folder(String title, int count) {
         this.title = title;
-        this.num = num;
+        this.count = count;
     }
     public String getTitle() {
         return title;
     }
-
-    public String getNum() {
-        return num;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public void setNum(String num) {
-        this.num = num;
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

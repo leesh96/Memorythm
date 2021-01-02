@@ -1,14 +1,21 @@
 package com.swp.memorythm;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +32,9 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
     private Map<Folder, Boolean> mCheckedMap = new HashMap<>();
     private List<Folder> mCheckedFolder = new ArrayList<>(); //체크한 항목 저장
     public boolean isTrash = false;
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
+    private boolean trigger = false;
 
     public FolderFragAdapter() {
     }
@@ -32,6 +42,7 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
     public FolderFragAdapter(Context mContext, ArrayList<Folder> listFolder) {
         this.mContext = mContext;
         this.dataFolder = listFolder;
+        dbHelper = new DBHelper(mContext);
     }
 
 
@@ -43,16 +54,30 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
         viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                Folder folder = dataFolder.get(viewHolder.getAdapterPosition());
-                mCheckedMap.put(folder,isChecked);
-                // 체크된거 mCheckedFolder 넣기
-                if(isChecked){
-                    mCheckedFolder.add(folder);
+                if (viewHolder.getAdapterPosition() == 0){
+                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                    alert.setMessage("메모폴더는 삭제가 안됩니다.");
+                    alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.show();
                 }else {
-                    mCheckedFolder.remove(folder);
+                    Folder folder = dataFolder.get(viewHolder.getAdapterPosition());
+                    mCheckedMap.put(folder,isChecked);
+                    // 체크된거 mCheckedFolder 넣기
+                    if(isChecked){
+                        mCheckedFolder.add(folder);
+                    }else {
+                        mCheckedFolder.remove(folder);
+                    }
                 }
+
             }
         });
+
         return viewHolder;
     }
 
@@ -62,7 +87,7 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
         Folder folder = dataFolder.get(position);
 
         holder.titleTV.setText(dataFolder.get(position).getTitle());
-        holder.numTV.setText(dataFolder.get(position).getNum());
+        holder.numTV.setText(String.valueOf(dataFolder.get(position).getCount()));
         //체크박스 체크 여부
         boolean isChecked = mCheckedMap.get(folder)==null?false:mCheckedMap.get(folder);
         holder.checkBox.setChecked(isChecked);
@@ -73,6 +98,10 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
             // 프레그먼트 교체하는 부분
             FragmentActivity activity = (FragmentActivity)view.getContext();
             MemoListFragment memoListFragment = new MemoListFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("folder", dataFolder.get(position).getTitle());
+            bundle.putString("case", "folder");
+            memoListFragment.setArguments(bundle);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.folderID,memoListFragment).addToBackStack(null).commit();
             notifyDataSetChanged();
         });
@@ -97,10 +126,39 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
     //FolderFragment 에서 객체를 생성한 후에 리스트를 입력하여 어댑터의 dataFolder 에 매치
     @Override
     public boolean onItemMove(int from_position, int to_position) {
-        Folder folder = dataFolder.get(from_position);
-        dataFolder.remove(from_position);
-        dataFolder.add(to_position, folder);
-        notifyItemMoved(from_position, to_position); // 데이터가 이동함을 알림
+
+        if(!trigger) {
+
+            if(to_position == 0 || from_position == 0){
+                trigger = true;
+                AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                alert.setMessage("메모폴더는 고정입니다.");
+                alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                        trigger = false;
+                    }
+                });
+                alert.show();
+
+            }else {
+                Folder folder = dataFolder.get(from_position);
+                dataFolder.remove(from_position);
+                dataFolder.add(to_position, folder);
+                notifyItemMoved(from_position, to_position); // 데이터가 이동함을 알림
+
+                db = dbHelper.getWritableDatabase();
+                for (int i = 0; i < dataFolder.size(); i++) {
+                    String folder_name = dataFolder.get(i).getTitle();
+                    db.execSQL("UPDATE folder SET sequence = '"+i+"' WHERE name = '"+ folder_name +"';");
+                }
+                trigger = false;
+            }
+        } else {
+
+            return true;
+        }
 
         return true;
     }
@@ -139,5 +197,8 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
 
     public void setVisible(boolean trash){
         isTrash = trash;
+    }
+    public List<Folder> setCheckBox(){
+        return mCheckedFolder;
     }
 }
