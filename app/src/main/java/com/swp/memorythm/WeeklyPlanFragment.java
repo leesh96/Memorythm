@@ -222,7 +222,8 @@ public class WeeklyPlanFragment extends Fragment {
             }
             for(int i = 0; i < dayView.length; i++) {
 
-                dayView[i].setText(setDay[i]);
+                if(setDay[i].equals(" ")) dayView[i].setText("");
+                else dayView[i].setText(setDay[i]);
             }
         }
     }
@@ -328,7 +329,14 @@ public class WeeklyPlanFragment extends Fragment {
             input = Integer.toString(day);
 
             if(i == index) continue;
-            if((day < 1) || (day > myCalendar.getActualMaximum(Calendar.DATE))) continue;
+            if((day < 1) || (day > myCalendar.getActualMaximum(Calendar.DATE))) {
+
+                if (!dayView[i].getText().toString().equals("")) {
+
+                    dayView[i].setText("");
+                }
+                continue;
+            }
             dayView[i].setText(input);
         }
     }

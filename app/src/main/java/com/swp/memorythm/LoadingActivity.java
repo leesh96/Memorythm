@@ -61,6 +61,13 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
         setCurrentDate();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        db.close();
+    }
+
     private void setCurrentDate() {
         // 앱 실행할때마다 날짜 가져오기
         // 캘린더 객체 생성
