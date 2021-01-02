@@ -175,6 +175,13 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
 
         if(requestCode == 0) {
 
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1, this);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 1, this);
+            }
+
             intent = new Intent(LoadingActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
