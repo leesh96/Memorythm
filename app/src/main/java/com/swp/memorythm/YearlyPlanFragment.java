@@ -177,6 +177,7 @@ public class YearlyPlanFragment extends Fragment {
                 final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                 cursor.moveToFirst();
                 memoid = cursor.getInt(0);
+                db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '메모';");
                 break;
             case "view":
                 // 메모 수정

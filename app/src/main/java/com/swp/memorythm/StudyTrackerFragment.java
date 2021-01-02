@@ -177,6 +177,7 @@ public class StudyTrackerFragment extends Fragment {
             case "write":
                 db.execSQL("INSERT INTO studytracker('userdate', 'studyTimecheck', 'commentAll', 'commentTime', 'splitKey', 'bgcolor', 'title') " +
                         "VALUES('" + userdate + "', '" + studyTimecheck + "', '" + commentAll + "', '" + commentTime + "','"+ splitKey +"', '"+Bgcolor+"', '"+title+"');");
+                db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '메모';");
                 break;
             case "view":
                 if (getArguments() != null) {
