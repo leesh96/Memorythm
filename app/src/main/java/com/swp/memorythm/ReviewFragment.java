@@ -114,7 +114,7 @@ public class ReviewFragment extends Fragment {
                 activityRootView.getWindowVisibleDisplayFrame(r);
 
                 int heightDiff = activityRootView.getRootView().getHeight() - r.height();
-                if (heightDiff < 0.25 * activityRootView.getRootView().getHeight()) {
+                if (heightDiff < 0.25 * activityRootView.getRootView().getHeight()&& ReviewFragment.this.getActivity() != null) {
                     Log.d("키보드 ", "내려감?");
                     if (ReviewFragment.this.getActivity().getCurrentFocus() == et_reviewList) {
                         et_reviewList.setBackgroundResource(R.drawable.bg_selector);

@@ -145,7 +145,7 @@ public class WishFragment extends Fragment {
                 activityRootView.getWindowVisibleDisplayFrame(rect);
 
                 int heightDiff = activityRootView.getRootView().getHeight() - rect.height();
-                if (heightDiff < 0.25*activityRootView.getRootView().getHeight()) {
+                if (heightDiff < 0.25*activityRootView.getRootView().getHeight()&& WishFragment.this.getActivity() != null) {
                     if (WishFragment.this.getActivity().getCurrentFocus() == customCategory) {
                         customCategory.setBackgroundResource(R.drawable.bg_selector);
                         textViewsCategory[selectCategory].setBackgroundColor(Color.TRANSPARENT);
