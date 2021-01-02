@@ -141,8 +141,8 @@ public class MonthTrackerFragment extends Fragment {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         String userdate = textViewDate.getText().toString();
-        String goal = et_goal.getText().toString();
-        String comment = et_comment.getText().toString();
+        String goal = et_goal.getText().toString().replaceAll("'", "''");
+        String comment = et_comment.getText().toString().replaceAll("'", "''");
         StringBuilder dayCheck = new StringBuilder();
         for (int value : num_day) dayCheck.append(value);
 

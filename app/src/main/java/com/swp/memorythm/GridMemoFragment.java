@@ -88,7 +88,7 @@ public class GridMemoFragment extends Fragment {
     public Boolean saveData(String Mode, String Bgcolor, String title){ //저장 및 수정
         //userdate, content
         String userdate = textViewDate.getText().toString();
-        String content = editTextContent.getText().toString();
+        String content = editTextContent.getText().toString().replaceAll("'", "''");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
 

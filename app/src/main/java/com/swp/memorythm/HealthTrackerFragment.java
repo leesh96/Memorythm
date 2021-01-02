@@ -235,12 +235,12 @@ public class HealthTrackerFragment extends Fragment {
         String breakfastTime = tv_breakfast.getText().toString();
         String lunchTime = tv_lunch.getText().toString();
         String dinnerTime = tv_dinner.getText().toString();
-        String breakfastMenu = et_breakfast.getText().toString();
-        String lunchMenu = et_lunch.getText().toString();
-        String snackMenu = et_snack.getText().toString();
-        String dinnerMenu = et_dinner.getText().toString();
-        String exerciseContent = et_exercise.getText().toString();
-        String comment = et_comment.getText().toString();
+        String breakfastMenu = et_breakfast.getText().toString().replaceAll("'", "''");
+        String lunchMenu = et_lunch.getText().toString().replaceAll("'", "''");
+        String snackMenu = et_snack.getText().toString().replaceAll("'", "''");
+        String dinnerMenu = et_dinner.getText().toString().replaceAll("'", "''");
+        String exerciseContent = et_exercise.getText().toString().replaceAll("'", "''");
+        String comment = et_comment.getText().toString().replaceAll("'", "''");
         StringBuilder waterCups = new StringBuilder();
         for (int value : cups) waterCups.append(value);
         int exercisedata = getExercise();

@@ -161,8 +161,8 @@ public class ReviewFragment extends Fragment {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         String userdate = textViewDate.getText().toString();
-        String reviewTitle = et_title.getText().toString();
-        String reviewContent = et_content.getText().toString();
+        String reviewTitle = et_title.getText().toString().replaceAll("'", "''");
+        String reviewContent = et_content.getText().toString().replaceAll("'", "''");
         int starNum = (int) rb_review.getRating();
         int score=0;
         if(!et_scoreReview.getText().toString().equals("")){
@@ -172,7 +172,7 @@ public class ReviewFragment extends Fragment {
         String categoryName;
         int categoryCheck;
         if(isUser) {
-            categoryName = et_reviewList.getText().toString();
+            categoryName = et_reviewList.getText().toString().replaceAll("'", "''");
             categoryCheck = 9;
         }
         else {

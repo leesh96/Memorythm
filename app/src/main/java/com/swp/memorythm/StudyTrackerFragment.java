@@ -162,14 +162,14 @@ public class StudyTrackerFragment extends Fragment {
         String userdate = textViewDate.getText().toString();
         StringBuilder studyTimecheck = new StringBuilder();
         for (int value : num_time) studyTimecheck.append(value);
-        String commentAll = et_comment.getText().toString();
+        String commentAll = et_comment.getText().toString().replaceAll("'", "''");
         StringBuilder txt = new StringBuilder(); //edit text 모두 합쳐서 넣을 String
         for (EditText etComment : et_comments) txt.append(etComment.getText().toString());
         String splitKey = makeKey(txt.toString());
         StringBuilder commentTime = new StringBuilder();
         for (EditText etComment : et_comments) {
             if (!etComment.getText().toString().equals(""))
-                commentTime.append(etComment.getText().toString()).append(splitKey);
+                commentTime.append(etComment.getText().toString().replaceAll("'", "''")).append(splitKey);
             else commentTime.append(" ").append(splitKey);
         }
         db = dbHelper.getReadableDatabase();
