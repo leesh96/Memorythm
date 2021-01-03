@@ -63,6 +63,17 @@ public class WeeklyPlanFragment extends Fragment implements TextWatcher {
     private String[] setContent, setDay;
     private StringBuilder contentWeek, contentDay;
 
+    // 메인액티비티에서 고정메모 보는 프래그먼트로 만들어졌으면 수정 불가능하게 뷰 조정
+    public boolean fromFixedFragment;
+
+    public boolean isFromFixedFragment() {
+        return fromFixedFragment;
+    }
+
+    public void setFromFixedFragment(boolean fromFixedFragment) {
+        this.fromFixedFragment = fromFixedFragment;
+    }
+
     public static WeeklyPlanFragment newInstance() {
         return new WeeklyPlanFragment();
     }
@@ -186,6 +197,20 @@ public class WeeklyPlanFragment extends Fragment implements TextWatcher {
                 else dayView[i].setText(setDay[i]);
             }
             addListener();
+
+            // 수정 불가하게 만들기
+            if (isFromFixedFragment()) {
+                textViewDate.setEnabled(false);
+
+                for(EditText editText : weekView) {
+
+                    editText.setEnabled(false);
+                }
+                for(EditText editText : dayView) {
+
+                    editText.setEnabled(false);
+                }
+            }
         }
     }
 
