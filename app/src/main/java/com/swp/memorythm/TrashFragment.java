@@ -123,6 +123,10 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
                             String table = memoData.getTemplate();
                             int tableID = memoData.getMemoid();
                             db.execSQL("UPDATE '"+table+"' SET deleted = 0 WHERE id = '"+ tableID +"';");
+                            Cursor cursor = db.rawQuery("SELECT folder_name FROM '"+table+"' WHERE id = '"+tableID+"'", null);
+                            cursor.moveToFirst();
+                            String folder = cursor.getString(0);
+                            db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '"+folder+"';");
                         }
                         Toast.makeText(getContext(), "복구버튼 눌렀음", Toast.LENGTH_SHORT).show();
                     }else {

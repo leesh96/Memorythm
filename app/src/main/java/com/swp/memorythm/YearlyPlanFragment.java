@@ -36,6 +36,17 @@ public class YearlyPlanFragment extends Fragment {
     private String[] setContent;
     private StringBuilder contentYear;
 
+    // 메인액티비티에서 고정메모 보는 프래그먼트로 만들어졌으면 수정 불가능하게 뷰 조정
+    public boolean fromFixedFragment;
+
+    public boolean isFromFixedFragment() {
+        return fromFixedFragment;
+    }
+
+    public void setFromFixedFragment(boolean fromFixedFragment) {
+        this.fromFixedFragment = fromFixedFragment;
+    }
+
     public static YearlyPlanFragment newInstance() {
         return new YearlyPlanFragment();
     }
@@ -137,6 +148,16 @@ public class YearlyPlanFragment extends Fragment {
             for(int i = 0; i < yearView.length; i++) {
 
                 yearView[i].setText(setContent[i]);
+            }
+
+            // 수정 불가하게 만들기
+            if (isFromFixedFragment()) {
+                textViewDate.setEnabled(false);
+
+                for(EditText editText : yearView) {
+
+                    editText.setEnabled(false);
+                }
             }
         }
     }

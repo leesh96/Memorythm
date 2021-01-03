@@ -26,7 +26,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         Bundle bundle = new Bundle();
         bundle.putInt("memoid", memoid);
 
-        // TODO: 2021-01-03 템플릿 별로 프래그먼트 띄우는거 추가하기
         switch (Template) {
             case "nonlinememo":
                 NonlineMemoFragment nonlineMemoFragment = new NonlineMemoFragment();
@@ -73,6 +72,31 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 gridMemoFragment.setArguments(bundle);
                 gridMemoFragment.setFromFixedFragment(true);
                 return gridMemoFragment;
+            case "linememo":
+                LineMemoFragment lineMemoFragment = new LineMemoFragment();
+                lineMemoFragment.setArguments(bundle);
+                lineMemoFragment.setFromFixedFragment(true);
+                return lineMemoFragment;
+            case "dailyplan":
+                DailyPlanFragment dailyPlanFragment = new DailyPlanFragment();
+                dailyPlanFragment.setArguments(bundle);
+                dailyPlanFragment.setFromFixedFragment(true);
+                return dailyPlanFragment;
+            case "weeklyplan":
+                WeeklyPlanFragment weeklyPlanFragment = new WeeklyPlanFragment();
+                weeklyPlanFragment.setArguments(bundle);
+                weeklyPlanFragment.setFromFixedFragment(true);
+                return weeklyPlanFragment;
+            case "monthlyplan":
+                MonthlyPlanFragment monthlyPlanFragment = new MonthlyPlanFragment();
+                monthlyPlanFragment.setArguments(bundle);
+                monthlyPlanFragment.setFromFixedFragment(true);
+                return monthlyPlanFragment;
+            case "yearlyplan":
+                YearlyPlanFragment yearlyPlanFragment = new YearlyPlanFragment();
+                yearlyPlanFragment.setArguments(bundle);
+                yearlyPlanFragment.setFromFixedFragment(true);
+                return yearlyPlanFragment;
             default:
                 return null;
         }

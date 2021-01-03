@@ -44,6 +44,17 @@ public class MonthlyPlanFragment extends Fragment {
     private EditText[] monthView;
     private String[] setContent;
 
+    // 메인액티비티에서 고정메모 보는 프래그먼트로 만들어졌으면 수정 불가능하게 뷰 조정
+    public boolean fromFixedFragment;
+
+    public boolean isFromFixedFragment() {
+        return fromFixedFragment;
+    }
+
+    public void setFromFixedFragment(boolean fromFixedFragment) {
+        this.fromFixedFragment = fromFixedFragment;
+    }
+
     public static MonthlyPlanFragment newInstance() {
         return new MonthlyPlanFragment();
     }
@@ -109,6 +120,13 @@ public class MonthlyPlanFragment extends Fragment {
 
             textViewDate.setText(userDate);
             monthAdapter = new MonthAdapter(getContext(), myCalendar, setContent);
+
+            // 수정 불가하게 만들기
+            if (isFromFixedFragment()) {
+                textViewDate.setEnabled(false);
+                monthAdapter.setEnabled();
+                monthAdapter.notifyDataSetChanged();
+            }
         }
         else {
 

@@ -21,6 +21,7 @@ public class MonthAdapter extends BaseAdapter {
     EditText[] editTexts;
     String[] setContent;
     ArrayList<Integer> dayList = new ArrayList<Integer>();
+    boolean isFixed = false;
     int curYear;
     int curMonth;
 
@@ -43,6 +44,11 @@ public class MonthAdapter extends BaseAdapter {
     public void init(){
 
         calculate();//날짜 계산해서 dayList 배열 값 설정
+    }
+
+    public void setEnabled() {
+
+        isFixed = true;
     }
 
     public void calculate(){
@@ -143,6 +149,8 @@ public class MonthAdapter extends BaseAdapter {
         int height = gridView.getHeight() / divide;
         GridView.LayoutParams params = new GridView.LayoutParams( GridView.LayoutParams.MATCH_PARENT, height-2); //한칸의 크기 지정
         convertView.setLayoutParams(params);
+
+        if(isFixed) viewHolder.editText.setEnabled(false);
 
         return convertView; //뷰 뿌려주기
     }
