@@ -4,7 +4,8 @@ public class Folder {
     private String title;
     private int count;
 
-    public Folder() {
+    public Folder(String title) {
+        this.title = title;
     }
 
     public Folder(String title, int count) {

@@ -62,9 +62,7 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         folderRecyclerView.setLayoutManager(manager);
-        //기본폴더 생성
 
-//        listFolder.add(new Folder("메모",cursor.getInt(0)));
         //어뎁터 연결
         folderFragAdapter = new FolderFragAdapter(getContext(),listFolder);
         folderRecyclerView.setAdapter(folderFragAdapter);

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 import android.view.View;
@@ -56,12 +57,16 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
             if(buttonsShowedState != ButtonsState.GONE){
                 if(buttonsShowedState == ButtonsState.RIGHT_VISIBLE) dX = Math.min(dX, -buttonWidth);
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
             }else{
                 setTouchListener(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-            } if(buttonsShowedState == ButtonsState.GONE){
+            }
+
+            if(buttonsShowedState == ButtonsState.GONE){
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
-        } currentItemViewHolder = viewHolder;
+        }
+        currentItemViewHolder = viewHolder;
         //버튼을 그려주는 함수
         drawButtons(c, currentItemViewHolder);
     }
@@ -80,8 +85,10 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
             c.drawRoundRect(rightButton, corners, corners, p);
             drawText("폴더이동", c, rightButton, p);
             buttonInstance = rightButton;
-            }else{
+        }else{
             buttonInstance = null;
+
+
         }
     }
     //버튼의 텍스트 그려주기
