@@ -104,7 +104,7 @@ public class TodoFragment extends Fragment {
             textViewDate.setText(Userdate);
             mAdapter.notifyDataSetChanged();
             if (isFromFixedFragment()) {
-                setEnable(rootView, false);
+                setClickable(rootView, false);
                 btnAdd.setVisibility(View.GONE);
             }
         } else {
@@ -202,13 +202,14 @@ public class TodoFragment extends Fragment {
         db.close();
     }
 
-    private void setEnable(ViewGroup viewGroup, boolean enable) {
+    // 고정프래그먼트에서 뷰 이벤트 막는 함수
+    private void setClickable(ViewGroup viewGroup, boolean enable) {
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View child = viewGroup.getChildAt(i);
             if (child instanceof ViewGroup) {
-                setEnable((ViewGroup) child, enable);
+                setClickable((ViewGroup) child, enable);
             } else {
-                child.setEnabled(enable);
+                child.setClickable(enable);
             }
         }
     }
