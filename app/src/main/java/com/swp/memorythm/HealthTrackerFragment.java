@@ -42,6 +42,15 @@ public class HealthTrackerFragment extends Fragment {
     public static HealthTrackerFragment newInstance() {
         return new HealthTrackerFragment();
     }
+    private boolean fromFixedFragment;
+
+    public boolean isFromFixedFragment() {
+        return fromFixedFragment;
+    }
+
+    public void setFromFixedFragment(boolean fromFixedFragment) {
+        this.fromFixedFragment = fromFixedFragment;
+    }
 
     // 캘린더 객체 생성
     Calendar myCalendar = Calendar.getInstance();
@@ -139,6 +148,16 @@ public class HealthTrackerFragment extends Fragment {
             int finalI = i;
             ibtn_cup[i].setOnClickListener(v -> cups[finalI]= changeCups(ibtn_cup[finalI], cups[finalI]));
         }
+        if (isFromFixedFragment()) {
+            textViewDate.setEnabled(false);
+            et_comment.setEnabled(false); et_exercise.setEnabled(false); et_dinner.setEnabled(false); et_snack.setEnabled(false);
+            et_lunch.setEnabled(false); et_breakfast.setEnabled(false); tv_lunch.setEnabled(false); tv_breakfast.setEnabled(false);
+            tv_dinner.setEnabled(false); tv_aerobic.setEnabled(false); tv_chest.setEnabled(false); tv_lowerbody.setEnabled(false); tv_upperbody.setEnabled(false);
+            for(ImageButton imageButton:ibtn_cup) imageButton.setEnabled(false);
+        }
+        View activityRootView = viewGroup.findViewById(R.id.parentLayout);
+        // 수정 불가하게 만들기
+        if (isFromFixedFragment()) setClickable((ViewGroup) activityRootView);
         return viewGroup;
     }
 
@@ -146,6 +165,16 @@ public class HealthTrackerFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setData();
+    }
+
+    public void setClickable(View view){
+        view.setClickable(false);
+        if(view instanceof ViewGroup){
+            ViewGroup group = (ViewGroup)view;
+            for (int i = 0; i < group.getChildCount() ; i++) {
+                setClickable(group.getChildAt(i));
+            }
+        }
     }
 
     public int getMemoid() {

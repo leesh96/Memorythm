@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,15 @@ public class StudyTrackerFragment extends Fragment {
     public static StudyTrackerFragment newInstance() {
         return new StudyTrackerFragment();
     }
+    private boolean fromFixedFragment;
 
+    public boolean isFromFixedFragment() {
+        return fromFixedFragment;
+    }
+
+    public void setFromFixedFragment(boolean fromFixedFragment) {
+        this.fromFixedFragment = fromFixedFragment;
+    }
     // 캘린더 객체 생성
     Calendar myCalendar = Calendar.getInstance();
 
@@ -99,7 +106,9 @@ public class StudyTrackerFragment extends Fragment {
             int finalI = i;
             iv_time[i].setOnClickListener(v-> num_time[finalI]=changeBgColor(iv_time[finalI],num_time[finalI]));
         }
-
+        View activityRootView = viewGroup.findViewById(R.id.parentLayout);
+        // 수정 불가하게 만들기
+        if (isFromFixedFragment()) setClickable((ViewGroup) activityRootView);
 
         return viewGroup;
     }
@@ -108,6 +117,16 @@ public class StudyTrackerFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setData();
+    }
+
+    public void setClickable(View view){
+        view.setClickable(false);
+        if(view instanceof ViewGroup){
+            ViewGroup group = (ViewGroup)view;
+            for (int i = 0; i < group.getChildCount() ; i++) {
+                setClickable(group.getChildAt(i));
+            }
+        }
     }
 
     public int getMemoid() {

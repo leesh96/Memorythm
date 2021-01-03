@@ -32,6 +32,15 @@ public class GridMemoFragment extends Fragment {
     private int memoid;
     private TextView textViewDate;
     private EditText editTextContent;
+    private boolean fromFixedFragment;
+
+    public boolean isFromFixedFragment() {
+        return fromFixedFragment;
+    }
+
+    public void setFromFixedFragment(boolean fromFixedFragment) {
+        this.fromFixedFragment = fromFixedFragment;
+    }
 
     public static GridMemoFragment newInstance() {
         return new GridMemoFragment();
@@ -71,7 +80,9 @@ public class GridMemoFragment extends Fragment {
         textViewDate.setOnClickListener(v -> { // 데이트픽커 띄우기
             new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         });
-
+        View activityRootView = viewGroup.findViewById(R.id.parentLayout);
+        // 수정 불가하게 만들기
+        if (isFromFixedFragment()) setClickable((ViewGroup) activityRootView);
         return viewGroup;
     }
 
@@ -79,6 +90,16 @@ public class GridMemoFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setData();
+    }
+
+    public void setClickable(View view){
+        view.setClickable(false);
+        if(view instanceof ViewGroup){
+            ViewGroup group = (ViewGroup)view;
+            for (int i = 0; i < group.getChildCount() ; i++) {
+                setClickable(group.getChildAt(i));
+            }
+        }
     }
 
     public int getMemoid() {

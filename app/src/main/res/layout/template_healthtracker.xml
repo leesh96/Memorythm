@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
@@ -186,6 +187,7 @@
                     android:layout_weight="3"
                     android:padding="5dp"
                     android:inputType="textMultiLine"
+                    android:textColor="@color/text_color"
                     android:gravity="top"
                     android:textSize="14dp"
                     android:lineSpacingMultiplier="1"
@@ -243,6 +245,7 @@
                     android:layout_weight="3"
                     android:padding="5dp"
                     android:inputType="textMultiLine"
+                    android:textColor="@color/text_color"
                     android:gravity="top"
                     android:textSize="14dp"
                     android:lineSpacingMultiplier="1"
@@ -293,6 +296,7 @@
                     android:layout_weight="3"
                     android:padding="5dp"
                     android:inputType="textMultiLine"
+                    android:textColor="@color/text_color"
                     android:gravity="top"
                     android:textSize="14dp"
                     android:lineSpacingMultiplier="1"
@@ -350,6 +354,7 @@
                     android:layout_weight="3"
                     android:padding="5dp"
                     android:inputType="textMultiLine"
+                    android:textColor="@color/text_color"
                     android:gravity="top"
                     android:textSize="14dp"
                     android:lineSpacingMultiplier="1"
@@ -400,6 +405,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
                                 android:text="상체"
+                                android:textColor="@color/text_color"
                                 android:textSize="10dp"
                                 android:fontFamily="@font/sdkukdetopokki_l" />
                             <TextView
@@ -408,6 +414,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
                                 android:text="하체"
+                                android:textColor="@color/text_color"
                                 android:textSize="10dp"
                                 android:fontFamily="@font/sdkukdetopokki_l"/>
                             <TextView
@@ -416,6 +423,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
                                 android:text="가슴"
+                                android:textColor="@color/text_color"
                                 android:textSize="10dp"
                                 android:fontFamily="@font/sdkukdetopokki_l"/>
                             <TextView
@@ -424,6 +432,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
                                 android:text="유산소"
+                                android:textColor="@color/text_color"
                                 android:textSize="10dp"
                                 android:fontFamily="@font/sdkukdetopokki_l"/>
 
@@ -442,7 +451,7 @@
                         <EditText
                             android:id="@+id/et_exercise"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
                             android:layout_margin="10dp"
                             android:background="@drawable/edittext_style"
                             android:fontFamily="@font/nanumsquare_acl"
@@ -450,7 +459,9 @@
                             android:inputType="textMultiLine"
                             android:lineSpacingMultiplier="1"
                             android:padding="5dp"
+                            android:textColor="@color/text_color"
                             android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/iv_health"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -482,7 +493,7 @@
                         <EditText
                             android:id="@+id/et_comment"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
                             android:layout_marginTop="10dp"
                             android:background="@drawable/edittext_style"
                             android:fontFamily="@font/nanumsquare_acl"
@@ -490,7 +501,9 @@
                             android:inputType="textMultiLine"
                             android:lineSpacingMultiplier="1"
                             android:padding="5dp"
+                            android:textColor="@color/text_color"
                             android:textSize="14dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView6" />
                     </androidx.constraintlayout.widget.ConstraintLayout>

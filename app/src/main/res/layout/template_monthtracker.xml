@@ -65,6 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext_style"
+                android:textColor="@color/text_color"
                 android:hint="목표를 입력해주세요!"
                 android:textSize="15dp"
                 android:layout_gravity="center"
@@ -438,14 +439,16 @@
             <EditText
                 android:id="@+id/et_comment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:background="@drawable/edittext_style"
                 android:fontFamily="@font/nanumsquare_acl"
                 android:gravity="top"
                 android:inputType="textMultiLine"
                 android:lineSpacingMultiplier="1"
                 android:padding="5dp"
+                android:textColor="@color/text_color"
                 android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView7" />
         </androidx.constraintlayout.widget.ConstraintLayout>

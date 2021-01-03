@@ -1,14 +1,11 @@
 package com.swp.memorythm;
 
 import android.os.Bundle;
-import android.view.ViewGroup;
-import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 
@@ -51,35 +48,34 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 shoppingFragment.setArguments(bundle);
                 shoppingFragment.setFromFixedFragment(true);
                 return shoppingFragment;
+            case "review":
+                ReviewFragment reviewFragment = new ReviewFragment();
+                reviewFragment.setArguments(bundle);
+                reviewFragment.setFromFixedFragment(true);
+                return reviewFragment;
+            case "healthtracker":
+                HealthTrackerFragment healthTrackerFragment = new HealthTrackerFragment();
+                healthTrackerFragment.setArguments(bundle);
+                healthTrackerFragment.setFromFixedFragment(true);
+                return healthTrackerFragment;
+            case "studytracker":
+                StudyTrackerFragment studyTrackerFragment = new StudyTrackerFragment();
+                studyTrackerFragment.setArguments(bundle);
+                studyTrackerFragment.setFromFixedFragment(true);
+                return studyTrackerFragment;
+            case "monthtracker":
+                MonthTrackerFragment monthTrackerFragment = new MonthTrackerFragment();
+                monthTrackerFragment.setArguments(bundle);
+                monthTrackerFragment.setFromFixedFragment(true);
+                return monthTrackerFragment;
+            case "gridmemo":
+                GridMemoFragment gridMemoFragment = new GridMemoFragment();
+                gridMemoFragment.setArguments(bundle);
+                gridMemoFragment.setFromFixedFragment(true);
+                return gridMemoFragment;
             default:
                 return null;
         }
-    }
-
-    @NonNull
-    @Override
-    public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        ViewPager parent = container.findViewById(R.id.pager);
-        String Bgcolor = arrayList.get(position).getBgcolor();
-        switch (Bgcolor) {
-            case "yellow":
-            default:
-                parent.setBackgroundResource(R.drawable.template_style_bgyellow);
-                break;
-            case "pink":
-                parent.setBackgroundResource(R.drawable.template_style_bgpink);
-                break;
-            case "mint":
-                parent.setBackgroundResource(R.drawable.template_style_bgmint);
-                break;
-            case "sky":
-                parent.setBackgroundResource(R.drawable.template_style_bgsky);
-                break;
-            case "gray":
-                parent.setBackgroundResource(R.drawable.template_style_bggray);
-                break;
-        }
-        return super.instantiateItem(container, position);
     }
 
     @Override

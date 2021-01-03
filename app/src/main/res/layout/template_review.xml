@@ -63,6 +63,7 @@
                     android:background="@drawable/bg_selector"
                     android:text="Book"
                     android:textSize="10dp"
+                    android:textColor="@color/text_color"
                     android:gravity="center"
                     android:fontFamily="@font/sdkukdetopokki_b"
                     android:layout_margin="5dp"/>
@@ -73,6 +74,7 @@
                     android:layout_weight="1"
                     android:text="Concert"
                     android:textSize="10dp"
+                    android:textColor="@color/text_color"
                     android:gravity="center"
                     android:fontFamily="@font/sdkukdetopokki_b"
                     android:layout_margin="5dp"/>
@@ -82,6 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textSize="10dp"
+                    android:textColor="@color/text_color"
                     android:gravity="center"
                     android:text="Movie"
                     android:fontFamily="@font/sdkukdetopokki_b"
@@ -92,6 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textSize="10dp"
+                    android:textColor="@color/text_color"
                     android:gravity="center"
                     android:text="Musical"
                     android:fontFamily="@font/sdkukdetopokki_b"
@@ -102,6 +106,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textSize="10dp"
+                    android:textColor="@color/text_color"
                     android:gravity="center"
                     android:text="Food"
                     android:fontFamily="@font/sdkukdetopokki_b"
@@ -116,6 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Exhibition"
+                    android:textColor="@color/text_color"
                     android:textSize="9.5dp"
                     android:gravity="center"
                     android:fontFamily="@font/sdkukdetopokki_b"
@@ -127,6 +133,7 @@
                     android:layout_weight="1"
                     android:text="Party"
                     android:textSize="10dp"
+                    android:textColor="@color/text_color"
                     android:gravity="center"
                     android:fontFamily="@font/sdkukdetopokki_b"
                     android:layout_margin="5dp"/>
@@ -135,6 +142,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="@color/text_color"
                     android:textSize="10dp"
                     android:gravity="center"
                     android:text="Project"
@@ -145,6 +153,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="@color/text_color"
                     android:textSize="10dp"
                     android:gravity="center"
                     android:text="Trip"
@@ -158,6 +167,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textSize="10dp"
+                    android:textColor="@color/text_color"
                     android:gravity="center"
                     android:fontFamily="@font/sdkukdetopokki_b"
                     android:layout_margin="5dp"/>
@@ -230,6 +240,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
+                android:textColor="@color/text_color"
                 android:fontFamily="@font/sdkukdetopokki_l"/>
         </LinearLayout>
         <com.swp.memorythm.LinedEditText
@@ -239,6 +250,7 @@
             android:background="@android:color/transparent"
             android:fontFamily="@font/nanumsquare_acl"
             android:inputType="textMultiLine"
+            android:textColor="@color/text_color"
             android:gravity="top"
             android:lineHeight="30sp"
             android:textSize="14sp"

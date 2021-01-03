@@ -36,6 +36,15 @@ public class MonthTrackerFragment extends Fragment {
     private final Button[] btn_day = new Button[31] ;
     private final int[] num_day = new int[31];
     private int sum = 0;
+    private boolean fromFixedFragment;
+
+    public boolean isFromFixedFragment() {
+        return fromFixedFragment;
+    }
+
+    public void setFromFixedFragment(boolean fromFixedFragment) {
+        this.fromFixedFragment = fromFixedFragment;
+    }
 
     public static MonthTrackerFragment newInstance() {
         return new MonthTrackerFragment();
@@ -88,7 +97,9 @@ public class MonthTrackerFragment extends Fragment {
             int finalI = i;
             btn_day[i].setOnClickListener(v-> num_day[finalI]=changeBgColor(btn_day[finalI],num_day[finalI]));
         }
-
+        View activityRootView = viewGroup.findViewById(R.id.parentLayout);
+        // 수정 불가하게 만들기
+        if (isFromFixedFragment()) setClickable((ViewGroup) activityRootView);
         return viewGroup;
     }
 
@@ -96,6 +107,16 @@ public class MonthTrackerFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setData();
+    }
+
+    public void setClickable(View view){
+        view.setClickable(false);
+        if(view instanceof ViewGroup){
+            ViewGroup group = (ViewGroup)view;
+            for (int i = 0; i < group.getChildCount() ; i++) {
+                setClickable(group.getChildAt(i));
+            }
+        }
     }
 
     public int getMemoid() {

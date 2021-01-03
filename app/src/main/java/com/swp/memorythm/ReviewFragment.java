@@ -10,14 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import java.text.ParseException;
@@ -25,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 public class ReviewFragment extends Fragment {
     private DBHelper dbHelper;
@@ -37,6 +36,16 @@ public class ReviewFragment extends Fragment {
     private int pastChoice;
     private RatingBar rb_review;
     private boolean isEdit = false, isUser = false;
+    private boolean fromFixedFragment;
+
+    public boolean isFromFixedFragment() {
+        return fromFixedFragment;
+    }
+
+    public void setFromFixedFragment(boolean fromFixedFragment) {
+        this.fromFixedFragment = fromFixedFragment;
+    }
+
     public static ReviewFragment newInstance() {
         return new ReviewFragment();
     }
@@ -85,16 +94,20 @@ public class ReviewFragment extends Fragment {
         textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
 
         pastChoice = 0;
-        for (int i = 0; i < tv_reviews.length ; i++) {
+        for (int i = 0; i < tv_reviews.length; i++) {
             int finalI = i;
-            tv_reviews[i].setOnClickListener(v -> { setBg(pastChoice, tv_reviews[finalI]); pastChoice=finalI; isUser=false;});
+            tv_reviews[i].setOnClickListener(v -> {
+                setBg(pastChoice, tv_reviews[finalI]);
+                pastChoice = finalI;
+                isUser = false;
+            });
         }
 
         //레이팅 바
         rb_review.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
-            if(isEdit) isEdit = false;
+            if (isEdit) isEdit = false;
             else {
-                String string = Integer.toString((int)rb_review.getRating()*20);
+                String string = Integer.toString((int) rb_review.getRating() * 20);
                 et_scoreReview.setText(string);
             }
         });
@@ -106,36 +119,39 @@ public class ReviewFragment extends Fragment {
 
         final View activityRootView = viewGroup.findViewById(R.id.parentLayout);
 
-        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
-                //r will be populated with the coordinates of your view that area still visible.
-                activityRootView.getWindowVisibleDisplayFrame(r);
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            Rect r = new Rect();
+            //r will be populated with the coordinates of your view that area still visible.
+            activityRootView.getWindowVisibleDisplayFrame(r);
 
-                int heightDiff = activityRootView.getRootView().getHeight() - r.height();
-                if (heightDiff < 0.25 * activityRootView.getRootView().getHeight()&& ReviewFragment.this.getActivity() != null) {
-                    Log.d("키보드 ", "내려감?");
-                    if (ReviewFragment.this.getActivity().getCurrentFocus() == et_reviewList) {
-                        et_reviewList.setBackgroundResource(R.drawable.bg_selector);
-                        tv_reviews[pastChoice].setBackgroundColor(Color.parseColor("#00000000"));
-                        isUser = true;
-                        et_reviewList.clearFocus();
-                    } else if (ReviewFragment.this.getActivity().getCurrentFocus() == et_scoreReview) {
-                        isEdit = true;
-                        if (!et_scoreReview.getText().toString().equals("")) {
-                            int score = Integer.parseInt(et_scoreReview.getText().toString());
-                            rb_review.setRating(Math.round(score / 20.0));
-                            et_scoreReview.clearFocus();
-                        }
-                    } else if (ReviewFragment.this.getActivity().getCurrentFocus() == et_content)
-                        et_content.clearFocus();
-                    else if (ReviewFragment.this.getActivity().getCurrentFocus() == et_title)
-                        et_title.clearFocus();
+            int heightDiff = activityRootView.getRootView().getHeight() - r.height();
 
-                }
+            if (heightDiff < 0.25 * activityRootView.getRootView().getHeight() && ReviewFragment.this.getActivity() != null) {
+                Log.d("키보드 ", "내려감?");
+                if (ReviewFragment.this.getActivity().getCurrentFocus() == et_reviewList) {
+                    et_reviewList.setBackgroundResource(R.drawable.bg_selector);
+                    tv_reviews[pastChoice].setBackgroundColor(Color.parseColor("#00000000"));
+                    isUser = true;
+                    et_reviewList.clearFocus();
+                } else if (ReviewFragment.this.getActivity().getCurrentFocus() == et_scoreReview) {
+                    isEdit = true;
+                    if (!et_scoreReview.getText().toString().equals("")) {
+                        int score = Integer.parseInt(et_scoreReview.getText().toString());
+                        rb_review.setRating(Math.round(score / 20.0));
+                        et_scoreReview.clearFocus();
+                    }
+                } else if (ReviewFragment.this.getActivity().getCurrentFocus() == et_content)
+                    et_content.clearFocus();
+                else if (ReviewFragment.this.getActivity().getCurrentFocus() == et_title)
+                    et_title.clearFocus();
+
             }
+            activityRootView.getViewTreeObserver().removeOnGlobalLayoutListener(this::updateLabel);
         });
+
+        // 수정 불가하게 만들기
+        if (isFromFixedFragment()) setClickable((ViewGroup) activityRootView);
+
         return viewGroup;
     }
 
@@ -145,17 +161,27 @@ public class ReviewFragment extends Fragment {
         setData();
     }
 
+    public void setClickable(View view){
+        view.setClickable(false);
+        if(view instanceof ViewGroup){
+            ViewGroup group = (ViewGroup)view;
+            for (int i = 0; i < group.getChildCount() ; i++) {
+                setClickable(group.getChildAt(i));
+            }
+        }
+    }
+
     public int getMemoid() {
         return memoid;
     }
 
-    public void setBg (int past, TextView current){
+    public void setBg(int past, TextView current) {
         et_reviewList.setBackgroundResource(R.drawable.bg_line);
         tv_reviews[past].setBackgroundColor(Color.parseColor("#00000000"));
         current.setBackgroundResource(R.drawable.bg_selector);
     }
 
-    public Boolean saveData(String Mode, String Bgcolor, String title){
+    public Boolean saveData(String Mode, String Bgcolor, String title) {
         //String : userdate, categoryName, reviewTitle, reviewContent
         //int : categoryCheck, starNum, score
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -164,18 +190,17 @@ public class ReviewFragment extends Fragment {
         String reviewTitle = et_title.getText().toString().replaceAll("'", "''");
         String reviewContent = et_content.getText().toString().replaceAll("'", "''");
         int starNum = (int) rb_review.getRating();
-        int score=0;
-        if(!et_scoreReview.getText().toString().equals("")){
+        int score = 0;
+        if (!et_scoreReview.getText().toString().equals("")) {
             score = Integer.parseInt(et_scoreReview.getText().toString());
         }
 
         String categoryName;
         int categoryCheck;
-        if(isUser) {
+        if (isUser) {
             categoryName = et_reviewList.getText().toString().replaceAll("'", "''");
             categoryCheck = 9;
-        }
-        else {
+        } else {
             categoryName = "null";
             categoryCheck = pastChoice;
         }
@@ -183,7 +208,7 @@ public class ReviewFragment extends Fragment {
         switch (Mode) {
             case "write":
                 db.execSQL("INSERT INTO review('userdate', 'categoryName', 'reviewTitle', 'reviewContent', 'categoryCheck', 'starNum', 'score', 'bgcolor', 'title') " +
-                        "VALUES('" + userdate + "', '" + categoryName + "', '" + reviewTitle + "', '" + reviewContent + "', '" + categoryCheck + "', '" + starNum + "', '" + score + "', '"+Bgcolor+"', '"+title+"');");
+                        "VALUES('" + userdate + "', '" + categoryName + "', '" + reviewTitle + "', '" + reviewContent + "', '" + categoryCheck + "', '" + starNum + "', '" + score + "', '" + Bgcolor + "', '" + title + "');");
                 final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                 cursor.moveToFirst();
                 memoid = cursor.getInt(0);
@@ -193,23 +218,29 @@ public class ReviewFragment extends Fragment {
                 if (getArguments() != null) {
                     memoid = getArguments().getInt("memoid");
                 }
-                db.execSQL("UPDATE review SET userdate = '"+userdate+"', categoryName = '"+categoryName+"', reviewTitle = '"+reviewTitle+"', reviewContent = '"+reviewContent+"', categoryCheck = '"+categoryCheck+"', starNum = '"+starNum+"', score = '"+score+"'," +
-                        "editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                db.execSQL("UPDATE review SET userdate = '" + userdate + "', categoryName = '" + categoryName + "', reviewTitle = '" + reviewTitle + "', reviewContent = '" + reviewContent + "', categoryCheck = '" + categoryCheck + "', starNum = '" + starNum + "', score = '" + score + "'," +
+                        "editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
                 break;
         }
         return true;
     }
-    public void setData(){
-        String userDate =null, categoryName=null, reviewTitle=null, reviewContent=null;
-        int categoryCheck=0, starNum=0, score=0;
+
+    public void setData() {
+        String userDate = null, categoryName = null, reviewTitle = null, reviewContent = null;
+        int categoryCheck = 0, starNum = 0, score = 0;
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
-            Cursor cursor = db.rawQuery("SELECT userdate, categoryName, reviewTitle, reviewContent, categoryCheck, starNum, score FROM review WHERE id = "+memoid+"", null);
+            Cursor cursor = db.rawQuery("SELECT userdate, categoryName, reviewTitle, reviewContent, categoryCheck, starNum, score FROM review WHERE id = " + memoid + "", null);
             while (cursor.moveToNext()) {
-                userDate = cursor.getString(0); categoryName = cursor.getString(1); reviewTitle = cursor.getString(2); reviewContent = cursor.getString(3);
-                categoryCheck = cursor.getInt(4); starNum = cursor.getInt(5); score = cursor.getInt(6);
+                userDate = cursor.getString(0);
+                categoryName = cursor.getString(1);
+                reviewTitle = cursor.getString(2);
+                reviewContent = cursor.getString(3);
+                categoryCheck = cursor.getInt(4);
+                starNum = cursor.getInt(5);
+                score = cursor.getInt(6);
             }
             textViewDate.setText(userDate);
             et_title.setText(reviewTitle);
@@ -218,11 +249,11 @@ public class ReviewFragment extends Fragment {
             isEdit = true;
             et_scoreReview.setText(Integer.toString(score));
             isEdit = false;
-            if(categoryCheck==9){
+            if (categoryCheck == 9) {
                 et_reviewList.setText(categoryName);
                 et_reviewList.setBackgroundResource(R.drawable.bg_selector);
                 tv_reviews[pastChoice].setBackgroundColor(Color.parseColor("#00000000"));
-            }else setBg(pastChoice, tv_reviews[categoryCheck]);
+            } else setBg(pastChoice, tv_reviews[categoryCheck]);
 
             // 데이트픽커 다이얼로그에 userdate로 뜨게 하는 코드
             String toDate = textViewDate.getText().toString();
@@ -241,6 +272,7 @@ public class ReviewFragment extends Fragment {
         }
 
     }
+
     // 널 값 검증
     public boolean checkNull() {
         String reviewTitle = et_title.getText().toString();
