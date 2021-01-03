@@ -162,7 +162,7 @@ public class ReviewFragment extends Fragment {
     }
 
     public void setClickable(View view){
-        view.setClickable(false);
+        view.setOnTouchListener((view1, motionEvent) -> true);
         if(view instanceof ViewGroup){
             ViewGroup group = (ViewGroup)view;
             for (int i = 0; i < group.getChildCount() ; i++) {
