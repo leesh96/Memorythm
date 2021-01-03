@@ -1,26 +1,35 @@
 package com.swp.memorythm;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHolder> implements ItemTouchHelperListener, OnDialogListener{
+public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHolder> implements ItemTouchHelperListener {
     Context memoContext;
     private ArrayList<MemoData> listMemo;
     private Map<MemoData, Boolean> memoCheckedMap = new HashMap<>();
@@ -90,12 +99,6 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
     }
 
     @Override
-    public void onFinish(int position, MemoData memoData) {
-        listMemo.set(position, memoData);
-        notifyItemChanged(position);
-    }
-
-    @Override
     public boolean onItemMove(int from_position, int to_position) {
         return false;
     }
@@ -109,20 +112,65 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
     @Override
     public void onRightClick(int position, RecyclerView.ViewHolder viewHolder) {
         // 버튼 클릭시 다이얼로그 생성
-        MemoListDialog dialog = new MemoListDialog(memoContext, position, listMemo.get(position));
-        //화면 사이즈 구하기
-        DisplayMetrics dm = memoContext.getApplicationContext().getResources().getDisplayMetrics();
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-        //다이얼로그 사이즈 세팅
-        WindowManager.LayoutParams wm = dialog.getWindow().getAttributes();
-        wm.copyFrom(dialog.getWindow().getAttributes());
-        wm.width = (int) (width * 0.7);
-        wm.height = height/2;
-        //다이얼로그 Listener 세팅
-        dialog.setDialogListener(this);
-        //다이얼로그 띄우기
-        dialog.show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(memoContext);
+        View dialogView = LayoutInflater.from(memoContext).inflate(R.layout.dialog_memo_list, null, false);
+        builder.setView(dialogView);
+
+        DBHelper dbHelper = new DBHelper(memoContext);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        ArrayList<String> folderlist = new ArrayList<>();
+        String currentFolder = null;
+
+        try {
+            Cursor cursor = db.rawQuery("SELECT name FROM folder ORDER BY sequence", null);
+            while (cursor.moveToNext()) {
+                folderlist.add(cursor.getString(0));
+            }
+            cursor = db.rawQuery("SELECT folder_name FROM "+listMemo.get(position).getTemplate()+" WHERE id = "+listMemo.get(position).getMemoid(), null);
+            cursor.moveToFirst();
+            currentFolder = cursor.getString(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Spinner spinner = dialogView.findViewById(R.id.folder_spinner);
+        ArrayAdapter spinnerAdapter = new ArrayAdapter(memoContext, R.layout.support_simple_spinner_dropdown_item, folderlist);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setSelection(getIndex(spinner, currentFolder));
+
+        Button btnApply, btnCancel;
+        btnApply = dialogView.findViewById(R.id.btn_apply);
+        btnCancel = dialogView.findViewById(R.id.btn_cancel);
+
+        AlertDialog folderChange = builder.create();
+        folderChange.show();
+        notifyItemChanged(position);
+
+        String finalCurrentFolder = currentFolder;
+        btnApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String oldFolder = finalCurrentFolder;
+                String changeFolder = spinner.getItemAtPosition(spinner.getSelectedItemPosition()).toString();
+                try {
+                    db.execSQL("UPDATE "+listMemo.get(position).getTemplate()+" SET folder_name = '"+changeFolder+"' WHERE id = "+listMemo.get(position).getMemoid()+";");
+                    db.execSQL("UPDATE folder SET count = count - 1 WHERE name = '"+oldFolder+"';");
+                    db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '"+changeFolder+"';");
+                    listMemo.remove(position);
+                    notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                folderChange.dismiss();
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                folderChange.dismiss();
+            }
+        });
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -152,5 +200,13 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
     // 아이템 갱신에 사용
     public void setItems(ArrayList<MemoData> items){ listMemo = items; }
 
+    private int getIndex(Spinner spinner, String folderName) {
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(folderName)) {
+                return i;
+            }
+        }
+        return 0;
+    }
 }
 

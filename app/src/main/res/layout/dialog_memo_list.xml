@@ -1,11 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#FFFFFF"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/nanumsquare_acr"
+        android:text="폴더 이동"
+        android:textColor="@color/text_color"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/folder_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/folder_spinner"
+        app:layout_constraintStart_toStartOf="@+id/folder_spinner"
+        app:layout_constraintTop_toBottomOf="@+id/folder_spinner"
+        android:padding="5dp">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="90dp"
+            android:layout_height="30dp"
+            android:background="@color/white"
+            android:fontFamily="@font/nanumsquare_acr"
+            android:text="취소"
+            android:textColor="@color/text_color"
+            android:textSize="14dp"
+            android:layout_marginRight="20dp"/>
+
+        <Button
+            android:id="@+id/btn_apply"
+            android:layout_width="90dp"
+            android:layout_height="30dp"
+            android:background="@color/white"
+            android:fontFamily="@font/nanumsquare_acr"
+            android:text="이동"
+            android:textColor="@color/text_color"
+            android:textSize="14dp"
+            android:layout_marginLeft="20dp"/>
+
+    </LinearLayout>
+
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
@@ -31,5 +89,5 @@
         android:text="취소"
         android:textColor="@color/text_color"
         android:fontFamily="@font/nanumsquare_acr"
-        android:textSize="15sp"/>
-</LinearLayout>
+        android:textSize="15sp"/>-->
+</androidx.constraintlayout.widget.ConstraintLayout>
