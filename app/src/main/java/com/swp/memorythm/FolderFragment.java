@@ -73,7 +73,7 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
         deleteBtn = (ImageButton)view.findViewById(R.id.deleteFolderBtn);
         deleteBtn.setOnClickListener(this);
         //ItemTouchHelper 생성
-        helper = new ItemTouchHelper(new ItemTouchHelperCallback(folderFragAdapter));
+        helper = new ItemTouchHelper(new FolderItemTouchHelperCallback(folderFragAdapter));
         //RecyclerView에 ItemTouchHelper 붙이기
         helper.attachToRecyclerView(folderRecyclerView);
         //아이템 갱신
