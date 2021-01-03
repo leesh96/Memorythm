@@ -42,6 +42,16 @@ public class TodoFragment extends Fragment {
     private String Userdate;
     private StringBuilder Content, Done;
 
+    public boolean fromFixedFragment;
+
+    public boolean isFromFixedFragment() {
+        return fromFixedFragment;
+    }
+
+    public void setFromFixedFragment(boolean fromFixedFragment) {
+        this.fromFixedFragment = fromFixedFragment;
+    }
+
     private DBHelper dbHelper;
     private SQLiteDatabase db;
 
@@ -93,6 +103,11 @@ public class TodoFragment extends Fragment {
         if (getArguments() != null) {
             textViewDate.setText(Userdate);
             mAdapter.notifyDataSetChanged();
+            if (isFromFixedFragment()) {
+                textViewDate.setEnabled(false);
+                todoRecyclerView.setEnabled(false);
+                btnAdd.setVisibility(View.GONE);
+            }
         } else {
             // 텍스트뷰 초기 날짜 현재 날짜로 설정
             textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));

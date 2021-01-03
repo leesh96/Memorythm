@@ -52,6 +52,16 @@ public class WishFragment extends Fragment {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
 
+    public boolean fromFixedFragment;
+
+    public boolean isFromFixedFragment() {
+        return fromFixedFragment;
+    }
+
+    public void setFromFixedFragment(boolean fromFixedFragment) {
+        this.fromFixedFragment = fromFixedFragment;
+    }
+
     public static WishFragment newInstance() { return new WishFragment(); }
 
     // 캘린더 객체 생성
@@ -127,6 +137,14 @@ public class WishFragment extends Fragment {
                 textViewsCategory[selectCategory].setBackgroundColor(Color.TRANSPARENT);
             } else {
                 changeCategory(0, selectCategory);
+            }
+            if (isFromFixedFragment()) {
+                for (int i = 0; i < textViewsCategory.length; i++) {
+                    textViewsCategory[i].setEnabled(false);
+                    editTextCustomCategory.setEnabled(false);
+                    wishRecyclerView.setEnabled(false);
+                    btnAdd.setVisibility(View.GONE);
+                }
             }
         } else {
             // 텍스트뷰 초기 날짜 현재 날짜로 설정

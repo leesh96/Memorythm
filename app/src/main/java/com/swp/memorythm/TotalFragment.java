@@ -37,7 +37,7 @@ public class TotalFragment extends Fragment {
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT id, title, editdate, template_case FROM nonlinememo WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+        Cursor cursor = db.rawQuery("SELECT * FROM (SELECT id, title, editdate, template_case FROM nonlinememo WHERE deleted = 0 AND fixed = 0 UNION ALL " +
                 "SELECT id, title, editdate, template_case FROM linememo WHERE deleted = 0 AND fixed = 0 UNION ALL " +
                 "SELECT id, title, editdate, template_case FROM gridmemo WHERE deleted = 0 AND fixed = 0 UNION ALL " +
                 "SELECT id, title, editdate, template_case FROM todolist WHERE deleted = 0 AND fixed = 0 UNION ALL " +
@@ -50,9 +50,9 @@ public class TotalFragment extends Fragment {
                 "SELECT id, title, editdate, template_case FROM yearlyplan WHERE deleted = 0 AND fixed = 0 UNION ALL " +
                 "SELECT id, title, editdate, template_case FROM healthtracker WHERE deleted = 0 AND fixed = 0 UNION ALL " +
                 "SELECT id, title, editdate, template_case FROM monthtracker WHERE deleted = 0 AND fixed = 0 UNION ALL " +
-                "SELECT id, title, editdate, template_case FROM studytracker WHERE deleted = 0 AND fixed = 0 ",null);
+                "SELECT id, title, editdate, template_case FROM studytracker WHERE deleted = 0 AND fixed = 0) ORDER BY editdate DESC ",null);
 
-        Cursor cursorFixed = db.rawQuery("SELECT id, title, editdate, template_case FROM nonlinememo WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+        Cursor cursorFixed = db.rawQuery("SELECT * FROM (SELECT id, title, editdate, template_case FROM nonlinememo WHERE fixed = 1 AND deleted = 0 UNION ALL " +
                 "SELECT id, title, editdate, template_case FROM linememo WHERE fixed = 1 AND deleted = 0 UNION ALL " +
                 "SELECT id, title, editdate, template_case FROM gridmemo WHERE fixed = 1 AND deleted = 0 UNION ALL " +
                 "SELECT id, title, editdate, template_case FROM todolist WHERE fixed = 1 AND deleted = 0 UNION ALL " +
@@ -65,7 +65,7 @@ public class TotalFragment extends Fragment {
                 "SELECT id, title, editdate, template_case FROM yearlyplan WHERE fixed = 1 AND deleted = 0 UNION ALL " +
                 "SELECT id, title, editdate, template_case FROM healthtracker WHERE fixed = 1 AND deleted = 0 UNION ALL " +
                 "SELECT id, title, editdate, template_case FROM monthtracker WHERE fixed = 1 AND deleted = 0 UNION ALL " +
-                "SELECT id, title, editdate, template_case FROM studytracker WHERE fixed = 1 AND deleted = 0",null);
+                "SELECT id, title, editdate, template_case FROM studytracker WHERE fixed = 1 AND deleted = 0) ORDER BY editdate DESC",null);
 
         listTotal = new ArrayList<>();
         listFixed = new ArrayList<>();

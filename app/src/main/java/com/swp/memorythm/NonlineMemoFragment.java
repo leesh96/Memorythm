@@ -46,6 +46,16 @@ public class NonlineMemoFragment extends Fragment {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
 
+    // 메인액티비티에서 고정메모 보는 프래그먼트로 만들어졌으면 수정 불가능하게 뷰 조정
+    public boolean fromFixedFragment;
+
+    public boolean isFromFixedFragment() {
+        return fromFixedFragment;
+    }
+
+    public void setFromFixedFragment(boolean fromFixedFragment) {
+        this.fromFixedFragment = fromFixedFragment;
+    }
 
     public static NonlineMemoFragment newInstance() {
         return new NonlineMemoFragment();
@@ -88,6 +98,11 @@ public class NonlineMemoFragment extends Fragment {
         if (getArguments() != null) {
             textViewDate.setText(Userdate);
             editTextContent.setText(Content);
+            // 수정 불가하게 만들기
+            if (isFromFixedFragment()) {
+                textViewDate.setEnabled(false);
+                editTextContent.setEnabled(false);
+            }
         } else {
             // 텍스트뷰 초기 날짜 현재 날짜로 설정
             textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
