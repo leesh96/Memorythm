@@ -15,10 +15,12 @@ import java.util.ArrayList;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    private ArrayList<Fragment> items = new ArrayList<Fragment>();
+    private ArrayList<Fragment> items;
 
     public ViewPagerAdapter(@NonNull FragmentManager fm) {
+
         super(fm);
+        items = new ArrayList<>();
     }
 
     public void addItem(Fragment item){
