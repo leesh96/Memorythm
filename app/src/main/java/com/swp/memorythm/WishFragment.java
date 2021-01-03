@@ -139,12 +139,8 @@ public class WishFragment extends Fragment {
                 changeCategory(0, selectCategory);
             }
             if (isFromFixedFragment()) {
-                for (int i = 0; i < textViewsCategory.length; i++) {
-                    textViewsCategory[i].setEnabled(false);
-                    editTextCustomCategory.setEnabled(false);
-                    wishRecyclerView.setEnabled(false);
-                    btnAdd.setVisibility(View.GONE);
-                }
+                setEnable(rootView, false);
+                btnAdd.setVisibility(View.GONE);
             }
         } else {
             // 텍스트뷰 초기 날짜 현재 날짜로 설정
@@ -260,6 +256,17 @@ public class WishFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         db.close();
+    }
+
+    private void setEnable(ViewGroup viewGroup, boolean enable) {
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                setEnable((ViewGroup) child, enable);
+            } else {
+                child.setEnabled(enable);
+            }
+        }
     }
 
     // 카테고리 변경 함수

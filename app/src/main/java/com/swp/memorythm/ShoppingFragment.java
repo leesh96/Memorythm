@@ -103,8 +103,7 @@ public class ShoppingFragment extends Fragment {
             textViewDate.setText(Userdate);
             mAdapter.notifyDataSetChanged();
             if (isFromFixedFragment()) {
-                textViewDate.setEnabled(false);
-                shoppingRecyclerView.setEnabled(false);
+                setEnable(rootView, false);
                 btnAdd.setVisibility(View.GONE);
             }
         } else {
@@ -210,6 +209,17 @@ public class ShoppingFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         db.close();
+    }
+
+    private void setEnable(ViewGroup viewGroup, boolean enable) {
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                setEnable((ViewGroup) child, enable);
+            } else {
+                child.setEnabled(enable);
+            }
+        }
     }
 
     // 텍스트뷰 날짜 업데이트

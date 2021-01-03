@@ -52,13 +52,13 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
         // dbHelper.getWritableDatabase() : 읽고 쓰기 위해 DB 연다. 권한이 없거나 디스크가 가득 차면 실패
         // db.close() : DB를 닫는다.
 
+        // 날짜 받아오기
+        setCurrentDate();
+
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         //GPS 권한 요구, 확인
         requestLocation();
-
-        // 날짜 받아오기
-        setCurrentDate();
     }
 
     @Override

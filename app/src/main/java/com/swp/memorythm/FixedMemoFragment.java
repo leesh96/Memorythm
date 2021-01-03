@@ -72,8 +72,48 @@ public class FixedMemoFragment extends Fragment {
         viewPager.setOffscreenPageLimit(3); // 3개로 제한
         pagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), arrayList);
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setCurrentItem(0);
+        if (!arrayList.isEmpty()) {
+            viewPager.setCurrentItem(0);
+            setBackground(arrayList.get(0).getBgcolor());
+        }
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                setBackground(arrayList.get(position).getBgcolor());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         return view;
+    }
+
+    private void setBackground(String Bgcolor) {
+        switch (Bgcolor) {
+            case "yellow":
+            default:
+                viewPager.setBackgroundResource(R.drawable.template_style_bgyellow);
+                break;
+            case "pink":
+                viewPager.setBackgroundResource(R.drawable.template_style_bgpink);
+                break;
+            case "mint":
+                viewPager.setBackgroundResource(R.drawable.template_style_bgmint);
+                break;
+            case "sky":
+                viewPager.setBackgroundResource(R.drawable.template_style_bgsky);
+                break;
+            case "gray":
+                viewPager.setBackgroundResource(R.drawable.template_style_bggray);
+                break;
+        }
     }
 }
