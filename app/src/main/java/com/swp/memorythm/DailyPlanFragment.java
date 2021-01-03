@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -22,6 +23,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -188,7 +190,11 @@ public class DailyPlanFragment extends Fragment {
                 textViewDate.setEnabled(false);
                 editTextContentAm.setEnabled(false);
                 editTextContentPm.setEnabled(false);
-                radioGroup.setEnabled(false);
+
+                for(int i = 0; i < radioGroup.getChildCount(); i++) {
+
+                    ((RadioButton)radioGroup.getChildAt(i)).setEnabled(false);
+                }
             }
         }
     }

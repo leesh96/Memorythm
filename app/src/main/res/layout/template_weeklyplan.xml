@@ -100,6 +100,7 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -155,6 +156,7 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -210,6 +212,7 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -265,6 +268,7 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -320,6 +324,7 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -375,6 +380,7 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -430,6 +436,7 @@
                 android:fontFamily="@font/nanumsquare_acr"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
         </TableRow>
 
