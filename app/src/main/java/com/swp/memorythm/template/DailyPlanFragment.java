@@ -1,40 +1,41 @@
-package com.swp.memorythm;
+package com.swp.memorythm.template;
 
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+
+import com.swp.memorythm.DBHelper;
+import com.swp.memorythm.PreferenceManager;
+import com.swp.memorythm.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 
-public class YearlyPlanFragment extends Fragment {
+public class DailyPlanFragment extends Fragment {
+    private RadioGroup radioGroup;
     private TextView textViewDate;
-    private EditText editTextJan, editTextFeb, editTextMar, editTextApr, editTextMay, editTextJun,
-                     editTextJul, editTextAug, editTextSep, editTextOct, editTextNov, editTextDec;
+    private EditText editTextContentAm, editTextContentPm;
+    private String currentWeather;
+    private int id, weather;
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     public int memoid;
-    private EditText[] yearView = new EditText[12];
-    private String userDate;
-    private String[] setContent;
-    private StringBuilder contentYear;
+    private String userDate, contentAm, contentPm;
 
     // 메인액티비티에서 고정메모 보는 프래그먼트로 만들어졌으면 수정 불가능하게 뷰 조정
     public boolean fromFixedFragment;
@@ -47,8 +48,8 @@ public class YearlyPlanFragment extends Fragment {
         this.fromFixedFragment = fromFixedFragment;
     }
 
-    public static YearlyPlanFragment newInstance() {
-        return new YearlyPlanFragment();
+    public static DailyPlanFragment newInstance() {
+        return new DailyPlanFragment();
     }
 
     // 캘린더 객체 생성
@@ -59,13 +60,15 @@ public class YearlyPlanFragment extends Fragment {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
             myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, month);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             updateLabel();
         }
     };
 
     // 텍스트뷰 날짜 업데이트
     private void updateLabel() {
-        String DateFormat = "yyyy";
+        String DateFormat = "yyyy - MM - dd";
         SimpleDateFormat sdf = new SimpleDateFormat(DateFormat, Locale.KOREA);
 
         textViewDate.setText(sdf.format(myCalendar.getTime()));
@@ -81,56 +84,66 @@ public class YearlyPlanFragment extends Fragment {
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
         }
-        Cursor cursor = db.rawQuery("SELECT userdate, contentYear, splitKey FROM yearlyplan WHERE id = "+memoid+"", null);
+        Cursor cursor = db.rawQuery("SELECT userdate, contentAm, contentPm, weather FROM dailyplan WHERE id = "+memoid+"", null);
         while (cursor.moveToNext()) {
             userDate = cursor.getString(0);
-            String splitKey = cursor.getString(2);
-            setContent = cursor.getString(1).split(splitKey);
+            contentAm = cursor.getString(1);
+            contentPm = cursor.getString(2);
+            weather = cursor.getInt(3);
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_yearlyplan, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_dailyplan, container, false);
 
         textViewDate = rootView.findViewById(R.id.write_date);
-        editTextJan = rootView.findViewById(R.id.memo_content_jan);
-        editTextFeb = rootView.findViewById(R.id.memo_content_feb);
-        editTextMar = rootView.findViewById(R.id.memo_content_mar);
-        editTextApr = rootView.findViewById(R.id.memo_content_apr);
-        editTextMay = rootView.findViewById(R.id.memo_content_may);
-        editTextJun = rootView.findViewById(R.id.memo_content_jun);
-        editTextJul = rootView.findViewById(R.id.memo_content_jul);
-        editTextAug = rootView.findViewById(R.id.memo_content_aug);
-        editTextSep = rootView.findViewById(R.id.memo_content_sep);
-        editTextOct = rootView.findViewById(R.id.memo_content_oct);
-        editTextNov = rootView.findViewById(R.id.memo_content_nov);
-        editTextDec = rootView.findViewById(R.id.memo_content_dec);
+        editTextContentAm = rootView.findViewById(R.id.memo_content_am);
+        editTextContentPm = rootView.findViewById(R.id.memo_content_pm);
+        radioGroup = rootView.findViewById(R.id.weather_group);
 
-        yearView[0] = editTextJan;
-        yearView[1] = editTextFeb;
-        yearView[2] = editTextMar;
-        yearView[3] = editTextApr;
-        yearView[4] = editTextMay;
-        yearView[5] = editTextJun;
-        yearView[6] = editTextJul;
-        yearView[7] = editTextAug;
-        yearView[8] = editTextSep;
-        yearView[9] = editTextOct;
-        yearView[10] = editTextNov;
-        yearView[11] = editTextDec;
+        if((PreferenceManager.getInt(getActivity(), "currentWeatherId") != -1) && !PreferenceManager.getString(getActivity(), "currentWeather").equals("")) {
+
+            currentWeather = PreferenceManager.getString(getActivity(), "currentWeather");
+            id = PreferenceManager.getInt(getActivity(), "currentWeatherId");
+
+            //날씨값에 따른 아이콘 선택
+            switch (currentWeather) {
+
+                case "Clear":
+                    radioGroup.check(R.id.sun);
+                    break;
+                case "Clouds":
+                    if(id == 801 || id == 802) radioGroup.check(R.id.cloudy);
+                    else radioGroup.check(R.id.cloud);
+                    break;
+                case "Thunderstorm":
+                    radioGroup.check(R.id.storm);
+                    break;
+                case "Snow":
+                    radioGroup.check(R.id.snow);
+                    break;
+                case "Drizzle":
+                    radioGroup.check(R.id.rain);
+                case "Rain":
+                    radioGroup.check(R.id.rain);
+                    break;
+                default:
+                    radioGroup.check(R.id.cloud);
+                    break;
+            }
+        }
 
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
         Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy - MM - dd", Locale.KOREA);
         textViewDate.setText(simpleDateFormat.format(currentTime));
 
         textViewDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // 데이트픽커 띄우기
                 new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-
             }
         });
 
@@ -144,19 +157,19 @@ public class YearlyPlanFragment extends Fragment {
         if(getArguments() != null) {
 
             textViewDate.setText(userDate);
-
-            for(int i = 0; i < yearView.length; i++) {
-
-                yearView[i].setText(setContent[i]);
-            }
+            editTextContentAm.setText(contentAm);
+            editTextContentPm.setText(contentPm);
+            radioGroup.check(weather);
 
             // 수정 불가하게 만들기
             if (isFromFixedFragment()) {
                 textViewDate.setEnabled(false);
+                editTextContentAm.setEnabled(false);
+                editTextContentPm.setEnabled(false);
 
-                for(EditText editText : yearView) {
+                for(int i = 0; i < radioGroup.getChildCount(); i++) {
 
-                    editText.setEnabled(false);
+                    ((RadioButton)radioGroup.getChildAt(i)).setEnabled(false);
                 }
             }
         }
@@ -167,25 +180,30 @@ public class YearlyPlanFragment extends Fragment {
         return memoid;
     }
 
+    // 널 값 검증
+    public boolean checkNull() {
+        contentAm = editTextContentAm.getText().toString();
+        contentPm = editTextContentPm.getText().toString();
+
+        if ((contentAm.equals("") | contentAm == null) && (contentPm.equals("") | contentPm == null)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     // 저장 및 수정
     public boolean saveData(String Mode, String Bgcolor, String title) {
         db = dbHelper.getReadableDatabase();
 
         userDate = textViewDate.getText().toString();
-        contentYear = new StringBuilder();
-        String splitKey = makeKey();
+        contentAm = editTextContentAm.getText().toString();
+        contentPm = editTextContentPm.getText().toString();
+        weather = radioGroup.getCheckedRadioButtonId();
 
-        for (EditText editText : yearView) {
-
-            if(editText.getText().toString().equals("")) {
-
-                contentYear.append(" ").append(splitKey);
-            }
-            else {
-
-                contentYear.append(editText.getText().toString().replaceAll("'", "''")).append(splitKey);
-            }
-        }
+        //작은 따옴표 이스케이프 시키기
+        contentAm = contentAm.replaceAll("'", "''");
+        contentPm = contentPm.replaceAll("'", "''");
 
         //editdate 컬럼 업데이트 때문에
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -193,7 +211,7 @@ public class YearlyPlanFragment extends Fragment {
 
         switch (Mode) {
             case "write":
-                db.execSQL("INSERT INTO yearlyplan('userdate', 'contentYear', 'splitKey', 'title', 'bgcolor') VALUES('" + userDate + "', '" + contentYear + "', '" + splitKey + "', '" + title + "', '" + Bgcolor + "');");
+                db.execSQL("INSERT INTO dailyplan('userdate', 'contentAm', 'contentPm', 'weather', 'title', 'bgcolor') VALUES('" + userDate + "', '" + contentAm + "', '" + contentPm + "', '" + weather + "', '" + title + "', '" + Bgcolor + "');");
                 // 작성하면 view 모드로 바꾸기 위해 최근 삽입한 레코드 id로 바꿔줌
                 final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                 cursor.moveToFirst();
@@ -203,38 +221,14 @@ public class YearlyPlanFragment extends Fragment {
             case "view":
                 // 메모 수정
                 if (getArguments() == null) {
-                    db.execSQL("UPDATE yearlyplan SET userdate = '"+userDate+"', contentYear = '"+contentYear+"', splitKey = '"+splitKey+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE dailyplan SET userdate = '"+userDate+"', contentAm = '"+contentAm+"', contentPm = '"+contentPm+"', weather = '"+weather+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
                 } else {
                     memoid = getArguments().getInt("memoid");
-                    db.execSQL("UPDATE yearlyplan SET userdate = '"+userDate+"', contentYear = '"+contentYear+"', splitKey = '"+splitKey+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE dailyplan SET userdate = '"+userDate+"', contentAm = '"+contentAm+"', contentPm = '"+contentPm+"', weather = '"+weather+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
                 }
                 break;
         }
         return true;
-    }
-
-    public String makeKey(){
-        StringBuilder key = new StringBuilder();
-        Random random = new Random();
-
-        for (int i = 0; i < 8; i++) {
-            int rIndex = random.nextInt(3);
-            switch (rIndex) {
-                case 0:
-                    // a-z
-                    key.append((char) ((int) (random.nextInt(26)) + 97));
-                    break;
-                case 1:
-                    // A-Z
-                    key.append((char) ((int) (random.nextInt(26)) + 65));
-                    break;
-                case 2:
-                    // 0-9
-                    key.append(random.nextInt(10));
-                    break;
-            }
-        }
-        return key.toString();
     }
 
     @Override

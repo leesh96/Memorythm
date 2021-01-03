@@ -1,4 +1,4 @@
-package com.swp.memorythm;
+package com.swp.memorythm.template;
 
 import android.content.Context;
 import android.graphics.Canvas;

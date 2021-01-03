@@ -1,4 +1,4 @@
-package com.swp.memorythm;
+package com.swp.memorythm.template;
 
 import android.app.DatePickerDialog;
 import android.database.Cursor;
@@ -10,15 +10,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+
+import com.swp.memorythm.DBHelper;
+import com.swp.memorythm.PreferenceManager;
+import com.swp.memorythm.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

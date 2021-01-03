@@ -23,6 +23,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.swp.memorythm.MainActivity;
+import com.swp.memorythm.R;
 
 public class LoginActivity extends AppCompatActivity {
 

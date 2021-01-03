@@ -1,4 +1,4 @@
-package com.swp.memorythm;
+package com.swp.memorythm.template;
 
 import androidx.fragment.app.Fragment;
 
@@ -25,7 +25,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import com.swp.memorythm.DBHelper;
+import com.swp.memorythm.MainActivity;
+import com.swp.memorythm.R;
 
 public class MemoViewActivity extends AppCompatActivity {
     private FragmentManager fm;

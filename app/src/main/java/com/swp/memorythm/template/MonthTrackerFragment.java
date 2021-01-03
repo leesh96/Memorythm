@@ -1,20 +1,26 @@
-package com.swp.memorythm;
+package com.swp.memorythm.template;
 
 import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import com.swp.memorythm.DBHelper;
+import com.swp.memorythm.PreferenceManager;
+import com.swp.memorythm.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,20 +28,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Random;
 
-public class StudyTrackerFragment extends Fragment {
+public class MonthTrackerFragment extends Fragment {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private int memoid;
     private TextView textViewDate;
-    private EditText et_comment;
-    private final EditText[] et_comments = new EditText[24];
-    private final ImageView[] iv_time = new ImageView[144];
-    private final int[] num_time = new int[144];
-    public static StudyTrackerFragment newInstance() {
-        return new StudyTrackerFragment();
-    }
+    private EditText et_goal, et_comment;
+    private final Button[] btn_day = new Button[31] ;
+    private final int[] num_day = new int[31];
+    private int sum = 0;
     private boolean fromFixedFragment;
 
     public boolean isFromFixedFragment() {
@@ -45,6 +47,11 @@ public class StudyTrackerFragment extends Fragment {
     public void setFromFixedFragment(boolean fromFixedFragment) {
         this.fromFixedFragment = fromFixedFragment;
     }
+
+    public static MonthTrackerFragment newInstance() {
+        return new MonthTrackerFragment();
+    }
+
     // 캘린더 객체 생성
     Calendar myCalendar = Calendar.getInstance();
 
@@ -60,39 +67,25 @@ public class StudyTrackerFragment extends Fragment {
     private void updateLabel() {
         String DateFormat = "yyyy - MM - dd";
         SimpleDateFormat sdf = new SimpleDateFormat(DateFormat, Locale.KOREA);
+
         textViewDate.setText(sdf.format(myCalendar.getTime()));
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.template_studytracker, container, false);
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.template_monthtracker, container, false);
         dbHelper = new DBHelper(getContext());
 
         textViewDate = viewGroup.findViewById(R.id.write_date);
-        et_comment = viewGroup.findViewById(R.id.et_comment);
-        String packName = Objects.requireNonNull(this.getActivity()).getPackageName();
-        for (int i = 0; i < 12; i++) {
-            for (int j = 0; j < 6 ; j++) {
-                String amTime, pmTime;
-                if(i<9) {
-                    amTime = "am0"+(i+1)+"_"+(j+1); pmTime = "pm0"+(i+1)+"_"+(j+1);
-                }
-                else {
-                    amTime="am"+(i+1)+"_"+(j+1); pmTime = "pm"+(i+1)+"_"+(j+1);
-                }
-                int amId = getResources().getIdentifier(amTime,"id",packName);
-                int pmId = getResources().getIdentifier(pmTime,"id",packName);
-                iv_time[i*6+j] = viewGroup.findViewById(amId);
-                iv_time[72+i*6+j] = viewGroup.findViewById(pmId);
-            }
-        }
-        for (int i = 0; i < 24 ; i++) {
-            String name = "et"+i;
-            int id=getResources().getIdentifier(name,"id",packName);
-            et_comments[i] = viewGroup.findViewById(id);
-        }
+        et_goal = viewGroup.findViewById(R.id.et_goal); et_comment = viewGroup.findViewById(R.id.et_comment);
 
+        String packName = Objects.requireNonNull(this.getActivity()).getPackageName();
+        for (int i = 1; i < 32; i++) {
+            String name = "btn_day"+i;
+            int id = getResources().getIdentifier(name,"id",packName);
+            btn_day[i-1]=viewGroup.findViewById(id);
+        }
 
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
         textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
@@ -101,15 +94,14 @@ public class StudyTrackerFragment extends Fragment {
             new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         });
 
-
-        for (int i = 0; i < iv_time.length ; i++) {
+        //날짜 체크
+        for (int i = 0; i < btn_day.length ; i++) {
             int finalI = i;
-            iv_time[i].setOnClickListener(v-> num_time[finalI]=changeBgColor(iv_time[finalI],num_time[finalI]));
+            btn_day[i].setOnClickListener(v-> num_day[finalI]=changeBgColor(btn_day[finalI],num_day[finalI]));
         }
         View activityRootView = viewGroup.findViewById(R.id.parentLayout);
         // 수정 불가하게 만들기
         if (isFromFixedFragment()) setClickable((ViewGroup) activityRootView);
-
         return viewGroup;
     }
 
@@ -133,99 +125,84 @@ public class StudyTrackerFragment extends Fragment {
         return memoid;
     }
 
-    //배경색 바꾸는 함수
-    public int changeBgColor(ImageView imageView, int n){
+    //날짜 체크 함수
+    public int changeBgColor(Button button, int n){
+        GradientDrawable drawable = (GradientDrawable) ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.icon_circle);
+        assert drawable != null;
         if(n==0){
-            imageView.setBackgroundColor(Color.parseColor("#BFFFFFFF")); //투명도 75%
+            switch ((sum+1)/10){
+                case 0:
+                    drawable.setColor(Color.parseColor("#FAED7D"));
+                    break;
+                case 1:
+                    drawable.setColor(Color.parseColor("#CEF279"));
+                    break;
+                case 2:
+                    drawable.setColor(Color.parseColor("#B2CCFF"));
+                    break;
+                case 3:
+                    drawable.setColor(Color.parseColor("#FFA7A7"));
+                    break;
+            }
+            button.setBackground(drawable);
+            sum++;
             return 1;
         }else{
-            imageView.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+            drawable.setColor(Color.parseColor("#00FFA7A7"));
+            button.setBackground(drawable);
             return 0;
         }
     }
     public void setBgColor(){
-        for (int i = 0; i < iv_time.length ; i++) {
-            if(num_time[i]==1) changeBgColor(iv_time[i],0);
-            else changeBgColor(iv_time[i],1);
+        for (int i = 0; i < num_day.length; i++) {
+            if(num_day[i]==1) changeBgColor(btn_day[i],0);
+            else changeBgColor(btn_day[i],1);
         }
     }
-    public String makeKey(String txt){
-        StringBuilder key = new StringBuilder();
-        Random random = new Random();
-        do {
-            for (int i = 0; i < 8; i++) {
-                int rIndex = random.nextInt(3);
-                switch (rIndex) {
-                    case 0:
-                        // a-z
-                        key.append((char) ((int) (random.nextInt(26)) + 97));
-                        break;
-                    case 1:
-                        // A-Z
-                        key.append((char) ((int) (random.nextInt(26)) + 65));
-                        break;
-                    case 2:
-                        // 0-9
-                        key.append(random.nextInt(10));
-                        break;
-                }
-            }
-        } while (txt.contains(key));
-        return key.toString();
-    }
-
     public Boolean saveData(String Mode, String Bgcolor, String title){
-        //String : userdate, studyTimecheck , commentAll , commentTime, splitKey
+        //String : userdate, goal, dayCheck, comment
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         String userdate = textViewDate.getText().toString();
-        StringBuilder studyTimecheck = new StringBuilder();
-        for (int value : num_time) studyTimecheck.append(value);
-        String commentAll = et_comment.getText().toString().replaceAll("'", "''");
-        StringBuilder txt = new StringBuilder(); //edit text 모두 합쳐서 넣을 String
-        for (EditText etComment : et_comments) txt.append(etComment.getText().toString());
-        String splitKey = makeKey(txt.toString());
-        StringBuilder commentTime = new StringBuilder();
-        for (EditText etComment : et_comments) {
-            if (!etComment.getText().toString().equals(""))
-                commentTime.append(etComment.getText().toString().replaceAll("'", "''")).append(splitKey);
-            else commentTime.append(" ").append(splitKey);
-        }
+        String goal = et_goal.getText().toString().replaceAll("'", "''");
+        String comment = et_comment.getText().toString().replaceAll("'", "''");
+        StringBuilder dayCheck = new StringBuilder();
+        for (int value : num_day) dayCheck.append(value);
+
         db = dbHelper.getReadableDatabase();
         switch (Mode) {
             case "write":
-                db.execSQL("INSERT INTO studytracker('userdate', 'studyTimecheck', 'commentAll', 'commentTime', 'splitKey', 'bgcolor', 'title') " +
-                        "VALUES('" + userdate + "', '" + studyTimecheck + "', '" + commentAll + "', '" + commentTime + "','"+ splitKey +"', '"+Bgcolor+"', '"+title+"');");
+                db.execSQL("INSERT INTO monthtracker('userdate', 'goal', 'dayCheck', 'comment', 'bgcolor', 'title') VALUES('" + userdate + "', '" + goal + "', '" + dayCheck + "', '" + comment + "', '"+Bgcolor+"', '"+title+"');");
+                final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
+                cursor.moveToFirst();
+                memoid = cursor.getInt(0);
                 db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '메모';");
                 break;
             case "view":
                 if (getArguments() != null) {
                     memoid = getArguments().getInt("memoid");
                 }
-                db.execSQL("UPDATE studytracker SET userdate = '"+userdate+"', studyTimecheck = '"+studyTimecheck+"', commentAll = '"+commentAll+"', commentTime = '"+commentTime+"', splitKey = '"+splitKey+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                db.execSQL("UPDATE monthtracker SET userdate = '"+userdate+"', goal = '"+goal+"', dayCheck = '"+dayCheck+"', comment = '"+comment+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
                 break;
         }
         return true;
     }
     public void setData(){
-        String userdate=null, studyTimecheck=null , commentAll =null, commentTime=null, splitKey=null;
-        String[] array, array1;
+        String userdate=null, goal=null, dayCheck=null, comment=null;
+        String[] array;
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
-            Cursor cursor = db.rawQuery("SELECT userdate, studyTimecheck , commentAll , commentTime, splitKey  FROM studytracker WHERE id = "+memoid+"", null);
+            Cursor cursor = db.rawQuery("SELECT userdate, goal, dayCheck, comment  FROM monthtracker WHERE id = "+memoid+"", null);
             while (cursor.moveToNext()) {
-                userdate = cursor.getString(0); studyTimecheck = cursor.getString(1); commentAll = cursor.getString(2); commentTime = cursor.getString(3); splitKey = cursor.getString(4);
+                userdate = cursor.getString(0); goal = cursor.getString(1); dayCheck = cursor.getString(2); comment = cursor.getString(3);
             }
             textViewDate.setText(userdate);
-            array = studyTimecheck.split("");
-            for (int i = 0; i <array.length ; i++) num_time[i] = Integer.parseInt(array[i]);
-            et_comment.setText(commentAll);
-            array1 = commentTime.split(splitKey);
-            for (int i = 0; i <array1.length ; i++) {
-                if(!array1[i].equals(" ")) et_comments[i].setText(array1[i]);
-            }
+            et_goal.setText(goal);
+            et_comment.setText(comment);
+            array = dayCheck.split("");
+            for (int i = 0; i <array.length ; i++) num_day[i] = Integer.parseInt(array[i]);
             setBgColor();
             // 데이트픽커 다이얼로그에 userdate로 뜨게 하는 코드
             String toDate = textViewDate.getText().toString();
@@ -243,5 +220,10 @@ public class StudyTrackerFragment extends Fragment {
             });
         }
 
+    }
+    // 널 값 검증
+    public boolean checkNull() {
+        String goal = et_goal.getText().toString();
+        return !(goal.equals("") | goal == null);
     }
 }

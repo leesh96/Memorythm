@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.swp.memorythm.template.MemoViewActivity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

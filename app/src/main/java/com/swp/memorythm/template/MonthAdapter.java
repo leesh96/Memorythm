@@ -1,4 +1,4 @@
-package com.swp.memorythm;
+package com.swp.memorythm.template;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
+
+import com.swp.memorythm.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;

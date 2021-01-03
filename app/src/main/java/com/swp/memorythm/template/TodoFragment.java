@@ -1,4 +1,4 @@
-package com.swp.memorythm;
+package com.swp.memorythm.template;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,6 +23,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.swp.memorythm.DBHelper;
+import com.swp.memorythm.PreferenceManager;
+import com.swp.memorythm.R;
+import com.swp.memorythm.template.adapter.TodoAdapter;
+import com.swp.memorythm.template.data.TodoData;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -104,7 +111,7 @@ public class TodoFragment extends Fragment {
             textViewDate.setText(Userdate);
             mAdapter.notifyDataSetChanged();
             if (isFromFixedFragment()) {
-                setClickable(rootView, false);
+                invaildTouch(rootView);
                 btnAdd.setVisibility(View.GONE);
             }
         } else {
@@ -203,13 +210,18 @@ public class TodoFragment extends Fragment {
     }
 
     // 고정프래그먼트에서 뷰 이벤트 막는 함수
-    private void setClickable(ViewGroup viewGroup, boolean enable) {
+    private void invaildTouch(ViewGroup viewGroup) {
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View child = viewGroup.getChildAt(i);
             if (child instanceof ViewGroup) {
-                setClickable((ViewGroup) child, enable);
+                invaildTouch((ViewGroup) child);
             } else {
-                child.setClickable(enable);
+                child.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        return true;
+                    }
+                });
             }
         }
     }

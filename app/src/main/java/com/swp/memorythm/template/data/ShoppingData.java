@@ -1,4 +1,4 @@
-package com.swp.memorythm;
+package com.swp.memorythm.template.data;
 
 public class ShoppingData {
     private boolean isBought;

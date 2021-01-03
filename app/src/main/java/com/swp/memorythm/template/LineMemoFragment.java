@@ -1,65 +1,35 @@
-package com.swp.memorythm;
+package com.swp.memorythm.template;
 
-import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.tabs.TabLayout;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.swp.memorythm.DBHelper;
+import com.swp.memorythm.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Query;
-
-public class DailyPlanFragment extends Fragment {
-    private RadioGroup radioGroup;
+public class LineMemoFragment extends Fragment {
     private TextView textViewDate;
-    private EditText editTextContentAm, editTextContentPm;
-    private String currentWeather;
-    private int id, weather;
+    private EditText editTextContent;
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     public int memoid;
-    private String userDate, contentAm, contentPm;
+    private String userDate, content;
 
     // 메인액티비티에서 고정메모 보는 프래그먼트로 만들어졌으면 수정 불가능하게 뷰 조정
     public boolean fromFixedFragment;
@@ -72,8 +42,8 @@ public class DailyPlanFragment extends Fragment {
         this.fromFixedFragment = fromFixedFragment;
     }
 
-    public static DailyPlanFragment newInstance() {
-        return new DailyPlanFragment();
+    public static LineMemoFragment newInstance() {
+        return new LineMemoFragment();
     }
 
     // 캘린더 객체 생성
@@ -108,56 +78,20 @@ public class DailyPlanFragment extends Fragment {
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
         }
-        Cursor cursor = db.rawQuery("SELECT userdate, contentAm, contentPm, weather FROM dailyplan WHERE id = "+memoid+"", null);
+        Cursor cursor = db.rawQuery("SELECT userdate, content FROM linememo WHERE id = "+memoid+"", null);
         while (cursor.moveToNext()) {
             userDate = cursor.getString(0);
-            contentAm = cursor.getString(1);
-            contentPm = cursor.getString(2);
-            weather = cursor.getInt(3);
+            content = cursor.getString(1);
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_dailyplan, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_linememo, container, false);
 
         textViewDate = rootView.findViewById(R.id.write_date);
-        editTextContentAm = rootView.findViewById(R.id.memo_content_am);
-        editTextContentPm = rootView.findViewById(R.id.memo_content_pm);
-        radioGroup = rootView.findViewById(R.id.weather_group);
-
-        if((PreferenceManager.getInt(getActivity(), "currentWeatherId") != -1) && !PreferenceManager.getString(getActivity(), "currentWeather").equals("")) {
-
-            currentWeather = PreferenceManager.getString(getActivity(), "currentWeather");
-            id = PreferenceManager.getInt(getActivity(), "currentWeatherId");
-
-            //날씨값에 따른 아이콘 선택
-            switch (currentWeather) {
-
-                case "Clear":
-                    radioGroup.check(R.id.sun);
-                    break;
-                case "Clouds":
-                    if(id == 801 || id == 802) radioGroup.check(R.id.cloudy);
-                    else radioGroup.check(R.id.cloud);
-                    break;
-                case "Thunderstorm":
-                    radioGroup.check(R.id.storm);
-                    break;
-                case "Snow":
-                    radioGroup.check(R.id.snow);
-                    break;
-                case "Drizzle":
-                    radioGroup.check(R.id.rain);
-                case "Rain":
-                    radioGroup.check(R.id.rain);
-                    break;
-                default:
-                    radioGroup.check(R.id.cloud);
-                    break;
-            }
-        }
+        editTextContent = rootView.findViewById(R.id.memo_content);
 
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
         Date currentTime = Calendar.getInstance().getTime();
@@ -181,20 +115,12 @@ public class DailyPlanFragment extends Fragment {
         if(getArguments() != null) {
 
             textViewDate.setText(userDate);
-            editTextContentAm.setText(contentAm);
-            editTextContentPm.setText(contentPm);
-            radioGroup.check(weather);
+            editTextContent.setText(content);
 
             // 수정 불가하게 만들기
             if (isFromFixedFragment()) {
                 textViewDate.setEnabled(false);
-                editTextContentAm.setEnabled(false);
-                editTextContentPm.setEnabled(false);
-
-                for(int i = 0; i < radioGroup.getChildCount(); i++) {
-
-                    ((RadioButton)radioGroup.getChildAt(i)).setEnabled(false);
-                }
+                editTextContent.setEnabled(false);
             }
         }
     }
@@ -206,10 +132,9 @@ public class DailyPlanFragment extends Fragment {
 
     // 널 값 검증
     public boolean checkNull() {
-        contentAm = editTextContentAm.getText().toString();
-        contentPm = editTextContentPm.getText().toString();
+        content = editTextContent.getText().toString();
 
-        if ((contentAm.equals("") | contentAm == null) && (contentPm.equals("") | contentPm == null)) {
+        if (content.equals("") | content == null) {
             return false;
         } else {
             return true;
@@ -221,13 +146,10 @@ public class DailyPlanFragment extends Fragment {
         db = dbHelper.getReadableDatabase();
 
         userDate = textViewDate.getText().toString();
-        contentAm = editTextContentAm.getText().toString();
-        contentPm = editTextContentPm.getText().toString();
-        weather = radioGroup.getCheckedRadioButtonId();
+        content = editTextContent.getText().toString();
 
         //작은 따옴표 이스케이프 시키기
-        contentAm = contentAm.replaceAll("'", "''");
-        contentPm = contentPm.replaceAll("'", "''");
+        content = content.replaceAll("'", "''");
 
         //editdate 컬럼 업데이트 때문에
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -235,7 +157,7 @@ public class DailyPlanFragment extends Fragment {
 
         switch (Mode) {
             case "write":
-                db.execSQL("INSERT INTO dailyplan('userdate', 'contentAm', 'contentPm', 'weather', 'title', 'bgcolor') VALUES('" + userDate + "', '" + contentAm + "', '" + contentPm + "', '" + weather + "', '" + title + "', '" + Bgcolor + "');");
+                db.execSQL("INSERT INTO linememo('userdate', 'content', 'bgcolor', 'title') VALUES('" + userDate + "', '" + content + "', '" + Bgcolor + "', '" + title + "');");
                 // 작성하면 view 모드로 바꾸기 위해 최근 삽입한 레코드 id로 바꿔줌
                 final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                 cursor.moveToFirst();
@@ -245,10 +167,10 @@ public class DailyPlanFragment extends Fragment {
             case "view":
                 // 메모 수정
                 if (getArguments() == null) {
-                    db.execSQL("UPDATE dailyplan SET userdate = '"+userDate+"', contentAm = '"+contentAm+"', contentPm = '"+contentPm+"', weather = '"+weather+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE linememo SET userdate = '"+userDate+"', content = '"+content+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
                 } else {
                     memoid = getArguments().getInt("memoid");
-                    db.execSQL("UPDATE dailyplan SET userdate = '"+userDate+"', contentAm = '"+contentAm+"', contentPm = '"+contentPm+"', weather = '"+weather+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE linememo SET userdate = '"+userDate+"', content = '"+content+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
                 }
                 break;
         }

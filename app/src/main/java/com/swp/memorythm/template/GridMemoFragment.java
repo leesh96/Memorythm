@@ -1,31 +1,27 @@
-package com.swp.memorythm;
+package com.swp.memorythm.template;
 
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+
+import com.swp.memorythm.DBHelper;
+import com.swp.memorythm.PreferenceManager;
+import com.swp.memorythm.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
-
-import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class GridMemoFragment extends Fragment {
     private DBHelper dbHelper;

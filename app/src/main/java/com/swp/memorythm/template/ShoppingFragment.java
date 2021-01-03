@@ -1,16 +1,14 @@
-package com.swp.memorythm;
+package com.swp.memorythm.template;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -25,6 +23,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.swp.memorythm.DBHelper;
+import com.swp.memorythm.PreferenceManager;
+import com.swp.memorythm.R;
+import com.swp.memorythm.template.adapter.ShoppingAdapter;
+import com.swp.memorythm.template.data.ShoppingData;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,21 +37,16 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
-public class WishFragment extends Fragment {
+public class ShoppingFragment extends Fragment {
     private TextView textViewDate;
-    private TextView[] textViewsCategory = new TextView[9];
-    private EditText editTextCustomCategory;
-    private RecyclerView wishRecyclerView;
+    private RecyclerView shoppingRecyclerView;
     private ImageButton btnAdd;
-    private ArrayList<WishData> mArrayList;
-    private WishAdapter mAdapter;
-
-    private int selectCategory;
-    private boolean selectCustomCategory;
+    private ArrayList<ShoppingData> mArrayList;
+    private ShoppingAdapter mAdapter;
 
     public int memoid;
-    private String Userdate, CustomCategoryName;
-    private StringBuilder Content, Wished;
+    private String Userdate;
+    private StringBuilder Content, Amount, Bought;
 
     private DBHelper dbHelper;
     private SQLiteDatabase db;
@@ -62,7 +61,7 @@ public class WishFragment extends Fragment {
         this.fromFixedFragment = fromFixedFragment;
     }
 
-    public static WishFragment newInstance() { return new WishFragment(); }
+    public static ShoppingFragment newInstance() { return new ShoppingFragment(); }
 
     // 캘린더 객체 생성
     Calendar myCalendar = Calendar.getInstance();
@@ -95,59 +94,28 @@ public class WishFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_wish, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.template_shopping, container, false);
 
         textViewDate = rootView.findViewById(R.id.tv_date);
-        textViewsCategory[0] = rootView.findViewById(R.id.tv_activity);
-        textViewsCategory[1] = rootView.findViewById(R.id.tv_concert);
-        textViewsCategory[2] = rootView.findViewById(R.id.tv_product);
-        textViewsCategory[3] = rootView.findViewById(R.id.tv_book);
-        textViewsCategory[4] = rootView.findViewById(R.id.tv_food);
-        textViewsCategory[5] = rootView.findViewById(R.id.tv_trip);
-        textViewsCategory[6] = rootView.findViewById(R.id.tv_cloth);
-        textViewsCategory[7] = rootView.findViewById(R.id.tv_movie);
-        textViewsCategory[8] = rootView.findViewById(R.id.tv_study);
-        editTextCustomCategory = rootView.findViewById(R.id.et_customcate);
-        wishRecyclerView = rootView.findViewById(R.id.wish_rcview);
+        shoppingRecyclerView = rootView.findViewById(R.id.shopping_rcview);
         btnAdd = rootView.findViewById(R.id.btn_add);
 
         // 리사이클러뷰 설정
-        wishRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        wishRecyclerView.setHasFixedSize(true);
-        mAdapter = new WishAdapter(getActivity(), mArrayList);
-        wishRecyclerView.setAdapter(mAdapter);
-
-        for (int i = 0; i < textViewsCategory.length; i++) {
-            int finalI = i;
-            textViewsCategory[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    changeCategory(selectCategory, finalI);
-                    selectCategory = finalI;
-                    selectCustomCategory = false;
-                }
-            });
-        }
+        shoppingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        shoppingRecyclerView.setHasFixedSize(true);
+        mAdapter = new ShoppingAdapter(getActivity(), mArrayList);
+        shoppingRecyclerView.setAdapter(mAdapter);
 
         if (getArguments() != null) {
             textViewDate.setText(Userdate);
-            if (selectCustomCategory) {
-                editTextCustomCategory.setText(CustomCategoryName);
-                editTextCustomCategory.setBackgroundResource(R.drawable.bg_selector);
-                textViewsCategory[selectCategory].setBackgroundColor(Color.TRANSPARENT);
-            } else {
-                changeCategory(0, selectCategory);
-            }
+            mAdapter.notifyDataSetChanged();
             if (isFromFixedFragment()) {
-                setClickable(rootView, false);
+                invaildTouch(rootView);
                 btnAdd.setVisibility(View.GONE);
             }
         } else {
             // 텍스트뷰 초기 날짜 현재 날짜로 설정
             textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
-            selectCategory = 0;
-            selectCustomCategory = false;
-            changeCategory(0, 0);
             mArrayList.clear();
             mAdapter.notifyDataSetChanged();
         }
@@ -170,19 +138,20 @@ public class WishFragment extends Fragment {
             }
         });
 
-        // wishlist 항목 추가
+        // list 항목 추가
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-                View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_wish, null, false);
+                View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_shopping, null, false);
                 builder.setView(dialogView);
 
-                EditText editTextWish;
+                EditText editTextShopping, editTextAmount;
                 Button btnApply, btnCancel;
 
-                editTextWish = dialogView.findViewById(R.id.et_wish);
+                editTextShopping = dialogView.findViewById(R.id.et_shopping);
+                editTextAmount = dialogView.findViewById(R.id.et_amount);
                 btnApply = dialogView.findViewById(R.id.btn_apply);
                 btnCancel = dialogView.findViewById(R.id.btn_cancel);
 
@@ -192,9 +161,10 @@ public class WishFragment extends Fragment {
                 btnApply.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String WishContent = editTextWish.getText().toString();
+                        String ShoppingContent = editTextShopping.getText().toString();
+                        String ShoppingAmount = editTextAmount.getText().toString();
 
-                        if (WishContent.equals("") | WishContent == null) {
+                        if (ShoppingContent.equals("") | ShoppingContent == null) {
                             AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
                             alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
@@ -202,15 +172,26 @@ public class WishFragment extends Fragment {
                                     dialog.dismiss();
                                 }
                             });
-                            alert.setMessage("위시리스트를 입력하세요!");
+                            alert.setMessage("사야할 물건을 입력하세요!");
+                            alert.show();
+                        } else if (ShoppingAmount.equals("") | ShoppingAmount == null) {
+                            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                            alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int i) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            alert.setMessage("수량을 입력하세요!");
                             alert.show();
                         } else {
-                            WishData wishData = new WishData();
+                            ShoppingData shoppingData = new ShoppingData();
 
-                            wishData.setWished(false);
-                            wishData.setContent(WishContent);
+                            shoppingData.setBought(false);
+                            shoppingData.setContent(ShoppingContent);
+                            shoppingData.setAmount(ShoppingAmount);
 
-                            mArrayList.add(wishData);
+                            mArrayList.add(shoppingData);
                             mAdapter.notifyDataSetChanged();
 
                             alertDialog.dismiss();
@@ -227,27 +208,6 @@ public class WishFragment extends Fragment {
             }
         });
 
-        final View activityRootView = rootView.findViewById(R.id.parentLayout);
-
-        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect rect = new Rect();
-                //r will be populated with the coordinates of your view that area still visible.
-                activityRootView.getWindowVisibleDisplayFrame(rect);
-
-                int heightDiff = activityRootView.getRootView().getHeight() - rect.height();
-                if (heightDiff < 0.25*activityRootView.getRootView().getHeight()&& WishFragment.this.getActivity() != null) {
-                    if (WishFragment.this.getActivity().getCurrentFocus() == editTextCustomCategory) {
-                        editTextCustomCategory.setBackgroundResource(R.drawable.bg_selector);
-                        textViewsCategory[selectCategory].setBackgroundColor(Color.TRANSPARENT);
-                        selectCustomCategory = true;
-                        editTextCustomCategory.clearFocus();
-                    }
-                }
-            }
-        });
-
         return rootView;
     }
 
@@ -259,22 +219,20 @@ public class WishFragment extends Fragment {
     }
 
     // 고정프래그먼트에서 뷰 이벤트 막는 함수
-    private void setClickable(ViewGroup viewGroup, boolean enable) {
+    private void invaildTouch(ViewGroup viewGroup) {
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View child = viewGroup.getChildAt(i);
             if (child instanceof ViewGroup) {
-                setClickable((ViewGroup) child, enable);
+                invaildTouch((ViewGroup) child);
             } else {
-                child.setClickable(enable);
+                child.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        return true;
+                    }
+                });
             }
         }
-    }
-
-    // 카테고리 변경 함수
-    public void changeCategory(int old, int current) {
-        editTextCustomCategory.setBackgroundResource(R.drawable.border_d);
-        textViewsCategory[old].setBackgroundColor(Color.TRANSPARENT);
-        textViewsCategory[current].setBackgroundResource(R.drawable.bg_selector);
     }
 
     // 텍스트뷰 날짜 업데이트
@@ -329,29 +287,23 @@ public class WishFragment extends Fragment {
 
         Userdate = textViewDate.getText().toString();
         Content = new StringBuilder();
-        Wished = new StringBuilder();
+        Bought = new StringBuilder();
+        Amount = new StringBuilder();
 
         StringBuilder txt = new StringBuilder();
 
-        for (WishData wishData : mArrayList) {
-            txt.append(wishData.getContent());
-            txt.append(wishData.isWished());
+        for (ShoppingData shoppingData : mArrayList) {
+            txt.append(shoppingData.getContent());
+            txt.append(shoppingData.isBought());
+            txt.append(shoppingData.getAmount());
         }
 
         String splitkey = makeKey(txt.toString());
 
-        for (WishData wishData : mArrayList) {
-            Content.append(wishData.getContent()).append(splitkey);
-            Wished.append(wishData.isWished()).append(splitkey);
-        }
-
-        int category;
-        if (selectCustomCategory) {
-            CustomCategoryName = editTextCustomCategory.getText().toString().replaceAll("'", "''");
-            category = 9;
-        } else {
-            CustomCategoryName = "null";
-            category = selectCategory;
+        for (ShoppingData shoppingData : mArrayList) {
+            Content.append(shoppingData.getContent()).append(splitkey);
+            Bought.append(shoppingData.isBought()).append(splitkey);
+            Amount.append(shoppingData.getAmount()).append(splitkey);
         }
 
         // editdate 컬럼 업데이트 때문에
@@ -359,10 +311,10 @@ public class WishFragment extends Fragment {
         Date date = new Date();
 
         switch (Mode) {
-            case "write":
+            case "write":   // 저장
                 try {
-                    db.execSQL("INSERT INTO wishlist('userdate', 'content', 'wished', 'splitkey', 'category', 'customcategory', 'title', 'bgcolor') " +
-                            "VALUES('"+Userdate+"', '"+Content+"', '"+Wished+"', '"+splitkey+"', "+category+", '"+CustomCategoryName+"', '"+Title+"', '"+Bgcolor+"');");
+                    db.execSQL("INSERT INTO shoppinglist('userdate', 'content', 'bought', 'amount', 'splitkey', 'title', 'bgcolor') " +
+                            "VALUES('"+Userdate+"', '"+Content+"', '"+Bought+"', '"+Amount+"', '"+splitkey+"', '"+Title+"', '"+Bgcolor+"');");
                     final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                     cursor.moveToFirst();
                     memoid = cursor.getInt(0);
@@ -372,13 +324,12 @@ public class WishFragment extends Fragment {
                     e.printStackTrace();
                 }
                 break;
-            case "view":
-                if (getArguments() != null) {
+            case "view":    // 수정
+                if (getArguments() != null) {   // 메모리스트에서 view 모드로 왔을 때 id 업데이트
                     memoid = getArguments().getInt("memoid");
                 }
                 try {
-                    db.execSQL("UPDATE wishlist SET userdate = '"+Userdate+"', content = '"+Content+"', wished = '"+Wished+"', splitkey = '"+splitkey+"', category = "+category+", customcategory = '"+CustomCategoryName+"', " +
-                            "title = '"+Title+"', editdate = '"+dateFormat.format(date.getTime())+"' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE shoppinglist SET userdate = '"+Userdate+"', content = '"+Content+"', bought = '"+Bought+"', amount = '"+Amount+"', splitkey = '"+splitkey+"', title = '"+Title+"', editdate = '"+dateFormat.format(date.getTime())+"' WHERE id = "+memoid+";");
                     success = true;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -393,35 +344,28 @@ public class WishFragment extends Fragment {
     private void getData(int id) {
         Cursor cursor;
         try {
-            cursor = db.rawQuery("SELECT userdate, content, wished, splitkey, category, customcategory FROM wishlist WHERE id = " + memoid + "", null);
+            cursor = db.rawQuery("SELECT userdate, content, bought, amount, splitkey FROM shoppinglist WHERE id = "+memoid+"", null);
             cursor.moveToFirst();
 
             Userdate = cursor.getString(0);
             String allContent = cursor.getString(1);
-            String allWished = cursor.getString(2);
-            String splitkey = cursor.getString(3);
-            int category = cursor.getInt(4);
-            CustomCategoryName = cursor.getString(5);
+            String allBought = cursor.getString(2);
+            String allAmount = cursor.getString(3);
+            String splitkey = cursor.getString(4);
 
             String[] contentArray = allContent.split(splitkey);
-            String[] wishedArray = allWished.split(splitkey);
+            String[] boughtArray = allBought.split(splitkey);
+            String[] amountArray = allAmount.split(splitkey);
 
             for (int i = 0; i < contentArray.length; i++) {
-                WishData wishData = new WishData();
+                ShoppingData shoppingData = new ShoppingData();
 
-                wishData.setContent(contentArray[i]);
-                wishData.setWished(Boolean.parseBoolean(wishedArray[i]));
+                shoppingData.setContent(contentArray[i]);
+                shoppingData.setBought(Boolean.parseBoolean(boughtArray[i]));
+                shoppingData.setAmount(amountArray[i]);
 
-                mArrayList.add(wishData);
+                mArrayList.add(shoppingData);
             }
-
-            if (category == 9) {
-                selectCustomCategory = true;
-                selectCategory = 0;
-            } else {
-                selectCategory = category;
-            }
-
             Toast.makeText(getContext(), "데이터 로드 성공", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();

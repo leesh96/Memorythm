@@ -243,7 +243,7 @@
                 android:textColor="@color/text_color"
                 android:fontFamily="@font/sdkukdetopokki_l"/>
         </LinearLayout>
-        <com.swp.memorythm.LinedEditText
+        <com.swp.memorythm.template.LinedEditText
             android:id="@+id/et_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -7,6 +7,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.swp.memorythm.template.DailyPlanFragment;
+import com.swp.memorythm.template.GridMemoFragment;
+import com.swp.memorythm.template.HealthTrackerFragment;
+import com.swp.memorythm.template.LineMemoFragment;
+import com.swp.memorythm.template.MonthTrackerFragment;
+import com.swp.memorythm.template.MonthlyPlanFragment;
+import com.swp.memorythm.template.NonlineMemoFragment;
+import com.swp.memorythm.template.ReviewFragment;
+import com.swp.memorythm.template.ShoppingFragment;
+import com.swp.memorythm.template.StudyTrackerFragment;
+import com.swp.memorythm.template.TodoFragment;
+import com.swp.memorythm.template.WeeklyPlanFragment;
+import com.swp.memorythm.template.WishFragment;
+import com.swp.memorythm.template.YearlyPlanFragment;
+
 import java.util.ArrayList;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {

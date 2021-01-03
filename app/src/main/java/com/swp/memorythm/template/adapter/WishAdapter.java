@@ -1,4 +1,4 @@
-package com.swp.memorythm;
+package com.swp.memorythm.template.adapter;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -18,6 +18,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.swp.memorythm.R;
+import com.swp.memorythm.template.data.WishData;
 
 import java.util.ArrayList;
 

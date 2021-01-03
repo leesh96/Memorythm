@@ -1,4 +1,4 @@
-package com.swp.memorythm;
+package com.swp.memorythm.template.adapter;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -19,28 +19,30 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.swp.memorythm.R;
+import com.swp.memorythm.template.data.TodoData;
+
 import java.util.ArrayList;
 
-public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHolder> {
-    private ArrayList<ShoppingData> mArrayList = null;
+public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
+    private ArrayList<TodoData> mArrayList = null;
     private Activity context = null;
 
-    public ShoppingAdapter(Activity context, ArrayList<ShoppingData> list) {
+    public TodoAdapter(Activity context, ArrayList<TodoData> list) {
         this.context = context;
         this.mArrayList = list;
     }
 
     // 뷰 초기화
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
-        protected CheckBox shoppingCheckBox;
-        protected TextView textViewShopping, textViewAmount;
+        protected CheckBox todoCheckBox;
+        protected TextView textViewTodo;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            this.shoppingCheckBox = itemView.findViewById(R.id.item_checkbox);
-            this.textViewShopping = itemView.findViewById(R.id.item_content);
-            this.textViewAmount = itemView.findViewById(R.id.item_amount);
+            this.todoCheckBox = itemView.findViewById(R.id.item_checkbox);
+            this.textViewTodo = itemView.findViewById(R.id.item_content);
 
             itemView.setOnCreateContextMenuListener(this);
         }
@@ -60,22 +62,20 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
                 switch (item.getItemId()) {
                     case 1001:  // 편집 항목을 선택
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        View view = LayoutInflater.from(context).inflate(R.layout.dialog_shopping, null, false);
+                        View view = LayoutInflater.from(context).inflate(R.layout.dialog_todo, null, false);
                         builder.setView(view);
 
                         TextView textViewTitle;
-                        EditText editTextShopping, editTextAmount;
+                        EditText editTextTodo;
                         Button btnApply, btnCancel;
 
                         textViewTitle = view.findViewById(R.id.tv_title);
-                        editTextShopping = view.findViewById(R.id.et_shopping);
-                        editTextAmount = view.findViewById(R.id.et_amount);
+                        editTextTodo = view.findViewById(R.id.et_todo);
                         btnApply = view.findViewById(R.id.btn_apply);
                         btnCancel = view.findViewById(R.id.btn_cancel);
 
-                        textViewTitle.setText("쇼핑리스트 편집");
-                        editTextShopping.setText(mArrayList.get(getAdapterPosition()).getContent());
-                        editTextAmount.setText(mArrayList.get(getAdapterPosition()).getAmount());
+                        textViewTitle.setText("할 일 편집");
+                        editTextTodo.setText(mArrayList.get(getAdapterPosition()).getContent());
 
                         AlertDialog alertDialog = builder.create();
                         alertDialog.show();
@@ -83,10 +83,10 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
                         btnApply.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                String ShoppingContent = editTextShopping.getText().toString();
-                                String ShoppingAmount = editTextAmount.getText().toString();
+                                String TodoContent = editTextTodo.getText().toString();
 
-                                if (ShoppingContent.equals("") | ShoppingContent == null) {
+                                // 빈 입력 예외처리
+                                if (TodoContent.equals("") | TodoContent == null) {
                                     AlertDialog.Builder alert = new AlertDialog.Builder(context);
                                     alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                         @Override
@@ -94,26 +94,15 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
                                             dialog.dismiss();
                                         }
                                     });
-                                    alert.setMessage("사야할 물건을 입력하세요!");
-                                    alert.show();
-                                } else if (ShoppingAmount.equals("") | ShoppingAmount == null) {
-                                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                                    alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int i) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                                    alert.setMessage("수량을 입력하세요!");
+                                    alert.setMessage("할 일을 입력하세요!");
                                     alert.show();
                                 } else {
-                                    ShoppingData shoppingData = new ShoppingData();
+                                    TodoData todoData = new TodoData();
 
-                                    shoppingData.setBought(false);
-                                    shoppingData.setContent(ShoppingContent);
-                                    shoppingData.setAmount(ShoppingAmount);
+                                    todoData.setDone(false);
+                                    todoData.setContent(TodoContent);
 
-                                    mArrayList.set(getAdapterPosition(), shoppingData);
+                                    mArrayList.set(getAdapterPosition(), todoData);
                                     notifyItemChanged(getAdapterPosition());
 
                                     alertDialog.dismiss();
@@ -140,8 +129,8 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_shopping, viewGroup, false);
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_todowish, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
 
         return viewHolder;
@@ -150,22 +139,16 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
     // 아이템 내용 넣기
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        viewHolder.shoppingCheckBox.setChecked(mArrayList.get(position).isBought());
-        viewHolder.textViewShopping.setText(mArrayList.get(position).getContent());
-        viewHolder.textViewAmount.setText(mArrayList.get(position).getAmount());
+        viewHolder.todoCheckBox.setChecked(mArrayList.get(position).isDone());
+        viewHolder.textViewTodo.setText(mArrayList.get(position).getContent());
 
-        // 할일 완료 체크
-        viewHolder.shoppingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        // 할 일 완료 체크
+        viewHolder.todoCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mArrayList.get(position).setBought(isChecked);
-                if (isChecked) {
-                    viewHolder.textViewShopping.setPaintFlags(viewHolder.textViewShopping.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                    viewHolder.textViewAmount.setPaintFlags(viewHolder.textViewAmount.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                } else {
-                    viewHolder.textViewShopping.setPaintFlags(0);
-                    viewHolder.textViewAmount.setPaintFlags(0);
-                }
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                mArrayList.get(position).setDone(b);
+                if (b) viewHolder.textViewTodo.setPaintFlags(viewHolder.textViewTodo.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                else viewHolder.textViewTodo.setPaintFlags(0);
             }
         });
     }

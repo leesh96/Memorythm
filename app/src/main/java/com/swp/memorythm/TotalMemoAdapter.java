@@ -8,10 +8,11 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.swp.memorythm.template.MemoViewActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

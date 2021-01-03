@@ -1,6 +1,5 @@
 package com.swp.memorythm;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
