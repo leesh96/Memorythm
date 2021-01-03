@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -139,10 +140,16 @@ public class NonlineMemoFragment extends Fragment {
     private void setClickable(ViewGroup viewGroup, boolean enable) {
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View child = viewGroup.getChildAt(i);
+            Log.d("view : ", child.toString());
             if (child instanceof ViewGroup) {
                 setClickable((ViewGroup) child, enable);
             } else {
-                child.setClickable(enable);
+                child.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return true;
+                    }
+                });
             }
         }
     }
