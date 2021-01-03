@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="폴더 선택"
+            android:gravity="center"
+            android:textColor="@color/text_color"
+            android:fontFamily="@font/nanumsquare_acr"
+            android:textSize="15sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="안에 어떻게 꾸며야 하지"
+            android:gravity="center"
+            android:textColor="@color/text_color"
+            android:fontFamily="@font/nanumsquare_acr"
+            android:textSize="15sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnTransferCancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="취소"
+            android:textColor="@color/text_color"
+            android:fontFamily="@font/nanumsquare_acr"
+            android:textSize="15sp"/>
+        <Button
+            android:id="@+id/btnTransfer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="폴더이동"
+            android:textColor="@color/text_color"
+            android:fontFamily="@font/nanumsquare_acr"
+            android:textSize="15sp"/>
+    </LinearLayout>
+</LinearLayout>

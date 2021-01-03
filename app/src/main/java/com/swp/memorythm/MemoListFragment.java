@@ -3,6 +3,7 @@ package com.swp.memorythm;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,16 +25,19 @@ public class MemoListFragment extends Fragment {
     private RecyclerView memoRecyclerView;
     private ArrayList<MemoData> listMemo;
     private MemoListAdapter memoListAdapter;
-    private ImageButton btnDelete, btnChange;
+    private ImageButton btnDelete;
     private Boolean check = false;
+
     private DBHelper dbHelper;
     private SQLiteDatabase db;
+
+    private ItemTouchHelper helper;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_memo_list, container, false);
-        //중간부분
+        //recyclerview
         memoRecyclerView = (RecyclerView)view.findViewById(R.id.memoListBottomRV);
         memoRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         memoListAdapter = new MemoListAdapter(getContext(),listMemo);
@@ -70,21 +75,14 @@ public class MemoListFragment extends Fragment {
             }
 
         });
-        // 폴더 이동 버튼
-        btnChange = (ImageButton)view.findViewById(R.id.memoChangeBtn);
-        btnChange.setOnClickListener(view1 -> {
-            if(check){
 
-                memoListAdapter.setVisible(false);
-                memoListAdapter.notifyDataSetChanged();
-                check = false;
-            }else {
-                memoListAdapter.setVisible(true);
-                memoListAdapter.notifyDataSetChanged();
-                check = true;
-            }
-
-        });
+        //ItemTouchHelper 생성
+        helper = new ItemTouchHelper(new ItemTouchHelperCallback(memoListAdapter));
+        //RecyclerView에 ItemTouchHelper 붙이기
+        helper.attachToRecyclerView(memoRecyclerView);
+        //아이템 갱신
+        memoListAdapter.setItems(listMemo);
+        memoListAdapter.notifyDataSetChanged();
         return view;
     }
 
@@ -153,5 +151,14 @@ public class MemoListFragment extends Fragment {
 
         }
     }
+    private void setUpRecyclerView(){
+        memoRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                helper.onDraw(c,parent, state);
+            }
+        });
+    }
+
 }
 

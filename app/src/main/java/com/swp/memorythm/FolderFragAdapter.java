@@ -162,11 +162,12 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
 
         return true;
     }
-
+    // 사용 안 함
     @Override
-    public void onItemSwipe(int position) {
-
-    }
+    public void onItemSwipe(int position) { }
+    // 사용 안 함
+    @Override
+    public void onRightClick(int position, RecyclerView.ViewHolder viewHolder) { }
 
     //ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -190,14 +191,12 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
         return  result;
     }
     // 아이템 갱신에 사용
-    public void setItems(ArrayList<Folder> items){
-        dataFolder = items;
-    }
-
-
+    public void setItems(ArrayList<Folder> items){ dataFolder = items; }
+    //체크박스 숨김에 사용
     public void setVisible(boolean trash){
         isTrash = trash;
     }
+    //체크박스 체크항목 전달
     public List<Folder> setCheckBox(){
         return mCheckedFolder;
     }

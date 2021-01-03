@@ -2,9 +2,11 @@ package com.swp.memorythm;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -18,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHolder> {
+public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHolder> implements ItemTouchHelperListener, OnDialogListener{
     Context memoContext;
     private ArrayList<MemoData> listMemo;
     private Map<MemoData, Boolean> memoCheckedMap = new HashMap<>();
@@ -87,6 +89,42 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
         return (null != listMemo ? listMemo.size():0);
     }
 
+    @Override
+    public void onFinish(int position, MemoData memoData) {
+        listMemo.set(position, memoData);
+        notifyItemChanged(position);
+    }
+
+    @Override
+    public boolean onItemMove(int from_position, int to_position) {
+        return false;
+    }
+
+    @Override
+    public void onItemSwipe(int position) {
+        listMemo.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    @Override
+    public void onRightClick(int position, RecyclerView.ViewHolder viewHolder) {
+        // 버튼 클릭시 다이얼로그 생성
+        MemoListDialog dialog = new MemoListDialog(memoContext, position, listMemo.get(position));
+        //화면 사이즈 구하기
+        DisplayMetrics dm = memoContext.getApplicationContext().getResources().getDisplayMetrics();
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        //다이얼로그 사이즈 세팅
+        WindowManager.LayoutParams wm = dialog.getWindow().getAttributes();
+        wm.copyFrom(dialog.getWindow().getAttributes());
+        wm.width = (int) (width * 0.7);
+        wm.height = height/2;
+        //다이얼로그 Listener 세팅
+        dialog.setDialogListener(this);
+        //다이얼로그 띄우기
+        dialog.show();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView titleTV, DateTV;
         CheckBox checkBox;
@@ -107,10 +145,12 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
     public void setVisible(boolean trash){
         isTrash = trash;
     }
-
+    //체크박스 체크항목 전달
     public List<MemoData> setCheckBox(){
         return mCheckedMemo;
     }
+    // 아이템 갱신에 사용
+    public void setItems(ArrayList<MemoData> items){ listMemo = items; }
 
 }
 
