@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        setFrag(2); // 첫 프레그먼트 지정
+        setFrag(0); // 첫 프레그먼트 지정
 
         //Navigation Drawer(왼쪽에 있음, 드래그하면 나타남)
         final String[] items = {"Setting"};

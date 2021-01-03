@@ -30,11 +30,19 @@ public class TotalFragment extends Fragment {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
 
+    public TotalFixedMemoAdapter getTotalFixedMemoAdapter() {
+        return totalFixedMemoAdapter;
+    }
+
+    public void setTotalFixedMemoAdapter(TotalFixedMemoAdapter totalFixedMemoAdapter) {
+        this.totalFixedMemoAdapter = totalFixedMemoAdapter;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_total, container, false);
-        dbHelper = new DBHelper(getContext());
+/*        dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM (SELECT id, title, editdate, template_case FROM nonlinememo WHERE deleted = 0 AND fixed = 0 UNION ALL " +
@@ -90,7 +98,7 @@ public class TotalFragment extends Fragment {
             fixedData.setTotalDate(cursorFixed.getString(2).substring(0, 10));
             fixedData.setTemplate(cursorFixed.getString(3));
             listFixed.add(fixedData);
-        }
+        }*/
 
 
         // recyclerview
@@ -153,9 +161,125 @@ public class TotalFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Cursor cursor = db.rawQuery("SELECT * FROM (SELECT id, title, editdate, template_case FROM nonlinememo WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM linememo WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM gridmemo WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM todolist WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM wishlist WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM shoppinglist WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM review WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM dailyplan WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM weeklyplan WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM monthlyplan WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM yearlyplan WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM healthtracker WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM monthtracker WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM studytracker WHERE deleted = 0 AND fixed = 0) ORDER BY editdate DESC ",null);
+
+        Cursor cursorFixed = db.rawQuery("SELECT * FROM (SELECT id, title, editdate, template_case FROM nonlinememo WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM linememo WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM gridmemo WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM todolist WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM wishlist WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM shoppinglist WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM review WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM dailyplan WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM weeklyplan WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM monthlyplan WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM yearlyplan WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM healthtracker WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM monthtracker WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM studytracker WHERE fixed = 1 AND deleted = 0) ORDER BY editdate DESC",null);
+
+        listTotal.clear();
+        listFixed.clear();
+
+        while (cursor.moveToNext()) {
+            //전체메모
+            TotalMemoData totalMemoData = new TotalMemoData();
+            totalMemoData.setTotalID(cursor.getInt(0));
+            totalMemoData.setTotalTitle(cursor.getString(1));
+            totalMemoData.setTotalDate(cursor.getString(2).substring(0, 10));
+            totalMemoData.setTemplate(cursor.getString(3));
+
+            listTotal.add(totalMemoData);
+        }
+
+        while (cursorFixed.moveToNext()) {
+            //전체메모의 고정메모
+            TotalMemoData fixedData = new TotalMemoData();
+            fixedData.setTotalID(cursorFixed.getInt(0));
+            fixedData.setTotalTitle(cursorFixed.getString(1));
+            fixedData.setTotalDate(cursorFixed.getString(2).substring(0, 10));
+            fixedData.setTemplate(cursorFixed.getString(3));
+            listFixed.add(fixedData);
+        }
+
+        totalFixedMemoAdapter.notifyDataSetChanged();
+        totalMemoAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dbHelper = new DBHelper(getContext());
+        db = dbHelper.getReadableDatabase();
 
+        Cursor cursor = db.rawQuery("SELECT * FROM (SELECT id, title, editdate, template_case FROM nonlinememo WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM linememo WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM gridmemo WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM todolist WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM wishlist WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM shoppinglist WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM review WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM dailyplan WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM weeklyplan WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM monthlyplan WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM yearlyplan WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM healthtracker WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM monthtracker WHERE deleted = 0 AND fixed = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM studytracker WHERE deleted = 0 AND fixed = 0) ORDER BY editdate DESC ",null);
 
+        Cursor cursorFixed = db.rawQuery("SELECT * FROM (SELECT id, title, editdate, template_case FROM nonlinememo WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM linememo WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM gridmemo WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM todolist WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM wishlist WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM shoppinglist WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM review WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM dailyplan WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM weeklyplan WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM monthlyplan WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM yearlyplan WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM healthtracker WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM monthtracker WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                "SELECT id, title, editdate, template_case FROM studytracker WHERE fixed = 1 AND deleted = 0) ORDER BY editdate DESC",null);
+
+        listTotal = new ArrayList<>();
+        listFixed = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            //전체메모
+            TotalMemoData totalMemoData = new TotalMemoData();
+            totalMemoData.setTotalID(cursor.getInt(0));
+            totalMemoData.setTotalTitle(cursor.getString(1));
+            totalMemoData.setTotalDate(cursor.getString(2).substring(0, 10));
+            totalMemoData.setTemplate(cursor.getString(3));
+
+            listTotal.add(totalMemoData);
+
+        }
+
+        while (cursorFixed.moveToNext()) {
+            //전체메모의 고정메모
+            TotalMemoData fixedData = new TotalMemoData();
+            fixedData.setTotalID(cursorFixed.getInt(0));
+            fixedData.setTotalTitle(cursorFixed.getString(1));
+            fixedData.setTotalDate(cursorFixed.getString(2).substring(0, 10));
+            fixedData.setTemplate(cursorFixed.getString(3));
+            listFixed.add(fixedData);
+        }
     }
 }
