@@ -871,7 +871,7 @@ public class MemoViewActivity extends AppCompatActivity {
                             cursor.moveToFirst();
                             String whereMemoIn = cursor.getString(0);
                             db.execSQL("UPDATE "+TemplateCase+" SET deleted = 1 WHERE id = "+memoid+";");
-                            db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '"+whereMemoIn+"';");
+                            db.execSQL("UPDATE folder SET count = count - 1 WHERE name = '"+whereMemoIn+"';");
                             Toast.makeText(MemoViewActivity.this, "휴지통 이동 성공", Toast.LENGTH_SHORT).show();
                             if (isAfterWrite) {
                                 Intent newMain = new Intent(MemoViewActivity.this, MainActivity.class);

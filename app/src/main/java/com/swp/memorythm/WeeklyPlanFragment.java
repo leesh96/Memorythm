@@ -13,6 +13,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +51,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public class WeeklyPlanFragment extends Fragment {
+public class WeeklyPlanFragment extends Fragment implements TextWatcher {
     private TextView textViewDate;
     private EditText editTextMon, editTextTue, editTextWed, editTextThu, editTextFri, editTextSat, editTextSun,
                      editTextDayMon, editTextDayTue, editTextDayWed, editTextDayThu, editTextDayFri, editTextDaySat, editTextDaySun;
@@ -67,6 +69,7 @@ public class WeeklyPlanFragment extends Fragment {
 
     // 캘린더 객체 생성
     Calendar myCalendar = Calendar.getInstance();
+    Calendar calCalendar = Calendar.getInstance();
 
     //데이트픽커 다이얼로그
     DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
@@ -142,59 +145,12 @@ public class WeeklyPlanFragment extends Fragment {
         dayView[5] = editTextDaySat;
         dayView[6] = editTextDaySun;
 
+        addListener();
+
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
         Date currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy - MM", Locale.KOREA);
         textViewDate.setText(simpleDateFormat.format(currentTime));
-
-        final View activityRootView = rootView.findViewById(R.id.frame);
-
-        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
-                //r will be populated with the coordinates of your view that area still visible.
-                activityRootView.getWindowVisibleDisplayFrame(r);
-
-                int heightDiff = activityRootView.getRootView().getHeight() - r.height();
-                if ((heightDiff < 0.25 * activityRootView.getRootView().getHeight()) && WeeklyPlanFragment.this.getActivity() != null) {
-                    Log.d("키보드 ", "내려감?");
-                    if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[0]) {
-
-                        calculateDay(0);
-                        dayView[0].clearFocus();
-                    } else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[1]) {
-
-                        calculateDay(1);
-                        dayView[1].clearFocus();
-                    } else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[2]) {
-
-                        calculateDay(2);
-                        dayView[2].clearFocus();
-                    }
-                    else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[3]) {
-
-                        calculateDay(3);
-                        dayView[3].clearFocus();
-                    }
-                    else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[4]) {
-
-                        calculateDay(4);
-                        dayView[4].clearFocus();
-                    }
-                    else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[5]) {
-
-                        calculateDay(5);
-                        dayView[5].clearFocus();
-                    }
-                    else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[6]) {
-
-                        calculateDay(6);
-                        dayView[6].clearFocus();
-                    }
-                }
-            }
-        });
 
         textViewDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,17 +170,79 @@ public class WeeklyPlanFragment extends Fragment {
         if(getArguments() != null) {
 
             textViewDate.setText(userDate);
+            String[] setDate = userDate.split(" - ");
+            myCalendar.set(Calendar.YEAR, Integer.parseInt(setDate[0]));
+            myCalendar.set(Calendar.MONTH, Integer.parseInt(setDate[1]) - 1);
 
             for(int i = 0; i < weekView.length; i++) {
 
                 weekView[i].setText(setContent[i]);
 
             }
+            removeListener();
             for(int i = 0; i < dayView.length; i++) {
 
                 if(setDay[i].equals(" ")) dayView[i].setText("");
                 else dayView[i].setText(setDay[i]);
             }
+            addListener();
+        }
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[0]) {
+
+            calculateDay(0);
+        } else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[1]) {
+
+            calculateDay(1);
+        } else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[2]) {
+
+            calculateDay(2);
+        }
+        else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[3]) {
+
+            calculateDay(3);
+        }
+        else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[4]) {
+
+            calculateDay(4);
+        }
+        else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[5]) {
+
+            calculateDay(5);
+        }
+        else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[6]) {
+
+            calculateDay(6);
+        }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
+
+    public void removeListener() {
+
+        for(EditText editText : dayView) {
+
+            editText.removeTextChangedListener(this);
+        }
+    }
+
+    public void addListener() {
+
+        for(EditText editText : dayView) {
+
+            editText.addTextChangedListener(this);
         }
     }
 
@@ -318,8 +336,16 @@ public class WeeklyPlanFragment extends Fragment {
 
     public void calculateDay(int index) {
 
+        removeListener();
+
         int std, diff, day;
         String input;
+
+        if(dayView[index].getText().toString().equals("")) {
+
+            addListener();
+            return;
+        }
 
         std = Integer.parseInt(dayView[index].getText().toString());
 
@@ -330,16 +356,23 @@ public class WeeklyPlanFragment extends Fragment {
             input = Integer.toString(day);
 
             if(i == index) continue;
-            if((day < 1) || (day > myCalendar.getActualMaximum(Calendar.DATE))) {
+            if(day < 1) {
 
-                if (!dayView[i].getText().toString().equals("")) {
+                calCalendar.set(Calendar.MONTH, myCalendar.get(Calendar.MONTH) - 1);
+                input = Integer.toString(calCalendar.getActualMaximum(Calendar.DATE) + day);
+            }
+            else if(day ==  myCalendar.getActualMaximum(Calendar.DATE)) {
 
-                    dayView[i].setText("");
-                }
-                continue;
+                index = i;
+                std = 0;
+            }
+            else if(day > myCalendar.getActualMaximum(Calendar.DATE)){
+
+                input = Integer.toString(diff);
             }
             dayView[i].setText(input);
         }
+        addListener();
     }
 
     @Override
