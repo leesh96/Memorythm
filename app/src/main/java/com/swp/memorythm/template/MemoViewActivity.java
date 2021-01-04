@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.swp.memorythm.DBHelper;
 import com.swp.memorythm.MainActivity;
+import com.swp.memorythm.PreferenceManager;
 import com.swp.memorythm.R;
 
 public class MemoViewActivity extends AppCompatActivity {
@@ -38,7 +39,7 @@ public class MemoViewActivity extends AppCompatActivity {
     private FrameLayout template_frame;
 
     private String TemplateCase, Mode, MemoBackground, MemoTitle;
-    private int isMemofixed, memoid;
+    private int isMemofixed, memoid, fixedmemocnt;
 
     private boolean isAfterWrite = false;
 
@@ -218,27 +219,9 @@ public class MemoViewActivity extends AppCompatActivity {
         checkBoxFixed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                int fixedmemocnt = 0;
+                fixedmemocnt = PreferenceManager.getInt(MemoViewActivity.this, "fixedmemocnt");
                 if (b) {
                     try {
-                        Cursor cursor = db.rawQuery("SELECT count(*) FROM nonlinememo WHERE fixed = 1 UNION ALL " +
-                                "SELECT count(*) FROM linememo WHERE fixed = 1 UNION ALL " +
-                                "SELECT count(*) FROM gridmemo WHERE fixed = 1 UNION ALL " +
-                                "SELECT count(*) FROM todolist WHERE fixed = 1 UNION ALL " +
-                                "SELECT count(*) FROM wishlist WHERE fixed = 1 UNION ALL " +
-                                "SELECT count(*) FROM shoppinglist WHERE fixed = 1 UNION ALL " +
-                                "SELECT count(*) FROM review WHERE fixed = 1 UNION ALL " +
-                                "SELECT count(*) FROM dailyplan WHERE fixed = 1 UNION ALL " +
-                                "SELECT count(*) FROM weeklyplan WHERE fixed = 1 UNION ALL " +
-                                "SELECT count(*) FROM monthlyplan WHERE fixed = 1 UNION ALL " +
-                                "SELECT count(*) FROM yearlyplan WHERE fixed = 1 UNION ALL " +
-                                "SELECT count(*) FROM healthtracker WHERE fixed = 1 UNION ALL " +
-                                "SELECT count(*) FROM monthtracker WHERE fixed = 1 UNION ALL " +
-                                "SELECT count(*) FROM studytracker WHERE fixed = 1", null);
-                        while (cursor.moveToNext()) {
-                            fixedmemocnt += cursor.getInt(0);
-                        }
-                        Log.d("fixedmemocount = ", String.valueOf(fixedmemocnt));
                         if (fixedmemocnt >= 3) {
                             AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
                             alert.setMessage("고정 메모는 3개를 넘을 수 없습니다!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -252,6 +235,8 @@ public class MemoViewActivity extends AppCompatActivity {
                             checkBoxFixed.setChecked(false);
                         } else {
                             db.execSQL("UPDATE "+TemplateCase+" SET fixed = 1 WHERE id = "+memoid+";");
+                            fixedmemocnt = fixedmemocnt + 1;
+                            PreferenceManager.setInt(MemoViewActivity.this, "fixedmemocnt", fixedmemocnt);
                             Toast.makeText(MemoViewActivity.this, "고정 변경 성공", Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
@@ -261,6 +246,8 @@ public class MemoViewActivity extends AppCompatActivity {
                 } else {
                     try {
                         db.execSQL("UPDATE "+TemplateCase+" SET fixed = 0 WHERE id = "+memoid+";");
+                        fixedmemocnt = fixedmemocnt - 1;
+                        PreferenceManager.setInt(MemoViewActivity.this, "fixedmemocnt", fixedmemocnt);
                         Toast.makeText(MemoViewActivity.this, "고정 변경 성공", Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -863,16 +850,22 @@ public class MemoViewActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                fixedmemocnt = PreferenceManager.getInt(MemoViewActivity.this, "fixedmemocnt");
                 AlertDialog.Builder alert = new AlertDialog.Builder(MemoViewActivity.this);
                 alert.setMessage("메모를 삭제하시겠습니까?");
                 alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
                         try {
-                            Cursor cursor = db.rawQuery("SELECT folder_name FROM "+TemplateCase+" WHERE id = "+memoid+";", null);
+                            Cursor cursor = db.rawQuery("SELECT folder_name, fixed FROM "+TemplateCase+" WHERE id = "+memoid+";", null);
                             cursor.moveToFirst();
                             String whereMemoIn = cursor.getString(0);
-                            db.execSQL("UPDATE "+TemplateCase+" SET deleted = 1 WHERE id = "+memoid+";");
+                            int memofixed = cursor.getInt(1);
+                            if (memofixed == 1) {
+                                fixedmemocnt = fixedmemocnt - 1;
+                                PreferenceManager.setInt(MemoViewActivity.this, "fixedmemocnt", fixedmemocnt);
+                            }
+                            db.execSQL("UPDATE "+TemplateCase+" SET deleted = 1, fixed = 0 WHERE id = "+memoid+";");
                             db.execSQL("UPDATE folder SET count = count - 1 WHERE name = '"+whereMemoIn+"';");
                             Toast.makeText(MemoViewActivity.this, "휴지통 이동 성공", Toast.LENGTH_SHORT).show();
                             if (isAfterWrite) {
