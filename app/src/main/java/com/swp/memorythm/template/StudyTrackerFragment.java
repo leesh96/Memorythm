@@ -29,7 +29,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Random;
 
 public class StudyTrackerFragment extends Fragment {
     private DBHelper dbHelper;
@@ -204,6 +203,7 @@ public class StudyTrackerFragment extends Fragment {
                 splitKey = cursor.getString(4);
             }
             textViewDate.setText(userdate);
+            assert studyTimecheck != null;
             array = studyTimecheck.split("");
             for (int i = 0; i < array.length; i++) num_time[i] = Integer.parseInt(array[i]);
             et_comment.setText(commentAll);
@@ -217,6 +217,7 @@ public class StudyTrackerFragment extends Fragment {
             @SuppressLint("SimpleDateFormat") SimpleDateFormat stringtodate = new SimpleDateFormat("yyyy - MM - dd");
             try {
                 Date fromString = stringtodate.parse(toDate);
+                assert fromString != null;
                 myCalendar.setTime(fromString);
             } catch (ParseException e) {
                 e.printStackTrace();

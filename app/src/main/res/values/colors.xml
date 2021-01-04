@@ -9,11 +9,11 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="template_bgpink">#F0E3E2</color>
+    <color name="template_bgpink">#FCE8DF</color>
     <color name="template_bgyellow">#FFF8D5</color>
-    <color name="template_bgmint">#D8E5EA</color>
-    <color name="template_bgsky">#DCDEEC</color>
-    <color name="template_bggray">#EAEDF2</color>
+    <color name="template_bgmint">#DDEBBA</color>
+    <color name="template_bgsky">#D7ECED</color>
+    <color name="template_bggray">#F3EDDD</color>
     <color name="text_color">#000000</color>
     <color name="background">#F0F1F2</color>
     <color name="fragementbg">#F7F8F8</color>
