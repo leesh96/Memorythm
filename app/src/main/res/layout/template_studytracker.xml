@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,11 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:fontFamily="@font/sdkukdetopokki_b"
         android:text="StudyTracker"
         android:textAlignment="center"
-        android:textColor="@color/text_color"
+        android:textColor="@color/black"
         android:textSize="20dp"
-        android:fontFamily="@font/sdkukdetopokki_b"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +30,7 @@
         android:fontFamily="@font/sdkukdetopokki_b"
         android:text="2020-11-30"
         android:textAlignment="center"
-        android:textColor="@color/text_color"
+        android:textColor="@color/black"
         android:textSize="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/StudyTracker" />
@@ -41,13 +39,13 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:orientation="vertical"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/write_date"
-        app:layout_constraintVertical_bias="0.0"
-        android:orientation="vertical">
+        app:layout_constraintVertical_bias="0.0">
 
         <TableLayout
             android:layout_width="match_parent"
@@ -57,7 +55,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#707070" />
+                android:background="@color/black" />
 
             <TableRow
                 android:layout_height="0dp"
@@ -74,8 +72,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="06"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +85,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/border_dr_dash"/>
+                    android:src="@drawable/border_dr_dash" />
 
                 <ImageView
                     android:id="@+id/am06_2"
@@ -131,10 +129,10 @@
                     android:layout_weight="6"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
                     android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
             </TableRow>
 
@@ -153,7 +151,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="07"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -208,12 +206,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -233,8 +231,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="08"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -286,14 +284,14 @@
                 <EditText
                     android:id="@+id/et8"
                     android:layout_width="0dp"
-                    android:textColor="@color/text_color"
                     android:layout_height="match_parent"
-                    android:singleLine="true"
-                    android:maxLength="17"
                     android:layout_weight="6"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -310,10 +308,10 @@
 
                     <TextView
                         android:layout_width="0dp"
-                        android:textColor="@color/text_color"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="09"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -367,13 +365,13 @@
                     android:id="@+id/et9"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:singleLine="true"
-                    android:maxLength="17"
                     android:layout_weight="6"
                     android:background="@drawable/border_d_dash"
-                    android:textColor="@color/text_color"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -393,7 +391,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="10"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -447,13 +445,13 @@
                     android:id="@+id/et10"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:singleLine="true"
-                    android:maxLength="17"
                     android:layout_weight="6"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
-                    android:textColor="@color/text_color"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -473,8 +471,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="11"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -528,12 +526,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
-                    android:textColor="@color/text_color"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -551,9 +549,9 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:textColor="@color/text_color"
                         android:gravity="center"
                         android:text="12"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -608,12 +606,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -633,8 +631,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="01"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -688,12 +686,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
                     android:background="@drawable/border_d_dash"
-                    android:textColor="@color/text_color"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -713,7 +711,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="02"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -768,12 +766,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
                     android:background="@drawable/border_d_dash"
-                    android:textColor="@color/text_color"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -793,7 +791,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="03"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -848,12 +846,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -873,8 +871,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="04"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -928,12 +926,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -952,8 +950,8 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:textColor="@color/text_color"
                         android:text="05"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -1008,12 +1006,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -1033,8 +1031,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="06"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1088,12 +1086,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
             </TableRow>
 
@@ -1112,8 +1110,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="07"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1166,13 +1164,13 @@
                     android:id="@+id/et19"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:singleLine="true"
-                    android:maxLength="17"
                     android:layout_weight="6"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -1192,8 +1190,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="08"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1247,12 +1245,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -1272,8 +1270,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="09"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1327,12 +1325,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -1352,8 +1350,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="10"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1407,12 +1405,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -1432,8 +1430,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="11"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1487,12 +1485,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -1512,8 +1510,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="12"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1567,12 +1565,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -1592,8 +1590,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="01"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1647,12 +1645,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -1672,8 +1670,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="02"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1727,12 +1725,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -1752,8 +1750,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="03"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1807,12 +1805,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -1832,8 +1830,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="04"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1887,12 +1885,12 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@drawable/border_d_dash"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
@@ -1912,8 +1910,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="05"
+                        android:textColor="@color/black"
                         android:textSize="11dp"
-                        android:textColor="@color/text_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -1967,16 +1965,17 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
-                    android:singleLine="true"
-                    android:maxLength="17"
-                    android:textColor="@color/text_color"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/nanumsquare_acl"
+                    android:maxLength="17"
                     android:padding="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
                     android:textSize="10dp" />
 
             </TableRow>
         </TableLayout>
+
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
@@ -1987,7 +1986,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#707070" />
+                android:background="@color/black" />
+
             <TextView
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
@@ -1995,22 +1995,21 @@
                 android:layout_margin="10dp"
                 android:fontFamily="@font/sdkukdetopokki_b"
                 android:text="Comment"
-                android:textColor="@color/text_color"
-                 />
+                android:textColor="@color/black" />
+
             <EditText
                 android:id="@+id/et_comment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/transparent"
                 android:fontFamily="@font/nanumsquare_acl"
                 android:gravity="top"
-                android:background="@android:color/transparent"
-                android:textColor="@color/text_color"
                 android:inputType="textMultiLine"
                 android:lineSpacingMultiplier="1"
                 android:padding="5dp"
+                android:textColor="@color/black"
                 android:textSize="10dp" />
         </LinearLayout>
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

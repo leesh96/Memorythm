@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/parentLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    >
+    android:background="@android:color/transparent">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:fontFamily="@font/sdkukdetopokki_b"
         android:text="Review"
         android:textAlignment="center"
-        android:textColor="@color/text_color"
+        android:textColor="@color/black"
         android:textSize="20dp"
-        android:fontFamily="@font/sdkukdetopokki_b"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,10 +26,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:clickable="true"
+        android:focusable="true"
         android:fontFamily="@font/sdkukdetopokki_b"
         android:text="2020-11-30"
         android:textAlignment="center"
-        android:textColor="@color/text_color"
+        android:textColor="@color/black"
         android:textSize="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
@@ -44,140 +43,155 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/write_date"
-         >
+        app:layout_constraintTop_toBottomOf="@+id/write_date">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="5dp"
+            android:background="@color/black" />
+
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TableRow>
+
                 <TextView
                     android:id="@+id/tv_book"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_selector"
-                    android:text="Book"
-                    android:textSize="10dp"
-                    android:textColor="@color/text_color"
-                    android:gravity="center"
                     android:fontFamily="@font/sdkukdetopokki_b"
-                    android:layout_margin="5dp"/>
+                    android:gravity="center"
+                    android:text="Book"
+                    android:textColor="@color/black"
+                    android:textSize="10dp" />
+
                 <TextView
                     android:id="@+id/tv_concert"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:text="Concert"
-                    android:textSize="10dp"
-                    android:textColor="@color/text_color"
-                    android:gravity="center"
                     android:fontFamily="@font/sdkukdetopokki_b"
-                    android:layout_margin="5dp"/>
+                    android:gravity="center"
+                    android:text="Concert"
+                    android:textColor="@color/black"
+                    android:textSize="10dp" />
+
                 <TextView
                     android:id="@+id/tv_movie"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:textSize="10dp"
-                    android:textColor="@color/text_color"
+                    android:fontFamily="@font/sdkukdetopokki_b"
                     android:gravity="center"
                     android:text="Movie"
-                    android:fontFamily="@font/sdkukdetopokki_b"
-                    android:layout_margin="5dp"/>
+                    android:textColor="@color/black"
+                    android:textSize="10dp" />
+
                 <TextView
                     android:id="@+id/tv_musical"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:textSize="10dp"
-                    android:textColor="@color/text_color"
+                    android:fontFamily="@font/sdkukdetopokki_b"
                     android:gravity="center"
                     android:text="Musical"
-                    android:fontFamily="@font/sdkukdetopokki_b"
-                    android:layout_margin="5dp"/>
+                    android:textColor="@color/black"
+                    android:textSize="10dp" />
+
                 <TextView
                     android:id="@+id/tv_food"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:textSize="10dp"
-                    android:textColor="@color/text_color"
+                    android:fontFamily="@font/sdkukdetopokki_b"
                     android:gravity="center"
                     android:text="Food"
-                    android:fontFamily="@font/sdkukdetopokki_b"
-                    android:layout_margin="5dp"/>
+                    android:textColor="@color/black"
+                    android:textSize="10dp" />
             </TableRow>
-            <TableRow
-                android:layout_marginTop="5dp"
-               >
+
+            <TableRow android:layout_marginTop="5dp">
+
                 <TextView
                     android:id="@+id/tv_exhibition"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:text="Exhibition"
-                    android:textColor="@color/text_color"
-                    android:textSize="9.5dp"
-                    android:gravity="center"
                     android:fontFamily="@font/sdkukdetopokki_b"
-                    android:layout_margin="5dp"/>
+                    android:gravity="center"
+                    android:text="Exhibition"
+                    android:textColor="@color/black"
+                    android:textSize="9.5dp" />
+
                 <TextView
                     android:id="@+id/tv_party"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:text="Party"
-                    android:textSize="10dp"
-                    android:textColor="@color/text_color"
-                    android:gravity="center"
                     android:fontFamily="@font/sdkukdetopokki_b"
-                    android:layout_margin="5dp"/>
+                    android:gravity="center"
+                    android:text="Party"
+                    android:textColor="@color/black"
+                    android:textSize="10dp" />
+
                 <TextView
                     android:id="@+id/tv_project"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:textColor="@color/text_color"
-                    android:textSize="10dp"
+                    android:fontFamily="@font/sdkukdetopokki_b"
                     android:gravity="center"
                     android:text="Project"
-                    android:fontFamily="@font/sdkukdetopokki_b"
-                    android:layout_margin="5dp"/>
+                    android:textColor="@color/black"
+                    android:textSize="10dp" />
+
                 <TextView
                     android:id="@+id/tv_trip"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:textColor="@color/text_color"
-                    android:textSize="10dp"
+                    android:fontFamily="@font/sdkukdetopokki_b"
                     android:gravity="center"
                     android:text="Trip"
-                    android:fontFamily="@font/sdkukdetopokki_b"
-                    android:layout_margin="5dp"/>
+                    android:textColor="@color/black"
+                    android:textSize="10dp" />
+
                 <EditText
-                    android:inputType="text"
-                    android:imeOptions="actionDone"
                     android:id="@+id/et_reviewlist"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:textSize="10dp"
-                    android:textColor="@color/text_color"
-                    android:gravity="center"
                     android:fontFamily="@font/sdkukdetopokki_b"
-                    android:layout_margin="5dp"/>
+                    android:gravity="center"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLength="6"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="10dp" />
             </TableRow>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/text_color"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                android:background="@color/black" />
         </TableLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -194,6 +208,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -201,15 +216,16 @@
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <EditText
-                    android:imeOptions="actionDone"
                     android:id="@+id/et_scorereview"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sdkukdetopokki_b"
                     android:gravity="center"
+                    android:imeOptions="actionDone"
                     android:inputType="number"
+                    android:maxLength="3"
                     android:padding="0dp"
-                    android:textColor="@color/text_color"
+                    android:textColor="@color/black"
                     android:textSize="12dp" />
 
                 <TextView
@@ -217,44 +233,50 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sdkukdetopokki_b"
                     android:text="/100"
-                    android:textSize="12dp"
-                    android:textColor="@color/text_color" />
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="5dp"
+            android:background="@color/black" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sdkukdetopokki_b"
                 android:text="TITLE"
-                android:textColor="@color/text_color"/>
+                android:textColor="@color/black" />
+
             <EditText
                 android:id="@+id/et_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:textColor="@color/text_color"
-                android:fontFamily="@font/sdkukdetopokki_l"/>
+                android:fontFamily="@font/sdkukdetopokki_l"
+                android:textColor="@color/black" />
         </LinearLayout>
+
         <com.swp.memorythm.template.LinedEditText
             android:id="@+id/et_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:fontFamily="@font/nanumsquare_acl"
-            android:inputType="textMultiLine"
-            android:textColor="@color/text_color"
             android:gravity="top"
+            android:inputType="textMultiLine"
             android:lineHeight="30sp"
-            android:textSize="14sp"
-            android:lineSpacingMultiplier="1.5"/>
+            android:lineSpacingMultiplier="1.5"
+            android:scrollbars="vertical"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

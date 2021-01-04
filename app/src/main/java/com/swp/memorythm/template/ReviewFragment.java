@@ -32,7 +32,7 @@ import java.util.Locale;
 public class ReviewFragment extends Fragment {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
-    private int memoid, pastChoice;
+    private int memoID, pastChoice;
     private TextView textViewDate;
     private EditText et_reviewList, et_scoreReview, et_title, et_content;
     private final TextView[] tv_reviews = new TextView[9];
@@ -161,7 +161,7 @@ public class ReviewFragment extends Fragment {
     }
 
     public int getMemoid() {
-        return memoid;
+        return memoID;
     }
 
     public void setBg(int past, TextView current) {
@@ -200,15 +200,15 @@ public class ReviewFragment extends Fragment {
                         "VALUES('" + userdate + "', '" + categoryName + "', '" + reviewTitle + "', '" + reviewContent + "', '" + categoryCheck + "', '" + starNum + "', '" + score + "', '" + Bgcolor + "', '" + title + "');");
                 @SuppressLint("Recycle") final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                 cursor.moveToFirst();
-                memoid = cursor.getInt(0);
+                memoID = cursor.getInt(0);
                 db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '메모';");
                 break;
             case "view":
                 if (getArguments() != null) {
-                    memoid = getArguments().getInt("memoid");
+                    memoID = getArguments().getInt("memoid");
                 }
                 db.execSQL("UPDATE review SET userdate = '" + userdate + "', categoryName = '" + categoryName + "', reviewTitle = '" + reviewTitle + "', reviewContent = '" + reviewContent + "', categoryCheck = '" + categoryCheck + "', starNum = '" + starNum + "', score = '" + score + "'," +
-                        "editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
+                        "editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoID + ";");
                 break;
         }
         return true;
@@ -221,8 +221,8 @@ public class ReviewFragment extends Fragment {
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
         if (getArguments() != null) {
-            memoid = getArguments().getInt("memoid");
-            @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT userdate, categoryName, reviewTitle, reviewContent, categoryCheck, starNum, score FROM review WHERE id = " + memoid + "", null);
+            memoID = getArguments().getInt("memoid");
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT userdate, categoryName, reviewTitle, reviewContent, categoryCheck, starNum, score FROM review WHERE id = " + memoID + "", null);
             while (cursor.moveToNext()) {
                 userDate = cursor.getString(0);
                 categoryName = cursor.getString(1);
@@ -245,11 +245,11 @@ public class ReviewFragment extends Fragment {
                 tv_reviews[pastChoice].setBackgroundColor(Color.TRANSPARENT);
             } else setBg(pastChoice, tv_reviews[categoryCheck]);
 
-            // 데이트픽커 다이얼로그에 userdate로 뜨게 하는 코드
+            // 데이트픽커 다이얼로그에 user date 로 뜨게 하는 코드
             String toDate = textViewDate.getText().toString();
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat stringtodate = new SimpleDateFormat("yyyy - MM - dd");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy - MM - dd");
             try {
-                Date fromString = stringtodate.parse(toDate);
+                Date fromString = stringToDate.parse(toDate);
                 myCalendar.setTime(fromString);
             } catch (ParseException e) {
                 e.printStackTrace();

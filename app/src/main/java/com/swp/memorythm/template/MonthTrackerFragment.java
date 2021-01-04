@@ -34,7 +34,7 @@ import java.util.Objects;
 public class MonthTrackerFragment extends Fragment {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
-    private int memoid, sum;
+    private int memoID, sum;
     private TextView textViewDate;
     private EditText et_goal, et_comment;
     private final Button[] btn_day = new Button[31];
@@ -60,13 +60,12 @@ public class MonthTrackerFragment extends Fragment {
     DatePickerDialog.OnDateSetListener myDatePicker = (datePicker, year, month, dayOfMonth) -> {
         myCalendar.set(Calendar.YEAR, year);
         myCalendar.set(Calendar.MONTH, month);
-        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         updateLabel();
     };
 
     // 텍스트뷰 날짜 업데이트
     private void updateLabel() {
-        String DateFormat = "yyyy - MM - dd";
+        String DateFormat = "yyyy - MM";
         SimpleDateFormat sdf = new SimpleDateFormat(DateFormat, Locale.KOREA);
 
         textViewDate.setText(sdf.format(myCalendar.getTime()));
@@ -90,7 +89,9 @@ public class MonthTrackerFragment extends Fragment {
         }
 
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
-        textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
+        String date = PreferenceManager.getString(getContext(), "currentDate");
+        date = date.substring(0,9);
+        textViewDate.setText(date);
 
         textViewDate.setOnClickListener(v -> { // 데이트픽커 띄우기
             new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -102,7 +103,6 @@ public class MonthTrackerFragment extends Fragment {
             btn_day[i].setOnClickListener(v -> num_day[finalI] = changeBgColor(btn_day[finalI], num_day[finalI]));
         }
         View activityRootView = viewGroup.findViewById(R.id.parentLayout);
-        // 수정 불가하게 만들기
         if (isFromFixedFragment()) CommonUtils.setTouchable(activityRootView);
         return viewGroup;
     }
@@ -114,7 +114,7 @@ public class MonthTrackerFragment extends Fragment {
     }
 
     public int getMemoid() {
-        return memoid;
+        return memoID;
     }
 
     //날짜 체크 함수
@@ -169,14 +169,14 @@ public class MonthTrackerFragment extends Fragment {
                 db.execSQL("INSERT INTO monthtracker('userdate', 'goal', 'dayCheck', 'comment', 'bgcolor', 'title') VALUES('" + userdate + "', '" + goal + "', '" + dayCheck + "', '" + comment + "', '" + Bgcolor + "', '" + title + "');");
                 @SuppressLint("Recycle") final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                 cursor.moveToFirst();
-                memoid = cursor.getInt(0);
+                memoID = cursor.getInt(0);
                 db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '메모';");
                 break;
             case "view":
                 if (getArguments() != null) {
-                    memoid = getArguments().getInt("memoid");
+                    memoID = getArguments().getInt("memoid");
                 }
-                db.execSQL("UPDATE monthtracker SET userdate = '" + userdate + "', goal = '" + goal + "', dayCheck = '" + dayCheck + "', comment = '" + comment + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
+                db.execSQL("UPDATE monthtracker SET userdate = '" + userdate + "', goal = '" + goal + "', dayCheck = '" + dayCheck + "', comment = '" + comment + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoID + ";");
                 break;
         }
         return true;
@@ -188,8 +188,8 @@ public class MonthTrackerFragment extends Fragment {
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
         if (getArguments() != null) {
-            memoid = getArguments().getInt("memoid");
-            @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT userdate, goal, dayCheck, comment  FROM monthtracker WHERE id = " + memoid + "", null);
+            memoID = getArguments().getInt("memoid");
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT userdate, goal, dayCheck, comment  FROM monthtracker WHERE id = " + memoID + "", null);
             while (cursor.moveToNext()) {
                 userdate = cursor.getString(0);
                 goal = cursor.getString(1);
@@ -204,9 +204,9 @@ public class MonthTrackerFragment extends Fragment {
             setBgColor();
             // 데이트픽커 다이얼로그에 userdate로 뜨게 하는 코드
             String toDate = textViewDate.getText().toString();
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat stringtodate = new SimpleDateFormat("yyyy - MM - dd");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy - MM - dd");
             try {
-                Date fromString = stringtodate.parse(toDate);
+                Date fromString = stringToDate.parse(toDate);
                 myCalendar.setTime(fromString);
             } catch (ParseException e) {
                 e.printStackTrace();

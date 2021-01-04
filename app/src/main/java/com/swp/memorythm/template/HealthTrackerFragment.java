@@ -34,12 +34,12 @@ import java.util.Objects;
 public class HealthTrackerFragment extends Fragment {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
-    private int memoid, aerobic;
-    private TextView textViewDate, tv_upperbody, tv_lowerbody, tv_chest, tv_aerobic;
+    private int memoID, aerobic;
+    private TextView textViewDate, tv_upperBody, tv_lowerBody, tv_chest, tv_aerobic;
     private EditText et_breakfast, et_lunch, et_snack, et_dinner, et_exercise, et_comment;
     private ImageView iv_health;
-    private final ImageButton[] ibtn_cup = new ImageButton[8];
-    private boolean upperbody, lowerbody, chest, fromFixedFragment;
+    private final ImageButton[] iBtn_cup = new ImageButton[8];
+    private boolean upperBody, lowerBody, chest, fromFixedFragment;
     private final int[] cups = new int[8];
     private TextView tv_breakfast, tv_lunch, tv_dinner;
 
@@ -82,8 +82,8 @@ public class HealthTrackerFragment extends Fragment {
         dbHelper = new DBHelper(getContext());
 
         textViewDate = viewGroup.findViewById(R.id.write_date);
-        tv_upperbody = viewGroup.findViewById(R.id.tv_upperbody);
-        tv_lowerbody = viewGroup.findViewById(R.id.tv_lowerbody);
+        tv_upperBody = viewGroup.findViewById(R.id.tv_upperbody);
+        tv_lowerBody = viewGroup.findViewById(R.id.tv_lowerbody);
         tv_chest = viewGroup.findViewById(R.id.tv_chest);
         tv_aerobic = viewGroup.findViewById(R.id.tv_aerobic);
         iv_health = viewGroup.findViewById(R.id.iv_health);
@@ -100,7 +100,7 @@ public class HealthTrackerFragment extends Fragment {
         for (int i = 1; i < 9; i++) {
             String name = "ibtn_cup" + i;
             int id = getResources().getIdentifier(name, "id", packName);
-            ibtn_cup[i - 1] = viewGroup.findViewById(id);
+            iBtn_cup[i - 1] = viewGroup.findViewById(id);
         }
         // 텍스트뷰 초기 날짜 현재 날짜로 설정
         textViewDate.setText(PreferenceManager.getString(getContext(), "currentDate"));
@@ -140,12 +140,12 @@ public class HealthTrackerFragment extends Fragment {
             timePickerDialog.show();
         });
         // 운동
-        tv_upperbody.setOnClickListener(v -> {
-            upperbody = !upperbody;
+        tv_upperBody.setOnClickListener(v -> {
+            upperBody = !upperBody;
             setHealth(iv_health, getExercise(), aerobic);
         });
-        tv_lowerbody.setOnClickListener(v -> {
-            lowerbody = !lowerbody;
+        tv_lowerBody.setOnClickListener(v -> {
+            lowerBody = !lowerBody;
             setHealth(iv_health, getExercise(), aerobic);
         });
         tv_chest.setOnClickListener(v -> {
@@ -158,27 +158,11 @@ public class HealthTrackerFragment extends Fragment {
             setHealth(iv_health, getExercise(), aerobic);
         });
 
-        for (int i = 0; i < ibtn_cup.length; i++) {
+        for (int i = 0; i < iBtn_cup.length; i++) {
             int finalI = i;
-            ibtn_cup[i].setOnClickListener(v -> cups[finalI] = changeCups(ibtn_cup[finalI], cups[finalI]));
+            iBtn_cup[i].setOnClickListener(v -> cups[finalI] = changeCups(iBtn_cup[finalI], cups[finalI]));
         }
-        if (isFromFixedFragment()) {
-            textViewDate.setEnabled(false);
-            et_comment.setEnabled(false);
-            et_exercise.setEnabled(false);
-            et_dinner.setEnabled(false);
-            et_snack.setEnabled(false);
-            et_lunch.setEnabled(false);
-            et_breakfast.setEnabled(false);
-            tv_lunch.setEnabled(false);
-            tv_breakfast.setEnabled(false);
-            tv_dinner.setEnabled(false);
-            tv_aerobic.setEnabled(false);
-            tv_chest.setEnabled(false);
-            tv_lowerbody.setEnabled(false);
-            tv_upperbody.setEnabled(false);
-            for (ImageButton imageButton : ibtn_cup) imageButton.setEnabled(false);
-        }
+
         View activityRootView = viewGroup.findViewById(R.id.parentLayout);
         // 수정 불가하게 만들기
         if (isFromFixedFragment()) CommonUtils.setTouchable(activityRootView);
@@ -192,16 +176,16 @@ public class HealthTrackerFragment extends Fragment {
     }
 
     public int getMemoid() {
-        return memoid;
+        return memoID;
     }
 
     public int getExercise() {
-        if (upperbody && lowerbody && chest) return 7;
-        else if (upperbody && lowerbody) return 6;
-        else if (upperbody && chest) return 5;
-        else if (lowerbody && chest) return 4;
-        else if (upperbody) return 3;
-        else if (lowerbody) return 2;
+        if (upperBody && lowerBody && chest) return 7;
+        else if (upperBody && lowerBody) return 6;
+        else if (upperBody && chest) return 5;
+        else if (lowerBody && chest) return 4;
+        else if (upperBody) return 3;
+        else if (lowerBody) return 2;
         else if (chest) return 1;
         else return 0;
     }
@@ -209,58 +193,58 @@ public class HealthTrackerFragment extends Fragment {
     public void setHealth(ImageView imageView, int doExercise, int doAerobic) {
         switch (doExercise) {
             case 0:
-                upperbody = false;
-                lowerbody = false;
+                upperBody = false;
+                lowerBody = false;
                 chest = false;
                 imageView.setImageResource(R.drawable.icon_exerciseblank);
                 break;
             case 1:
-                upperbody = false;
-                lowerbody = false;
+                upperBody = false;
+                lowerBody = false;
                 chest = true;
                 imageView.setImageResource(R.drawable.icon_chest);
                 break;
             case 2:
-                upperbody = false;
-                lowerbody = true;
+                upperBody = false;
+                lowerBody = true;
                 chest = false;
                 imageView.setImageResource(R.drawable.icon_lower);
                 break;
             case 3:
-                upperbody = true;
-                lowerbody = false;
+                upperBody = true;
+                lowerBody = false;
                 chest = false;
                 imageView.setImageResource(R.drawable.icon_upper);
                 break;
             case 4:
-                upperbody = false;
-                lowerbody = true;
+                upperBody = false;
+                lowerBody = true;
                 chest = true;
                 imageView.setImageResource(R.drawable.icon_lowchest);
                 break;
             case 5:
-                upperbody = true;
-                lowerbody = false;
+                upperBody = true;
+                lowerBody = false;
                 chest = true;
                 imageView.setImageResource(R.drawable.icon_upchest);
                 break;
             case 6:
-                upperbody = true;
-                lowerbody = true;
+                upperBody = true;
+                lowerBody = true;
                 chest = false;
                 imageView.setImageResource(R.drawable.icon_uplower);
                 break;
             case 7:
-                upperbody = true;
-                lowerbody = true;
+                upperBody = true;
+                lowerBody = true;
                 chest = true;
                 imageView.setImageResource(R.drawable.icon_exerciseall);
                 break;
         }
-        if (upperbody) tv_upperbody.setBackgroundColor(Color.parseColor("#FAED7D"));
-        else tv_upperbody.setBackgroundColor(Color.TRANSPARENT);
-        if (lowerbody) tv_lowerbody.setBackgroundColor(Color.parseColor("#FAED7D"));
-        else tv_lowerbody.setBackgroundColor(Color.TRANSPARENT);
+        if (upperBody) tv_upperBody.setBackgroundColor(Color.parseColor("#FAED7D"));
+        else tv_upperBody.setBackgroundColor(Color.TRANSPARENT);
+        if (lowerBody) tv_lowerBody.setBackgroundColor(Color.parseColor("#FAED7D"));
+        else tv_lowerBody.setBackgroundColor(Color.TRANSPARENT);
         if (chest) tv_chest.setBackgroundColor(Color.parseColor("#FAED7D"));
         else tv_chest.setBackgroundColor(Color.TRANSPARENT);
         if (doAerobic == 0) tv_aerobic.setBackgroundColor(Color.TRANSPARENT);
@@ -285,8 +269,8 @@ public class HealthTrackerFragment extends Fragment {
 
     public void setCups() {
         for (int i = 0; i < cups.length; i++) {
-            if (cups[i] == 1) changeCups(ibtn_cup[i], 0);
-            else changeCups(ibtn_cup[i], 1);
+            if (cups[i] == 1) changeCups(iBtn_cup[i], 0);
+            else changeCups(iBtn_cup[i], 1);
         }
     }
 
@@ -307,25 +291,25 @@ public class HealthTrackerFragment extends Fragment {
         String comment = et_comment.getText().toString().replaceAll("'", "''");
         StringBuilder waterCups = new StringBuilder();
         for (int value : cups) waterCups.append(value);
-        int exercisedata = getExercise();
-        int aerobicdata = aerobic;
+        int exerciseData = getExercise();
+        int aerobicData = aerobic;
         db = dbHelper.getReadableDatabase();
         switch (Mode) {
             case "write":
                 db.execSQL("INSERT INTO healthtracker('userdate', 'waterCups', 'breakfastTime', 'breakfastMenu', 'lunchTime', 'lunchMenu', 'snackMenu', 'dinnerTime', 'dinnerMenu', 'exerciseContent', 'comment',  'exercise', 'aerobic', 'bgcolor', 'title') " +
-                        "VALUES('" + userdate + "', '" + waterCups + "', '" + breakfastTime + "', '" + breakfastMenu + "', '" + lunchTime + "', '" + lunchMenu + "', '" + snackMenu + "', '" + dinnerTime + "', '" + dinnerMenu + "', '" + exerciseContent + "', '" + comment + "', '" + exercisedata + "', '" + aerobicdata + "', '" + Bgcolor + "', '" + title + "');");
+                        "VALUES('" + userdate + "', '" + waterCups + "', '" + breakfastTime + "', '" + breakfastMenu + "', '" + lunchTime + "', '" + lunchMenu + "', '" + snackMenu + "', '" + dinnerTime + "', '" + dinnerMenu + "', '" + exerciseContent + "', '" + comment + "', '" + exerciseData + "', '" + aerobicData + "', '" + Bgcolor + "', '" + title + "');");
                 @SuppressLint("Recycle") final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                 cursor.moveToFirst();
-                memoid = cursor.getInt(0);
+                memoID = cursor.getInt(0);
                 db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '메모';");
                 break;
             case "view":
                 if (getArguments() != null) {
-                    memoid = getArguments().getInt("memoid");
+                    memoID = getArguments().getInt("memoid");
                 }
                 db.execSQL("UPDATE healthtracker SET userdate = '" + userdate + "', waterCups = '" + waterCups + "', breakfastTime = '" + breakfastTime + "', breakfastMenu = '" + breakfastMenu + "', lunchTime = '" + lunchTime + "', " +
-                        "lunchMenu = '" + lunchMenu + "', snackMenu = '" + snackMenu + "', dinnerTime = '" + dinnerTime + "', dinnerMenu = '" + dinnerMenu + "', exerciseContent = '" + exerciseContent + "', comment = '" + comment + "', exercise = '" + exercisedata + "', aerobic = '" + aerobicdata + "'" +
-                        "editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
+                        "lunchMenu = '" + lunchMenu + "', snackMenu = '" + snackMenu + "', dinnerTime = '" + dinnerTime + "', dinnerMenu = '" + dinnerMenu + "', exerciseContent = '" + exerciseContent + "', comment = '" + comment + "', exercise = '" + exerciseData + "', aerobic = '" + aerobicData + "'" +
+                        "editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoID + ";");
                 break;
         }
         return true;
@@ -339,8 +323,8 @@ public class HealthTrackerFragment extends Fragment {
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
         if (getArguments() != null) {
-            memoid = getArguments().getInt("memoid");
-            @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT userdate, breakfastTime, breakfastMenu, lunchTime, lunchMenu, snackMenu , dinnerTime, dinnerMenu, exerciseContent, comment, exercise, aerobic, waterCups  FROM healthtracker WHERE id = " + memoid + "", null);
+            memoID = getArguments().getInt("memoid");
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT userdate, breakfastTime, breakfastMenu, lunchTime, lunchMenu, snackMenu , dinnerTime, dinnerMenu, exerciseContent, comment, exercise, aerobic, waterCups  FROM healthtracker WHERE id = " + memoID + "", null);
             while (cursor.moveToNext()) {
                 userdate = cursor.getString(0);
                 breakfastTime = cursor.getString(1);
@@ -370,11 +354,10 @@ public class HealthTrackerFragment extends Fragment {
             array = waterCups.split("");
             for (int i = 0; i < array.length; i++) cups[i] = Integer.parseInt(array[i]);
             setCups();
-            // 데이트픽커 다이얼로그에 userdate로 뜨게 하는 코드
             String toDate = textViewDate.getText().toString();
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat stringtodate = new SimpleDateFormat("yyyy - MM - dd");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy - MM - dd");
             try {
-                Date fromString = stringtodate.parse(toDate);
+                Date fromString = stringToDate.parse(toDate);
                 myCalendar.setTime(fromString);
             } catch (ParseException e) {
                 e.printStackTrace();

@@ -29,7 +29,7 @@ import java.util.Locale;
 public class GridMemoFragment extends Fragment {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
-    private int memoid;
+    private int memoID;
     private TextView textViewDate;
     private EditText editTextContent;
     private boolean fromFixedFragment;
@@ -81,7 +81,6 @@ public class GridMemoFragment extends Fragment {
             new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         });
         activityRootView = viewGroup.findViewById(R.id.parentLayout);
-        // 수정 불가하게 만들기
         if (isFromFixedFragment()) CommonUtils.setTouchable(activityRootView);
         return viewGroup;
     }
@@ -94,7 +93,7 @@ public class GridMemoFragment extends Fragment {
 
 
     public int getMemoid() {
-        return memoid;
+        return memoID;
     }
 
     public Boolean saveData(String Mode, String Bgcolor, String title) { //저장 및 수정
@@ -111,14 +110,14 @@ public class GridMemoFragment extends Fragment {
                 // 작성하면 view 모드로 바꾸기 위해 최근 삽입한 레코드 id로 바꿔줌
                 @SuppressLint("Recycle") final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                 cursor.moveToFirst();
-                memoid = cursor.getInt(0);
+                memoID = cursor.getInt(0);
                 db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '메모';");
                 break;
             case "view":
                 if (getArguments() != null) {
-                    memoid = getArguments().getInt("memoid");
+                    memoID = getArguments().getInt("memoid");
                 }
-                db.execSQL("UPDATE gridmemo SET userdate = '" + userdate + "', content = '" + content + "', title = '" + title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
+                db.execSQL("UPDATE gridmemo SET userdate = '" + userdate + "', content = '" + content + "', title = '" + title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoID + ";");
                 break;
         }
         return true;
@@ -130,8 +129,8 @@ public class GridMemoFragment extends Fragment {
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
         if (getArguments() != null) {
-            memoid = getArguments().getInt("memoid");
-            @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT userdate, content FROM gridmemo WHERE id = " + memoid + "", null);
+            memoID = getArguments().getInt("memoid");
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT userdate, content FROM gridmemo WHERE id = " + memoID + "", null);
             while (cursor.moveToNext()) {
                 userdate = cursor.getString(0);
                 content = cursor.getString(1);
@@ -140,9 +139,9 @@ public class GridMemoFragment extends Fragment {
             editTextContent.setText(content);
 
             String toDate = textViewDate.getText().toString();
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat stringtodate = new SimpleDateFormat("yyyy - MM - dd");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy - MM - dd");
             try {
-                Date fromString = stringtodate.parse(toDate);
+                Date fromString = stringToDate.parse(toDate);
                 myCalendar.setTime(fromString);
             } catch (ParseException e) {
                 e.printStackTrace();
