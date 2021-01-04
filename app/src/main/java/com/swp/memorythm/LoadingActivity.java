@@ -120,7 +120,7 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
                 @Override
                 public void handleMessage(@NonNull Message msg) {
                     super.handleMessage(msg);
-                    intent = new Intent(LoadingActivity.this, MainActivity.class);
+                    intent = new Intent(LoadingActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -189,7 +189,7 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 1, this);
             }
 
-            intent = new Intent(LoadingActivity.this, MainActivity.class);
+            intent = new Intent(LoadingActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }

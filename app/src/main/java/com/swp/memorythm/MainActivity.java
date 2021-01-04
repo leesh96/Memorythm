@@ -12,9 +12,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,8 +26,24 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
 import com.google.android.material.navigation.NavigationView;
 
 
@@ -31,9 +51,12 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private FragmentManager fm;
     private FragmentTransaction ft;
-    private ImageButton homeBtn, drawerBtn;
+    private ImageButton drawerBtn;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private ImageButton homeBtn; // 홈으로 가는 버튼
+    private ListView listview = null;
+    private String uid;
     private int fixedmemocnt = 0;
 
     private DBHelper dbHelper;
@@ -47,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        uid = intent.getStringExtra("uid");
 
         dbHelper = new DBHelper(MainActivity.this);
         db = dbHelper.getReadableDatabase();
@@ -141,10 +167,12 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (id) {
                     case R.id.dataBackUp:
+                        backupData("snack");
                         break;
                     case R.id.dataRestore:
                         break;
                     case R.id.logout:
+                        backupData("logout");
                         break;
                 }
 
@@ -171,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         PreferenceManager.removeKey(MainActivity.this, "fixedmemocnt");
+        backupData("");
         super.onDestroy();
     }
 
@@ -204,6 +233,62 @@ public class MainActivity extends AppCompatActivity {
                 ft.replace(R.id.mainFrame, new TrashFragment());
                 ft.commit();
                 break;
+        }
+    }
+
+    //db파일 백업
+    public void backupData(String flag) {
+
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
+
+        try {
+            File data = Environment.getDataDirectory(); // 경로(data/)
+
+            File currentDB = new File(data, "/data/com.swp.memorythm/databases/memorythm.db");
+            Uri uri = Uri.fromFile(currentDB); //파일로부터 uri 생성?
+            StorageReference mRef = storageReference.child("backup/" + uid); //스토리지 참조
+            UploadTask uploadTask = mRef.putFile(uri); //파일 업로드
+
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                    // 업로드 실패알림
+                    Log.d("오류", exception.getLocalizedMessage());
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    switch(flag) {
+
+                        // 백업 버튼 눌러서 백업 성공하면 스낵바 띄움
+                        case "snack":
+                            Snackbar snackbar = Snackbar.make(navigationView, "백업 성공", Snackbar.LENGTH_SHORT);
+
+                            snackbar.setAction("확인", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    snackbar.dismiss();
+                                }
+                            }).show();
+                            break;
+                        case "logout":
+                            dbHelper.onUpgrade(db, 1, 1); //로그아웃시 테이블 초기화
+                            FirebaseAuth.getInstance().signOut(); //파이어베이스 인증해제
+                            Intent intent1 = new Intent(getApplication(), LoginActivity.class);
+                            startActivity(intent1);
+                            finish();
+                            break;
+                        default:
+                            Log.d("reuslt", "백업 성공");
+                            break;
+                    }
+                }
+            });
+        } catch (Exception e) {
+            Log.d("reuslt", "백업 실패");
         }
     }
 }
