@@ -1,12 +1,12 @@
 package com.swp.memorythm.template;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.swp.memorythm.CommonUtils;
 import com.swp.memorythm.DBHelper;
 import com.swp.memorythm.PreferenceManager;
 import com.swp.memorythm.R;
@@ -31,14 +32,12 @@ import java.util.Locale;
 public class ReviewFragment extends Fragment {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
-    private int memoid;
+    private int memoid, pastChoice;
     private TextView textViewDate;
     private EditText et_reviewList, et_scoreReview, et_title, et_content;
     private final TextView[] tv_reviews = new TextView[9];
-    private int pastChoice;
     private RatingBar rb_review;
-    private boolean isEdit = false, isUser = false;
-    private boolean fromFixedFragment;
+    private boolean isEdit, isUser, fromFixedFragment;
 
     public boolean isFromFixedFragment() {
         return fromFixedFragment;
@@ -129,10 +128,9 @@ public class ReviewFragment extends Fragment {
             int heightDiff = activityRootView.getRootView().getHeight() - r.height();
 
             if (heightDiff < 0.25 * activityRootView.getRootView().getHeight() && ReviewFragment.this.getActivity() != null) {
-                Log.d("키보드 ", "내려감?");
                 if (ReviewFragment.this.getActivity().getCurrentFocus() == et_reviewList) {
                     et_reviewList.setBackgroundResource(R.drawable.bg_selector);
-                    tv_reviews[pastChoice].setBackgroundColor(Color.parseColor("#00000000"));
+                    tv_reviews[pastChoice].setBackgroundColor(Color.TRANSPARENT);
                     isUser = true;
                     et_reviewList.clearFocus();
                 } else if (ReviewFragment.this.getActivity().getCurrentFocus() == et_scoreReview) {
@@ -151,8 +149,7 @@ public class ReviewFragment extends Fragment {
             activityRootView.getViewTreeObserver().removeOnGlobalLayoutListener(this::updateLabel);
         });
 
-        // 수정 불가하게 만들기
-        if (isFromFixedFragment()) setClickable((ViewGroup) activityRootView);
+        if (isFromFixedFragment()) CommonUtils.setTouchable(activityRootView);
 
         return viewGroup;
     }
@@ -163,30 +160,20 @@ public class ReviewFragment extends Fragment {
         setData();
     }
 
-    public void setClickable(View view){
-        view.setOnTouchListener((view1, motionEvent) -> true);
-        if(view instanceof ViewGroup){
-            ViewGroup group = (ViewGroup)view;
-            for (int i = 0; i < group.getChildCount() ; i++) {
-                setClickable(group.getChildAt(i));
-            }
-        }
-    }
-
     public int getMemoid() {
         return memoid;
     }
 
     public void setBg(int past, TextView current) {
         et_reviewList.setBackgroundResource(R.drawable.bg_line);
-        tv_reviews[past].setBackgroundColor(Color.parseColor("#00000000"));
+        tv_reviews[past].setBackgroundColor(Color.TRANSPARENT);
         current.setBackgroundResource(R.drawable.bg_selector);
     }
 
     public Boolean saveData(String Mode, String Bgcolor, String title) {
         //String : userdate, categoryName, reviewTitle, reviewContent
         //int : categoryCheck, starNum, score
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         String userdate = textViewDate.getText().toString();
         String reviewTitle = et_title.getText().toString().replaceAll("'", "''");
@@ -211,7 +198,7 @@ public class ReviewFragment extends Fragment {
             case "write":
                 db.execSQL("INSERT INTO review('userdate', 'categoryName', 'reviewTitle', 'reviewContent', 'categoryCheck', 'starNum', 'score', 'bgcolor', 'title') " +
                         "VALUES('" + userdate + "', '" + categoryName + "', '" + reviewTitle + "', '" + reviewContent + "', '" + categoryCheck + "', '" + starNum + "', '" + score + "', '" + Bgcolor + "', '" + title + "');");
-                final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
+                @SuppressLint("Recycle") final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                 cursor.moveToFirst();
                 memoid = cursor.getInt(0);
                 db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '메모';");
@@ -227,6 +214,7 @@ public class ReviewFragment extends Fragment {
         return true;
     }
 
+    @SuppressLint("SetTextI18n")
     public void setData() {
         String userDate = null, categoryName = null, reviewTitle = null, reviewContent = null;
         int categoryCheck = 0, starNum = 0, score = 0;
@@ -234,7 +222,7 @@ public class ReviewFragment extends Fragment {
         db = dbHelper.getReadableDatabase();
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
-            Cursor cursor = db.rawQuery("SELECT userdate, categoryName, reviewTitle, reviewContent, categoryCheck, starNum, score FROM review WHERE id = " + memoid + "", null);
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT userdate, categoryName, reviewTitle, reviewContent, categoryCheck, starNum, score FROM review WHERE id = " + memoid + "", null);
             while (cursor.moveToNext()) {
                 userDate = cursor.getString(0);
                 categoryName = cursor.getString(1);
@@ -254,21 +242,20 @@ public class ReviewFragment extends Fragment {
             if (categoryCheck == 9) {
                 et_reviewList.setText(categoryName);
                 et_reviewList.setBackgroundResource(R.drawable.bg_selector);
-                tv_reviews[pastChoice].setBackgroundColor(Color.parseColor("#00000000"));
+                tv_reviews[pastChoice].setBackgroundColor(Color.TRANSPARENT);
             } else setBg(pastChoice, tv_reviews[categoryCheck]);
 
             // 데이트픽커 다이얼로그에 userdate로 뜨게 하는 코드
             String toDate = textViewDate.getText().toString();
-            SimpleDateFormat stringtodate = new SimpleDateFormat("yyyy - MM - dd");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat stringtodate = new SimpleDateFormat("yyyy - MM - dd");
             try {
                 Date fromString = stringtodate.parse(toDate);
                 myCalendar.setTime(fromString);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            // 데이트픽커 띄우기
+
             textViewDate.setOnClickListener(v -> {
-                // 뷰 모드면 날짜 맞게 해줘야댐
                 new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             });
         }

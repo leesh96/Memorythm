@@ -1,10 +1,12 @@
 package com.swp.memorythm.template;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.swp.memorythm.CommonUtils;
 import com.swp.memorythm.DBHelper;
 import com.swp.memorythm.PreferenceManager;
 import com.swp.memorythm.R;
@@ -37,9 +40,11 @@ public class StudyTrackerFragment extends Fragment {
     private final EditText[] et_comments = new EditText[24];
     private final ImageView[] iv_time = new ImageView[144];
     private final int[] num_time = new int[144];
+
     public static StudyTrackerFragment newInstance() {
         return new StudyTrackerFragment();
     }
+
     private boolean fromFixedFragment;
 
     public boolean isFromFixedFragment() {
@@ -49,6 +54,7 @@ public class StudyTrackerFragment extends Fragment {
     public void setFromFixedFragment(boolean fromFixedFragment) {
         this.fromFixedFragment = fromFixedFragment;
     }
+
     // 캘린더 객체 생성
     Calendar myCalendar = Calendar.getInstance();
 
@@ -77,23 +83,24 @@ public class StudyTrackerFragment extends Fragment {
         et_comment = viewGroup.findViewById(R.id.et_comment);
         String packName = Objects.requireNonNull(this.getActivity()).getPackageName();
         for (int i = 0; i < 12; i++) {
-            for (int j = 0; j < 6 ; j++) {
+            for (int j = 0; j < 6; j++) {
                 String amTime, pmTime;
-                if(i<9) {
-                    amTime = "am0"+(i+1)+"_"+(j+1); pmTime = "pm0"+(i+1)+"_"+(j+1);
+                if (i < 9) {
+                    amTime = "am0" + (i + 1) + "_" + (j + 1);
+                    pmTime = "pm0" + (i + 1) + "_" + (j + 1);
+                } else {
+                    amTime = "am" + (i + 1) + "_" + (j + 1);
+                    pmTime = "pm" + (i + 1) + "_" + (j + 1);
                 }
-                else {
-                    amTime="am"+(i+1)+"_"+(j+1); pmTime = "pm"+(i+1)+"_"+(j+1);
-                }
-                int amId = getResources().getIdentifier(amTime,"id",packName);
-                int pmId = getResources().getIdentifier(pmTime,"id",packName);
-                iv_time[i*6+j] = viewGroup.findViewById(amId);
-                iv_time[72+i*6+j] = viewGroup.findViewById(pmId);
+                int amId = getResources().getIdentifier(amTime, "id", packName);
+                int pmId = getResources().getIdentifier(pmTime, "id", packName);
+                iv_time[i * 6 + j] = viewGroup.findViewById(amId);
+                iv_time[72 + i * 6 + j] = viewGroup.findViewById(pmId);
             }
         }
-        for (int i = 0; i < 24 ; i++) {
-            String name = "et"+i;
-            int id=getResources().getIdentifier(name,"id",packName);
+        for (int i = 0; i < 24; i++) {
+            String name = "et" + i;
+            int id = getResources().getIdentifier(name, "id", packName);
             et_comments[i] = viewGroup.findViewById(id);
         }
 
@@ -105,14 +112,15 @@ public class StudyTrackerFragment extends Fragment {
             new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         });
 
+        et_comments[0].setFilters(new InputFilter[]{new InputFilter.LengthFilter(ViewGroup.LayoutParams.MATCH_PARENT)});
 
-        for (int i = 0; i < iv_time.length ; i++) {
+        for (int i = 0; i < iv_time.length; i++) {
             int finalI = i;
-            iv_time[i].setOnClickListener(v-> num_time[finalI]=changeBgColor(iv_time[finalI],num_time[finalI]));
+            iv_time[i].setOnClickListener(v -> num_time[finalI] = changeBgColor(iv_time[finalI], num_time[finalI]));
         }
         View activityRootView = viewGroup.findViewById(R.id.parentLayout);
         // 수정 불가하게 만들기
-        if (isFromFixedFragment()) setClickable((ViewGroup) activityRootView);
+        if (isFromFixedFragment()) CommonUtils.setTouchable(activityRootView);
 
         return viewGroup;
     }
@@ -123,64 +131,32 @@ public class StudyTrackerFragment extends Fragment {
         setData();
     }
 
-    public void setClickable(View view){
-        view.setOnTouchListener((view1, motionEvent) -> true);
-        if(view instanceof ViewGroup){
-            ViewGroup group = (ViewGroup)view;
-            for (int i = 0; i < group.getChildCount() ; i++) {
-                setClickable(group.getChildAt(i));
-            }
-        }
-    }
 
     public int getMemoid() {
         return memoid;
     }
 
     //배경색 바꾸는 함수
-    public int changeBgColor(ImageView imageView, int n){
-        if(n==0){
-            imageView.setBackgroundColor(Color.parseColor("#BFFFFFFF")); //투명도 75%
+    public int changeBgColor(ImageView imageView, int n) {
+        if (n == 0) {
+            imageView.setBackgroundColor(Color.parseColor("#FAED7D")); //투명도 75%
             return 1;
-        }else{
-            imageView.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+        } else {
+            imageView.setBackgroundColor(Color.TRANSPARENT);
             return 0;
         }
     }
-    public void setBgColor(){
-        for (int i = 0; i < iv_time.length ; i++) {
-            if(num_time[i]==1) changeBgColor(iv_time[i],0);
-            else changeBgColor(iv_time[i],1);
+
+    public void setBgColor() {
+        for (int i = 0; i < iv_time.length; i++) {
+            if (num_time[i] == 1) changeBgColor(iv_time[i], 0);
+            else changeBgColor(iv_time[i], 1);
         }
     }
-    public String makeKey(String txt){
-        StringBuilder key = new StringBuilder();
-        Random random = new Random();
-        do {
-            for (int i = 0; i < 8; i++) {
-                int rIndex = random.nextInt(3);
-                switch (rIndex) {
-                    case 0:
-                        // a-z
-                        key.append((char) ((int) (random.nextInt(26)) + 97));
-                        break;
-                    case 1:
-                        // A-Z
-                        key.append((char) ((int) (random.nextInt(26)) + 65));
-                        break;
-                    case 2:
-                        // 0-9
-                        key.append(random.nextInt(10));
-                        break;
-                }
-            }
-        } while (txt.contains(key));
-        return key.toString();
-    }
 
-    public Boolean saveData(String Mode, String Bgcolor, String title){
+    public Boolean saveData(String Mode, String Bgcolor, String title) {
         //String : userdate, studyTimecheck , commentAll , commentTime, splitKey
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         String userdate = textViewDate.getText().toString();
         StringBuilder studyTimecheck = new StringBuilder();
@@ -188,7 +164,7 @@ public class StudyTrackerFragment extends Fragment {
         String commentAll = et_comment.getText().toString().replaceAll("'", "''");
         StringBuilder txt = new StringBuilder(); //edit text 모두 합쳐서 넣을 String
         for (EditText etComment : et_comments) txt.append(etComment.getText().toString());
-        String splitKey = makeKey(txt.toString());
+        String splitKey = CommonUtils.makeKey(txt.toString());
         StringBuilder commentTime = new StringBuilder();
         for (EditText etComment : et_comments) {
             if (!etComment.getText().toString().equals(""))
@@ -199,41 +175,46 @@ public class StudyTrackerFragment extends Fragment {
         switch (Mode) {
             case "write":
                 db.execSQL("INSERT INTO studytracker('userdate', 'studyTimecheck', 'commentAll', 'commentTime', 'splitKey', 'bgcolor', 'title') " +
-                        "VALUES('" + userdate + "', '" + studyTimecheck + "', '" + commentAll + "', '" + commentTime + "','"+ splitKey +"', '"+Bgcolor+"', '"+title+"');");
+                        "VALUES('" + userdate + "', '" + studyTimecheck + "', '" + commentAll + "', '" + commentTime + "','" + splitKey + "', '" + Bgcolor + "', '" + title + "');");
                 db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '메모';");
                 break;
             case "view":
                 if (getArguments() != null) {
                     memoid = getArguments().getInt("memoid");
                 }
-                db.execSQL("UPDATE studytracker SET userdate = '"+userdate+"', studyTimecheck = '"+studyTimecheck+"', commentAll = '"+commentAll+"', commentTime = '"+commentTime+"', splitKey = '"+splitKey+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                db.execSQL("UPDATE studytracker SET userdate = '" + userdate + "', studyTimecheck = '" + studyTimecheck + "', commentAll = '" + commentAll + "', commentTime = '" + commentTime + "', splitKey = '" + splitKey + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
                 break;
         }
         return true;
     }
-    public void setData(){
-        String userdate=null, studyTimecheck=null , commentAll =null, commentTime=null, splitKey=null;
+
+    public void setData() {
+        String userdate = null, studyTimecheck = null, commentAll = null, commentTime = null, splitKey = null;
         String[] array, array1;
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
-            Cursor cursor = db.rawQuery("SELECT userdate, studyTimecheck , commentAll , commentTime, splitKey  FROM studytracker WHERE id = "+memoid+"", null);
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT userdate, studyTimecheck , commentAll , commentTime, splitKey  FROM studytracker WHERE id = " + memoid + "", null);
             while (cursor.moveToNext()) {
-                userdate = cursor.getString(0); studyTimecheck = cursor.getString(1); commentAll = cursor.getString(2); commentTime = cursor.getString(3); splitKey = cursor.getString(4);
+                userdate = cursor.getString(0);
+                studyTimecheck = cursor.getString(1);
+                commentAll = cursor.getString(2);
+                commentTime = cursor.getString(3);
+                splitKey = cursor.getString(4);
             }
             textViewDate.setText(userdate);
             array = studyTimecheck.split("");
-            for (int i = 0; i <array.length ; i++) num_time[i] = Integer.parseInt(array[i]);
+            for (int i = 0; i < array.length; i++) num_time[i] = Integer.parseInt(array[i]);
             et_comment.setText(commentAll);
             array1 = commentTime.split(splitKey);
-            for (int i = 0; i <array1.length ; i++) {
-                if(!array1[i].equals(" ")) et_comments[i].setText(array1[i]);
+            for (int i = 0; i < array1.length; i++) {
+                if (!array1[i].equals(" ")) et_comments[i].setText(array1[i]);
             }
             setBgColor();
             // 데이트픽커 다이얼로그에 userdate로 뜨게 하는 코드
             String toDate = textViewDate.getText().toString();
-            SimpleDateFormat stringtodate = new SimpleDateFormat("yyyy - MM - dd");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat stringtodate = new SimpleDateFormat("yyyy - MM - dd");
             try {
                 Date fromString = stringtodate.parse(toDate);
                 myCalendar.setTime(fromString);
@@ -246,6 +227,5 @@ public class StudyTrackerFragment extends Fragment {
                 new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             });
         }
-
     }
 }

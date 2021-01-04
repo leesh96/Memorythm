@@ -1,5 +1,6 @@
 package com.swp.memorythm.template;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.swp.memorythm.CommonUtils;
 import com.swp.memorythm.DBHelper;
 import com.swp.memorythm.PreferenceManager;
 import com.swp.memorythm.R;
@@ -59,7 +62,6 @@ public class GridMemoFragment extends Fragment {
     private void updateLabel() {
         String DateFormat = "yyyy - MM - dd";
         SimpleDateFormat sdf = new SimpleDateFormat(DateFormat, Locale.KOREA);
-
         textViewDate.setText(sdf.format(myCalendar.getTime()));
     }
 
@@ -80,7 +82,7 @@ public class GridMemoFragment extends Fragment {
         });
         activityRootView = viewGroup.findViewById(R.id.parentLayout);
         // 수정 불가하게 만들기
-        if (isFromFixedFragment()) setClickable((ViewGroup) activityRootView);
+        if (isFromFixedFragment()) CommonUtils.setTouchable(activityRootView);
         return viewGroup;
     }
 
@@ -90,33 +92,24 @@ public class GridMemoFragment extends Fragment {
         setData();
     }
 
-    public void setClickable(View view){
-        view.setOnTouchListener((view1, motionEvent) -> true);
-        if(view instanceof ViewGroup){
-            ViewGroup group = (ViewGroup)view;
-            for (int i = 0; i < group.getChildCount() ; i++) {
-                setClickable(group.getChildAt(i));
-            }
-        }
-    }
 
     public int getMemoid() {
         return memoid;
     }
 
-    public Boolean saveData(String Mode, String Bgcolor, String title){ //저장 및 수정
+    public Boolean saveData(String Mode, String Bgcolor, String title) { //저장 및 수정
         //userdate, content
         String userdate = textViewDate.getText().toString();
         String content = editTextContent.getText().toString().replaceAll("'", "''");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
 
         db = dbHelper.getReadableDatabase();
         switch (Mode) {
             case "write":
-                db.execSQL("INSERT INTO gridmemo('userdate', 'content', 'bgcolor', 'title') VALUES('" + userdate + "', '" + content + "', '"+Bgcolor+"', '"+title+"');");
+                db.execSQL("INSERT INTO gridmemo('userdate', 'content', 'bgcolor', 'title') VALUES('" + userdate + "', '" + content + "', '" + Bgcolor + "', '" + title + "');");
                 // 작성하면 view 모드로 바꾸기 위해 최근 삽입한 레코드 id로 바꿔줌
-                final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
+                @SuppressLint("Recycle") final Cursor cursor = db.rawQuery("select last_insert_rowid()", null);
                 cursor.moveToFirst();
                 memoid = cursor.getInt(0);
                 db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '메모';");
@@ -125,38 +118,36 @@ public class GridMemoFragment extends Fragment {
                 if (getArguments() != null) {
                     memoid = getArguments().getInt("memoid");
                 }
-                db.execSQL("UPDATE gridmemo SET userdate = '"+userdate+"', content = '"+content+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                db.execSQL("UPDATE gridmemo SET userdate = '" + userdate + "', content = '" + content + "', title = '" + title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
                 break;
         }
         return true;
     }
 
-    public void setData(){
-        String userdate=null, content=null;
+    public void setData() {
+        String userdate = null, content = null;
 
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
-            Cursor cursor = db.rawQuery("SELECT userdate, content FROM gridmemo WHERE id = "+memoid+"", null);
+            @SuppressLint("Recycle") Cursor cursor = db.rawQuery("SELECT userdate, content FROM gridmemo WHERE id = " + memoid + "", null);
             while (cursor.moveToNext()) {
                 userdate = cursor.getString(0);
                 content = cursor.getString(1);
             }
             textViewDate.setText(userdate);
             editTextContent.setText(content);
-            // 데이트픽커 다이얼로그에 userdate로 뜨게 하는 코드
+
             String toDate = textViewDate.getText().toString();
-            SimpleDateFormat stringtodate = new SimpleDateFormat("yyyy - MM - dd");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat stringtodate = new SimpleDateFormat("yyyy - MM - dd");
             try {
                 Date fromString = stringtodate.parse(toDate);
                 myCalendar.setTime(fromString);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            // 데이트픽커 띄우기
             textViewDate.setOnClickListener(v -> {
-                // 뷰 모드면 날짜 맞게 해줘야댐
                 new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             });
         }
