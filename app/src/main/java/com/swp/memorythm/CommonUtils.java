@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import java.util.Random;
 
 public final class CommonUtils {
-
     @SuppressLint("ClickableViewAccessibility")
     public static void setTouchable(View view) {
         view.setOnTouchListener((view1, motionEvent) -> true);
@@ -15,6 +14,18 @@ public final class CommonUtils {
             ViewGroup group = (ViewGroup) view;
             for (int i = 0; i < group.getChildCount(); i++) {
                 setTouchable(group.getChildAt(i));
+            }
+        }
+    }
+
+    // 고정프래그먼트에서 뷰 이벤트 막는 함수
+    public static void invaildTouch(ViewGroup viewGroup) {
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                invaildTouch((ViewGroup) child);
+            } else {
+                child.setOnTouchListener(null);
             }
         }
     }

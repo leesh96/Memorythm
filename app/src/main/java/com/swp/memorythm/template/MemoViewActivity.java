@@ -1,13 +1,10 @@
 package com.swp.memorythm.template;
 
-import androidx.fragment.app.Fragment;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -22,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -237,21 +235,19 @@ public class MemoViewActivity extends AppCompatActivity {
                             db.execSQL("UPDATE "+TemplateCase+" SET fixed = 1 WHERE id = "+memoid+";");
                             fixedmemocnt = fixedmemocnt + 1;
                             PreferenceManager.setInt(MemoViewActivity.this, "fixedmemocnt", fixedmemocnt);
-                            Toast.makeText(MemoViewActivity.this, "고정 변경 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 고정되었습니다.", Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(MemoViewActivity.this, "고정 변경 실패", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     try {
                         db.execSQL("UPDATE "+TemplateCase+" SET fixed = 0 WHERE id = "+memoid+";");
                         fixedmemocnt = fixedmemocnt - 1;
                         PreferenceManager.setInt(MemoViewActivity.this, "fixedmemocnt", fixedmemocnt);
-                        Toast.makeText(MemoViewActivity.this, "고정 변경 성공", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MemoViewActivity.this, "메모가 고정되었습니다.", Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(MemoViewActivity.this, "고정 변경 실패", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -277,7 +273,7 @@ public class MemoViewActivity extends AppCompatActivity {
                     // 프래그먼트 구분
                     if (fragment instanceof NonlineMemoFragment) {
                         if (((NonlineMemoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
                                 Mode = "view";
@@ -285,15 +281,12 @@ public class MemoViewActivity extends AppCompatActivity {
                                 setVisibility(Mode);
                                 memoid = ((NonlineMemoFragment) fragment).getMemoid();
                             }
-                            dialog.dismiss();
-                        } else { // 저장 실패 시
-                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
                         }
+                        dialog.dismiss();
                     }
                     else if (fragment instanceof TodoFragment) {
                         if (((TodoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) {  // 저장 성공 시
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
                                 Mode = "view";
@@ -301,15 +294,12 @@ public class MemoViewActivity extends AppCompatActivity {
                                 setVisibility(Mode);
                                 memoid = ((TodoFragment) fragment).getMemoid();
                             }
-                            dialog.dismiss();
-                        } else {    // 저장 실패 시
-                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
                         }
+                        dialog.dismiss();
                     }
                     else if (fragment instanceof ShoppingFragment) {
                         if (((ShoppingFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) {
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
                                 Mode = "view";
@@ -317,15 +307,12 @@ public class MemoViewActivity extends AppCompatActivity {
                                 setVisibility(Mode);
                                 memoid = ((ShoppingFragment) fragment).getMemoid();
                             }
-                            dialog.dismiss();
-                        } else {    // 저장 실패 시
-                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
                         }
+                        dialog.dismiss();
                     }
                     else if (fragment instanceof WishFragment) {
                         if (((WishFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) {
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
                                 Mode = "view";
@@ -333,15 +320,12 @@ public class MemoViewActivity extends AppCompatActivity {
                                 setVisibility(Mode);
                                 memoid = ((WishFragment) fragment).getMemoid();
                             }
-                            dialog.dismiss();
-                        } else {    // 저장 실패 시
-                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
                         }
+                        dialog.dismiss();
                     }
                     else if (fragment instanceof GridMemoFragment) {
                         if (((GridMemoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
                                 Mode = "view";
@@ -349,12 +333,12 @@ public class MemoViewActivity extends AppCompatActivity {
                                 setVisibility(Mode);
                                 memoid = ((GridMemoFragment) fragment).getMemoid();
                             }
-                        } else Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
                         dialog.dismiss();
                     }
                     else if (fragment instanceof ReviewFragment) {
                         if (((ReviewFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
                                 Mode = "view";
@@ -362,12 +346,12 @@ public class MemoViewActivity extends AppCompatActivity {
                                 setVisibility(Mode);
                                 memoid = ((ReviewFragment) fragment).getMemoid();
                             }
-                        } else Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
                         dialog.dismiss();
                     }
                     else if (fragment instanceof MonthTrackerFragment) {
                         if (((MonthTrackerFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
                                 Mode = "view";
@@ -375,12 +359,12 @@ public class MemoViewActivity extends AppCompatActivity {
                                 setVisibility(Mode);
                                 memoid = ((MonthTrackerFragment) fragment).getMemoid();
                             }
-                        } else Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
                         dialog.dismiss();
                     }
                     else if(fragment instanceof StudyTrackerFragment) {
                         if (((StudyTrackerFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
                                 Mode = "view";
@@ -388,12 +372,12 @@ public class MemoViewActivity extends AppCompatActivity {
                                 setVisibility(Mode);
                                 memoid = ((StudyTrackerFragment) fragment).getMemoid();
                             }
-                        } else Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
                         dialog.dismiss();
                     }
                     else if (fragment instanceof HealthTrackerFragment) {
                         if (((HealthTrackerFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
                                 Mode = "view";
@@ -401,12 +385,12 @@ public class MemoViewActivity extends AppCompatActivity {
                                 setVisibility(Mode);
                                 memoid = ((HealthTrackerFragment) fragment).getMemoid();
                             }
-                        } else Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
                         dialog.dismiss();
                     }
                     else if (fragment instanceof LineMemoFragment) {
                         if (((LineMemoFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
                                 Mode = "view";
@@ -414,12 +398,12 @@ public class MemoViewActivity extends AppCompatActivity {
                                 setVisibility(Mode);
                                 memoid = ((LineMemoFragment) fragment).getMemoid();
                             }
-                        } else Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
                         dialog.dismiss();
                     }
                     else if (fragment instanceof DailyPlanFragment) {
                         if (((DailyPlanFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
                                 Mode = "view";
@@ -427,13 +411,12 @@ public class MemoViewActivity extends AppCompatActivity {
                                 setVisibility(Mode);
                                 memoid = ((DailyPlanFragment) fragment).getMemoid();
                             }
-                        } else
-                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
                         dialog.dismiss();
                     }
                     else if (fragment instanceof WeeklyPlanFragment) {
                         if (((WeeklyPlanFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
                                 Mode = "view";
@@ -441,13 +424,12 @@ public class MemoViewActivity extends AppCompatActivity {
                                 setVisibility(Mode);
                                 memoid = ((WeeklyPlanFragment) fragment).getMemoid();
                             }
-                        } else
-                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
                         dialog.dismiss();
                     }
                     else if (fragment instanceof MonthlyPlanFragment) {
                         if (((MonthlyPlanFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
                                 Mode = "view";
@@ -455,13 +437,12 @@ public class MemoViewActivity extends AppCompatActivity {
                                 setVisibility(Mode);
                                 memoid = ((MonthlyPlanFragment) fragment).getMemoid();
                             }
-                        } else
-                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
                         dialog.dismiss();
                     }
                     else if (fragment instanceof YearlyPlanFragment) {
                         if (((YearlyPlanFragment) fragment).saveData(Mode, MemoBackground, MemoTitle)) { // 저장 성공 시
-                            Toast.makeText(MemoViewActivity.this, "저장 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MemoViewActivity.this, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
                             // write 모드이면, memo id 받고 view 모드로 설정
                             if (Mode.equals("write")) {
                                 Mode = "view";
@@ -469,8 +450,7 @@ public class MemoViewActivity extends AppCompatActivity {
                                 setVisibility(Mode);
                                 memoid = ((YearlyPlanFragment) fragment).getMemoid();
                             }
-                        } else
-                            Toast.makeText(MemoViewActivity.this, "저장 실패", Toast.LENGTH_SHORT).show();
+                        }
                         dialog.dismiss();
                     }
                 });
@@ -867,7 +847,6 @@ public class MemoViewActivity extends AppCompatActivity {
                             }
                             db.execSQL("UPDATE "+TemplateCase+" SET deleted = 1, fixed = 0 WHERE id = "+memoid+";");
                             db.execSQL("UPDATE folder SET count = count - 1 WHERE name = '"+whereMemoIn+"';");
-                            Toast.makeText(MemoViewActivity.this, "휴지통 이동 성공", Toast.LENGTH_SHORT).show();
                             if (isAfterWrite) {
                                 Intent newMain = new Intent(MemoViewActivity.this, MainActivity.class);
                                 startActivity(newMain);
@@ -875,7 +854,6 @@ public class MemoViewActivity extends AppCompatActivity {
                             } else finish();
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Toast.makeText(MemoViewActivity.this, "휴지통 이동 실패", Toast.LENGTH_SHORT).show();
                         }
                         dialog.dismiss();
                     }

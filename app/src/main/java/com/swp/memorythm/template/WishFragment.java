@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -17,7 +16,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.swp.memorythm.CommonUtils;
 import com.swp.memorythm.DBHelper;
 import com.swp.memorythm.PreferenceManager;
 import com.swp.memorythm.R;
@@ -38,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 
 public class WishFragment extends Fragment {
     private TextView textViewDate;
@@ -146,7 +144,7 @@ public class WishFragment extends Fragment {
                 changeCategory(0, selectCategory);
             }
             if (isFromFixedFragment()) {
-                invaildTouch(rootView);
+                CommonUtils.invaildTouch(rootView);
                 btnAdd.setVisibility(View.GONE);
             }
         } else {
@@ -234,6 +232,7 @@ public class WishFragment extends Fragment {
             }
         });
 
+        // 키보드 내려가면 포커스 빼주는 코드
         final View activityRootView = rootView.findViewById(R.id.parentLayout);
 
         activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -265,23 +264,6 @@ public class WishFragment extends Fragment {
         db.close();
     }
 
-    // 고정프래그먼트에서 뷰 이벤트 막는 함수
-    private void invaildTouch(ViewGroup viewGroup) {
-        for (int i = 0; i < viewGroup.getChildCount(); i++) {
-            View child = viewGroup.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                invaildTouch((ViewGroup) child);
-            } else {
-                child.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        return true;
-                    }
-                });
-            }
-        }
-    }
-
     // 카테고리 변경 함수
     public void changeCategory(int old, int current) {
         editTextCustomCategory.setBackgroundResource(R.drawable.border_d);
@@ -304,35 +286,8 @@ public class WishFragment extends Fragment {
 
     // 널 값 검증
     public boolean checkNull() {
-        if (mArrayList.size() == 0) {
-            return false;
-        } else return true;
-    }
-
-    // 분리키 만들기
-    public String makeKey(String txt){
-        StringBuilder key = new StringBuilder();
-        Random random = new Random();
-        do {
-            for (int i = 0; i < 8; i++) {
-                int rIndex = random.nextInt(3);
-                switch (rIndex) {
-                    case 0:
-                        // a-z
-                        key.append((char) ((int) (random.nextInt(26)) + 97));
-                        break;
-                    case 1:
-                        // A-Z
-                        key.append((char) ((int) (random.nextInt(26)) + 65));
-                        break;
-                    case 2:
-                        // 0-9
-                        key.append(random.nextInt(10));
-                        break;
-                }
-            }
-        } while (txt.contains(key));
-        return key.toString();
+        if (mArrayList.size() == 0) return false;
+        else return true;
     }
 
     // 저장 및 수정
@@ -350,7 +305,7 @@ public class WishFragment extends Fragment {
             txt.append(wishData.isWished());
         }
 
-        String splitkey = makeKey(txt.toString());
+        String splitkey = CommonUtils.makeKey(txt.toString());
 
         for (WishData wishData : mArrayList) {
             Content.append(wishData.getContent()).append(splitkey);
@@ -433,11 +388,8 @@ public class WishFragment extends Fragment {
             } else {
                 selectCategory = category;
             }
-
-            Toast.makeText(getContext(), "데이터 로드 성공", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), "데이터 로드 실패", Toast.LENGTH_SHORT).show();
         }
     }
 }

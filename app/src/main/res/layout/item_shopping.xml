@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
     android:background="@android:color/transparent"
-    android:layout_marginBottom="5dp">
+    android:orientation="horizontal">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="0dp"
-        android:layout_weight="3"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="3"
         android:background="@drawable/border_d"
-        android:layout_marginRight="10dp">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <CheckBox
             android:id="@+id/item_checkbox"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
-            android:checked="false"
+            android:background="@drawable/custom_checkbox"
             android:button="@android:color/transparent"
-            android:background="@drawable/custom_checkbox"/>
+            android:checked="false" />
 
         <TextView
             android:id="@+id/item_content"
@@ -40,26 +39,26 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="match_parent"
-        android:padding="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
         android:background="@drawable/border_d"
-        android:layout_marginLeft="10dp">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/item_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:inputType="number"
-            android:textSize="14dp"
-            android:gravity="center"
-            android:textColor="@color/text_color"
-            android:padding="2dp"
+            android:background="@android:color/transparent"
             android:fontFamily="@font/nanumsquare_acr"
-            android:background="@android:color/transparent"/>
+            android:gravity="center"
+            android:inputType="number"
+            android:padding="2dp"
+            android:textColor="@color/text_color"
+            android:textSize="14dp" />
 
     </LinearLayout>
 

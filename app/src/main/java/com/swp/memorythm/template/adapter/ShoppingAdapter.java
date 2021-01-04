@@ -144,7 +144,7 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_shopping, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_shopping, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
 
         return viewHolder;
@@ -161,7 +161,9 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
         viewHolder.shoppingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // 완료 여부 변경
                 mArrayList.get(position).setBought(isChecked);
+                // 취소 선 긋기
                 if (isChecked) {
                     viewHolder.textViewShopping.setPaintFlags(viewHolder.textViewShopping.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     viewHolder.textViewAmount.setPaintFlags(viewHolder.textViewAmount.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);

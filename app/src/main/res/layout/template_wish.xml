@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/parentLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
@@ -46,14 +45,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_date">
 
-        <TableRow
-            android:layout_marginTop="5dp">
+        <TableRow android:layout_marginTop="5dp">
+
             <TextView
                 android:id="@+id/tv_activity"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_weight="1"
                 android:layout_margin="5dp"
+                android:layout_weight="1"
                 android:background="@drawable/bg_selector"
                 android:fontFamily="@font/sdkukdetopokki_b"
                 android:gravity="center"
@@ -65,112 +64,114 @@
                 android:id="@+id/tv_concert"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_weight="1"
                 android:layout_margin="5dp"
+                android:layout_weight="1"
                 android:fontFamily="@font/sdkukdetopokki_b"
                 android:gravity="center"
                 android:text="Concert"
                 android:textColor="@color/text_color"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/tv_product"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_weight="1"
                 android:layout_margin="5dp"
+                android:layout_weight="1"
                 android:fontFamily="@font/sdkukdetopokki_b"
                 android:gravity="center"
                 android:text="Product"
                 android:textColor="@color/text_color"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/tv_book"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_weight="1"
                 android:layout_margin="5dp"
+                android:layout_weight="1"
                 android:fontFamily="@font/sdkukdetopokki_b"
                 android:gravity="center"
                 android:text="Book"
                 android:textColor="@color/text_color"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/tv_food"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_weight="1"
                 android:layout_margin="5dp"
+                android:layout_weight="1"
                 android:fontFamily="@font/sdkukdetopokki_b"
                 android:gravity="center"
                 android:text="Food"
                 android:textColor="@color/text_color"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
         </TableRow>
+
         <TableRow
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp">
+
             <TextView
                 android:id="@+id/tv_trip"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_weight="1"
                 android:layout_margin="5dp"
+                android:layout_weight="1"
                 android:fontFamily="@font/sdkukdetopokki_b"
                 android:gravity="center"
                 android:text="Trip"
                 android:textColor="@color/text_color"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/tv_cloth"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_weight="1"
                 android:layout_margin="5dp"
+                android:layout_weight="1"
                 android:fontFamily="@font/sdkukdetopokki_b"
                 android:gravity="center"
                 android:text="Cloth"
                 android:textColor="@color/text_color"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/tv_movie"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_weight="1"
                 android:layout_margin="5dp"
+                android:layout_weight="1"
                 android:fontFamily="@font/sdkukdetopokki_b"
                 android:gravity="center"
                 android:text="Movie"
                 android:textColor="@color/text_color"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/tv_study"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_weight="1"
                 android:layout_margin="5dp"
+                android:layout_weight="1"
                 android:fontFamily="@font/sdkukdetopokki_b"
                 android:gravity="center"
                 android:text="Study"
                 android:textColor="@color/text_color"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
             <EditText
                 android:id="@+id/et_customcate"
-                android:inputType="text"
-                android:imeOptions="actionDone"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
-                android:layout_weight="1"
                 android:layout_margin="5dp"
+                android:layout_weight="1"
                 android:background="@drawable/border_d"
                 android:fontFamily="@font/sdkukdetopokki_b"
+                android:imeOptions="actionDone"
+                android:inputType="text"
                 android:maxLength="6"
                 android:textAlignment="center"
                 android:textColor="@color/text_color"
@@ -332,8 +333,8 @@
         android:id="@+id/btn_add"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:background="@drawable/ic_add"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

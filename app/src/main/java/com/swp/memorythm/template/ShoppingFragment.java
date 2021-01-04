@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,7 +13,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.swp.memorythm.CommonUtils;
 import com.swp.memorythm.DBHelper;
 import com.swp.memorythm.PreferenceManager;
 import com.swp.memorythm.R;
@@ -35,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 
 public class ShoppingFragment extends Fragment {
     private TextView textViewDate;
@@ -110,7 +108,7 @@ public class ShoppingFragment extends Fragment {
             textViewDate.setText(Userdate);
             mAdapter.notifyDataSetChanged();
             if (isFromFixedFragment()) {
-                invaildTouch(rootView);
+                CommonUtils.invaildTouch(rootView);
                 btnAdd.setVisibility(View.GONE);
             }
         } else {
@@ -218,23 +216,6 @@ public class ShoppingFragment extends Fragment {
         db.close();
     }
 
-    // 고정프래그먼트에서 뷰 이벤트 막는 함수
-    private void invaildTouch(ViewGroup viewGroup) {
-        for (int i = 0; i < viewGroup.getChildCount(); i++) {
-            View child = viewGroup.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                invaildTouch((ViewGroup) child);
-            } else {
-                child.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        return true;
-                    }
-                });
-            }
-        }
-    }
-
     // 텍스트뷰 날짜 업데이트
     private void updateLabel() {
         String DateFormat = "yyyy - MM - dd";
@@ -255,32 +236,6 @@ public class ShoppingFragment extends Fragment {
         } else return true;
     }
 
-    // 분리키 만들기
-    public String makeKey(String txt){
-        StringBuilder key = new StringBuilder();
-        Random random = new Random();
-        do {
-            for (int i = 0; i < 8; i++) {
-                int rIndex = random.nextInt(3);
-                switch (rIndex) {
-                    case 0:
-                        // a-z
-                        key.append((char) ((int) (random.nextInt(26)) + 97));
-                        break;
-                    case 1:
-                        // A-Z
-                        key.append((char) ((int) (random.nextInt(26)) + 65));
-                        break;
-                    case 2:
-                        // 0-9
-                        key.append(random.nextInt(10));
-                        break;
-                }
-            }
-        } while (txt.contains(key));
-        return key.toString();
-    }
-
     // 저장 및 수정
     public boolean saveData(String Mode, String Bgcolor, String Title) {
         boolean success = false;
@@ -298,7 +253,7 @@ public class ShoppingFragment extends Fragment {
             txt.append(shoppingData.getAmount());
         }
 
-        String splitkey = makeKey(txt.toString());
+        String splitkey = CommonUtils.makeKey(txt.toString());
 
         for (ShoppingData shoppingData : mArrayList) {
             Content.append(shoppingData.getContent()).append(splitkey);
@@ -366,10 +321,8 @@ public class ShoppingFragment extends Fragment {
 
                 mArrayList.add(shoppingData);
             }
-            Toast.makeText(getContext(), "데이터 로드 성공", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), "데이터 로드 실패", Toast.LENGTH_SHORT).show();
         }
     }
 }

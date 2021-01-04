@@ -5,18 +5,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.swp.memorythm.CommonUtils;
 import com.swp.memorythm.DBHelper;
 import com.swp.memorythm.PreferenceManager;
 import com.swp.memorythm.R;
@@ -91,7 +90,7 @@ public class NonlineMemoFragment extends Fragment {
             editTextContent.setText(Content);
             // 수정 불가하게 만들기
             if (isFromFixedFragment()) {
-                invaildTouch(rootView);
+                CommonUtils.invaildTouch(rootView);
             }
         } else {
             // 텍스트뷰 초기 날짜 현재 날짜로 설정
@@ -126,23 +125,6 @@ public class NonlineMemoFragment extends Fragment {
         db.close();
     }
 
-    // 고정프래그먼트에서 뷰 이벤트 막는 함수
-    private void invaildTouch(ViewGroup viewGroup) {
-        for (int i = 0; i < viewGroup.getChildCount(); i++) {
-            View child = viewGroup.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                invaildTouch((ViewGroup) child);
-            } else {
-                child.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        return true;
-                    }
-                });
-            }
-        }
-    }
-
     // 텍스트뷰 날짜 업데이트
     private void updateLabel() {
         String DateFormat = "yyyy - MM - dd";
@@ -160,11 +142,8 @@ public class NonlineMemoFragment extends Fragment {
     public boolean checkNull() {
         Content = editTextContent.getText().toString();
 
-        if (Content.equals("") | Content == null) {
-            return false;
-        } else {
-            return true;
-        }
+        if (Content.equals("") | Content == null) return false;
+        else return true;
     }
 
     // 저장 및 수정
@@ -216,10 +195,8 @@ public class NonlineMemoFragment extends Fragment {
             cursor.moveToFirst();
             Userdate = cursor.getString(0);
             Content = cursor.getString(1);
-            Toast.makeText(getContext(), "데이터 로드 성공", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), "데이터 로드 실패", Toast.LENGTH_SHORT).show();
         }
     }
 }

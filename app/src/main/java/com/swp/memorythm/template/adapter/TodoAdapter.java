@@ -130,7 +130,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_todowish, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_todowish, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
 
         return viewHolder;
@@ -145,9 +145,10 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.ViewHolder> {
         // 할 일 완료 체크
         viewHolder.todoCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                mArrayList.get(position).setDone(b);
-                if (b) viewHolder.textViewTodo.setPaintFlags(viewHolder.textViewTodo.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                mArrayList.get(position).setDone(isChecked);
+                // 취소선 긋기
+                if (isChecked) viewHolder.textViewTodo.setPaintFlags(viewHolder.textViewTodo.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 else viewHolder.textViewTodo.setPaintFlags(0);
             }
         });

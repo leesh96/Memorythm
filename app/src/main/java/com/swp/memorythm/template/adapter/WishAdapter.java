@@ -130,7 +130,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_todowish, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_todowish, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
 
         return viewHolder;
@@ -145,11 +145,9 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.ViewHolder> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mArrayList.get(position).setWished(isChecked);
-                if (isChecked) {
-                    viewHolder.textViewWish.setPaintFlags(viewHolder.textViewWish.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                } else {
-                    viewHolder.textViewWish.setPaintFlags(0);
-                }
+                // 취소 선 긋기
+                if (isChecked) viewHolder.textViewWish.setPaintFlags(viewHolder.textViewWish.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                else viewHolder.textViewWish.setPaintFlags(0);
             }
         });
     }
