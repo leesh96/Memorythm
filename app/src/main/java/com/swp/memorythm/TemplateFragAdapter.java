@@ -9,8 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -18,9 +16,7 @@ import java.util.ArrayList;
 public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapter.TemplateViewHolder> {
 
     Context templateContext;
-    ArrayList<Template> dataTemplate = new ArrayList<>();
-
-    public TemplateFragAdapter() { }
+    ArrayList<Template> dataTemplate;
 
     public TemplateFragAdapter(Context templateContext, ArrayList<Template> dataTemplate) {
         this.templateContext = templateContext;
@@ -43,7 +39,7 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
 
         //프레그먼트 교체
         holder.itemView.setOnClickListener(view -> {
-            FragmentActivity activity = (FragmentActivity)view.getContext();
+            FragmentActivity activity = (FragmentActivity) view.getContext();
             MemoListFragment memoListFragment = new MemoListFragment();
             Bundle bundle = new Bundle();
             bundle.putString("template", dataTemplate.get(position).getTemplate());
@@ -56,22 +52,23 @@ public class TemplateFragAdapter extends RecyclerView.Adapter<TemplateFragAdapte
 
     @Override
     public int getItemCount() {
-        return (null != dataTemplate ? dataTemplate.size():0);
+        return (null != dataTemplate ? dataTemplate.size() : 0);
     }
 
     //TemplateFragment에서 객체를 생성한 후에 리스트를 입력하여 어댑터의 dataTemplate에 매치
-    public void setItems(ArrayList<Template> itemList){
+    public void setItems(ArrayList<Template> itemList) {
         dataTemplate = itemList;
         notifyDataSetChanged();
     }
 
     // 아이템 뷰를 저장하는 뷰홀더 클래스.
-    public static class TemplateViewHolder extends RecyclerView.ViewHolder{
+    public static class TemplateViewHolder extends RecyclerView.ViewHolder {
         TextView templateTitle, templateNum;
+
         public TemplateViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.templateTitle = (TextView)itemView.findViewById(R.id.templateName);
-            this.templateNum = (TextView)itemView.findViewById(R.id.templateNum);
+            this.templateTitle = (TextView) itemView.findViewById(R.id.templateName);
+            this.templateNum = (TextView) itemView.findViewById(R.id.templateNum);
         }
     }
 }

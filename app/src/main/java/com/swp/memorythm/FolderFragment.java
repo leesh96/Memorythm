@@ -3,18 +3,17 @@ package com.swp.memorythm;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,20 +41,20 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
         db = dbHelper.getReadableDatabase();
 
         cursor = db.rawQuery("SELECT name, count FROM folder ORDER BY sequence ", null);
-        listFolder= new ArrayList<>();
+        listFolder = new ArrayList<>();
         cursor.moveToFirst();
         String name = cursor.getString(0);
         int count = cursor.getInt(1);
         listFolder.add(new Folder(name, count));
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             // 기본폴더 생성
             name = cursor.getString(0);
             count = cursor.getInt(1);
             listFolder.add(new Folder(name, count));
         }
 
-        folderRecyclerView = (RecyclerView)view.findViewById(R.id.folderRV);
+        folderRecyclerView = (RecyclerView) view.findViewById(R.id.folderRV);
         folderRecyclerView.setHasFixedSize(true);
         //리니어레이아웃
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
@@ -63,13 +62,13 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
         folderRecyclerView.setLayoutManager(manager);
 
         //어뎁터 연결
-        folderFragAdapter = new FolderFragAdapter(getContext(),listFolder);
+        folderFragAdapter = new FolderFragAdapter(getContext(), listFolder);
         folderRecyclerView.setAdapter(folderFragAdapter);
         //추가 버튼 구현
-        addBtn = (ImageButton)view.findViewById(R.id.addFolderBtn);
+        addBtn = (ImageButton) view.findViewById(R.id.addFolderBtn);
         addBtn.setOnClickListener(this);
         //삭제 버튼
-        deleteBtn = (ImageButton)view.findViewById(R.id.deleteFolderBtn);
+        deleteBtn = (ImageButton) view.findViewById(R.id.deleteFolderBtn);
         deleteBtn.setOnClickListener(this);
         //ItemTouchHelper 생성
         helper = new ItemTouchHelper(new FolderItemTouchHelperCallback(folderFragAdapter));
@@ -81,7 +80,6 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
 
         return view;
     }
-
 
 
     @Override
@@ -99,49 +97,49 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
                 Bundle args = new Bundle();
                 args.putString("key", "value");
 
-                FragmentDialog dialog = new FragmentDialog();
+                FragmentDialog dialog = new FragmentDialog(listFolder);
                 dialog.setArguments(args); // 데이터 전달
-                dialog.show(getActivity().getSupportFragmentManager(),"tag");
+                dialog.show(getActivity().getSupportFragmentManager(), "tag");
                 //다이얼로그에서 받아온 데이터
-                dialog.setFolderDialogResult(new FragmentDialog.FolderDialogResult(){
+                dialog.setFolderDialogResult(new FragmentDialog.FolderDialogResult() {
                     @Override
                     public void finish(String foldername) {
-                        listFolder.add(new Folder(foldername,0));
+                        listFolder.add(new Folder(foldername, 0));
                         folderFragAdapter.notifyDataSetChanged();
                     }
                 });
                 break;
             //삭제 기능 구현하기
             case R.id.deleteFolderBtn:
-                if(check){
-                    if(folderFragAdapter.removeItems()){
+                if (check) {
+                    if (folderFragAdapter.removeItems()) {
                         List<Folder> list = folderFragAdapter.setCheckBox();
 
                         for (Folder folder : list) {
                             String table = folder.getTitle();
                             int num = folder.getCount();
-                            db.execSQL("UPDATE nonlinememo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
-                            db.execSQL("UPDATE linememo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
-                            db.execSQL("UPDATE gridmemo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
-                            db.execSQL("UPDATE todolist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
-                            db.execSQL("UPDATE wishlist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
-                            db.execSQL("UPDATE shoppinglist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
-                            db.execSQL("UPDATE review SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
-                            db.execSQL("UPDATE dailyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
-                            db.execSQL("UPDATE weeklyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
-                            db.execSQL("UPDATE monthlyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
-                            db.execSQL("UPDATE yearlyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
-                            db.execSQL("UPDATE healthtracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
-                            db.execSQL("UPDATE monthtracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
-                            db.execSQL("UPDATE studytracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '"+ table +"';");
-                            db.execSQL("UPDATE folder SET count = count + '"+ num +"' WHERE name = '메모';");
-                            db.execSQL("DELETE FROM folder WHERE name = '"+ table +"';");
+                            db.execSQL("UPDATE nonlinememo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                            db.execSQL("UPDATE linememo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                            db.execSQL("UPDATE gridmemo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                            db.execSQL("UPDATE todolist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                            db.execSQL("UPDATE wishlist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                            db.execSQL("UPDATE shoppinglist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                            db.execSQL("UPDATE review SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                            db.execSQL("UPDATE dailyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                            db.execSQL("UPDATE weeklyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                            db.execSQL("UPDATE monthlyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                            db.execSQL("UPDATE yearlyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                            db.execSQL("UPDATE healthtracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                            db.execSQL("UPDATE monthtracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                            db.execSQL("UPDATE studytracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                            db.execSQL("UPDATE folder SET count = count + '" + num + "' WHERE name = '메모';");
+                            db.execSQL("DELETE FROM folder WHERE name = '" + table + "';");
                         }
                         folderFragAdapter.setVisible(false);
                         folderFragAdapter.notifyDataSetChanged();
                         check = false;
                         Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         folderFragAdapter.setVisible(true);
                         folderFragAdapter.notifyDataSetChanged();
                         check = false;

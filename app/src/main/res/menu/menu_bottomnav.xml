@@ -4,7 +4,7 @@
         android:id="@+id/totalItem"
         android:enabled="true"
         android:icon="@drawable/ic_total_memo"
-        android:title="전체메모"/>
+        android:title="전체메모" />
     <item
         android:id="@+id/folderItem"
         android:enabled="true"
@@ -14,15 +14,15 @@
         android:id="@+id/templateItem"
         android:enabled="true"
         android:icon="@drawable/template"
-        android:title="템플릿"/>
+        android:title="템플릿" />
     <item
         android:id="@+id/writeItem"
         android:enabled="true"
         android:icon="@drawable/write"
-        android:title="작성"/>
+        android:title="작성" />
     <item
         android:id="@+id/trashItem"
         android:enabled="true"
         android:icon="@drawable/trash"
-        android:title="휴지통"/>
+        android:title="휴지통" />
 </menu>

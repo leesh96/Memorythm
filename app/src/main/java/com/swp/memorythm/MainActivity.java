@@ -1,7 +1,13 @@
 package com.swp.memorythm;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,14 +24,16 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 
 public class MainActivity extends AppCompatActivity {
-    private BottomNavigationView bottomNavigationView; // 바텀네비게이션 뷰
+    private BottomNavigationView bottomNavigationView;
     private FragmentManager fm;
     private FragmentTransaction ft;
-    private ImageButton homeBtn; // 홈으로 가는 버튼
-    private ListView listview = null;
+    private ImageButton homeBtn, drawerBtn;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
     private int fixedmemocnt = 0;
 
     private DBHelper dbHelper;
@@ -71,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // 홈버튼 누르면 고정 메모 프레그먼트 띄우기
-        homeBtn = (ImageButton)findViewById(R.id.homeButton);
+        homeBtn = (ImageButton) findViewById(R.id.homeButton);
         homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,13 +90,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        // drawer 버튼
+        drawerBtn = (ImageButton) findViewById(R.id.drawerButton);
+        // drawer
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //navigationview
+        navigationView = (NavigationView) findViewById(R.id.navigation_layout);
 
         //바텀 네비게이션 사용
-        bottomNavigationView  = findViewById(R.id.bottomNavi);
+        bottomNavigationView = findViewById(R.id.bottomNavi);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.totalItem:
                         setFrag(1);
                         break;
@@ -116,22 +130,29 @@ public class MainActivity extends AppCompatActivity {
             setFrag(1);
         }
 
-        //Navigation Drawer(왼쪽에 있음, 드래그하면 나타남)
-        final String[] items = {"Setting"};
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, items) ;
-        listview = (ListView) findViewById(R.id.drawer_menulist) ;
-        listview.setAdapter(adapter) ;
-        //클릭
-        listview.setOnItemClickListener(new ListView.OnItemClickListener(){
+        //drawer 사용
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView adapterView, View view, int i, long l) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                item.setChecked(true);
+                drawerLayout.closeDrawers();
+                int id = item.getItemId();
+                String title = item.getTitle().toString();
 
-                //(나중에 아이템 추가할거 있으면 추가하기)
+                switch (id) {
+                    case R.id.dataBackUp:
+                        break;
+                    case R.id.dataRestore:
+                        break;
+                    case R.id.logout:
+                        break;
+                }
 
-                //리스트뷰의 아이템을 선택하면 drawer 닫기
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout) ;
-                drawer.closeDrawer(Gravity.LEFT) ;
+                return true;
             }
+        });
+        drawerBtn.setOnClickListener(view -> {
+            drawerLayout.openDrawer(GravityCompat.START);
         });
     }
 
@@ -153,11 +174,12 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+
     //프레그먼트 교체
-    private void setFrag(int n){
+    private void setFrag(int n) {
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
-        switch (n){
+        switch (n) {
             case 0:
                 ft.replace(R.id.mainFrame, new FixedMemoFragment());
                 ft.commit();
