@@ -32,7 +32,6 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
     private DBHelper dbHelper;
     private SQLiteDatabase db;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,15 +39,17 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
 
-        cursor = db.rawQuery("SELECT name, count FROM folder ORDER BY sequence ", null);
+        try {
+            cursor = db.rawQuery("SELECT name, count FROM folder ORDER BY sequence ", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         listFolder = new ArrayList<>();
         cursor.moveToFirst();
         String name = cursor.getString(0);
         int count = cursor.getInt(1);
         listFolder.add(new Folder(name, count));
-
         while (cursor.moveToNext()) {
-            // 기본폴더 생성
             name = cursor.getString(0);
             count = cursor.getInt(1);
             listFolder.add(new Folder(name, count));
@@ -60,7 +61,6 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         folderRecyclerView.setLayoutManager(manager);
-
         //어뎁터 연결
         folderFragAdapter = new FolderFragAdapter(getContext(), listFolder);
         folderRecyclerView.setAdapter(folderFragAdapter);
@@ -87,20 +87,19 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
     }
 
-    //  addBtn 누르면 폴더 추가 다이얼로그 생성
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            //폴더 추가
+            //폴더 추가(다이얼로그 생성)
             case R.id.addFolderBtn:
-                // 데이터를 다이얼로그로 보내는 코드
+                // 데이터를 FragmentDialog 로 보내기
                 Bundle args = new Bundle();
                 args.putString("key", "value");
 
                 FragmentDialog dialog = new FragmentDialog(listFolder);
                 dialog.setArguments(args); // 데이터 전달
                 dialog.show(getActivity().getSupportFragmentManager(), "tag");
-                //다이얼로그에서 받아온 데이터
+                //FragmentDialog 에서 받아온 데이터
                 dialog.setFolderDialogResult(new FragmentDialog.FolderDialogResult() {
                     @Override
                     public void finish(String foldername) {
@@ -109,7 +108,7 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
                     }
                 });
                 break;
-            //삭제 기능 구현하기
+            //폴더 삭제
             case R.id.deleteFolderBtn:
                 if (check) {
                     if (folderFragAdapter.removeItems()) {
@@ -118,22 +117,26 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
                         for (Folder folder : list) {
                             String table = folder.getTitle();
                             int num = folder.getCount();
-                            db.execSQL("UPDATE nonlinememo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
-                            db.execSQL("UPDATE linememo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
-                            db.execSQL("UPDATE gridmemo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
-                            db.execSQL("UPDATE todolist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
-                            db.execSQL("UPDATE wishlist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
-                            db.execSQL("UPDATE shoppinglist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
-                            db.execSQL("UPDATE review SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
-                            db.execSQL("UPDATE dailyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
-                            db.execSQL("UPDATE weeklyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
-                            db.execSQL("UPDATE monthlyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
-                            db.execSQL("UPDATE yearlyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
-                            db.execSQL("UPDATE healthtracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
-                            db.execSQL("UPDATE monthtracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
-                            db.execSQL("UPDATE studytracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
-                            db.execSQL("UPDATE folder SET count = count + '" + num + "' WHERE name = '메모';");
-                            db.execSQL("DELETE FROM folder WHERE name = '" + table + "';");
+                            try {
+                                db.execSQL("UPDATE nonlinememo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                                db.execSQL("UPDATE linememo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                                db.execSQL("UPDATE gridmemo SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                                db.execSQL("UPDATE todolist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                                db.execSQL("UPDATE wishlist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                                db.execSQL("UPDATE shoppinglist SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                                db.execSQL("UPDATE review SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                                db.execSQL("UPDATE dailyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                                db.execSQL("UPDATE weeklyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                                db.execSQL("UPDATE monthlyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                                db.execSQL("UPDATE yearlyplan SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                                db.execSQL("UPDATE healthtracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                                db.execSQL("UPDATE monthtracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                                db.execSQL("UPDATE studytracker SET folder_name = '메모' WHERE deleted = 0 and folder_name = '" + table + "';");
+                                db.execSQL("UPDATE folder SET count = count + '" + num + "' WHERE name = '메모';");
+                                db.execSQL("DELETE FROM folder WHERE name = '" + table + "';");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                         folderFragAdapter.setVisible(false);
                         folderFragAdapter.notifyDataSetChanged();
@@ -145,7 +148,6 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
                         check = false;
                         Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
                     folderFragAdapter.setVisible(true);
                     folderFragAdapter.notifyDataSetChanged();

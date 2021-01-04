@@ -30,7 +30,6 @@ public class FixedMemoFragment extends Fragment {
         db = dbHelper.getReadableDatabase();
 
         arrayList = new ArrayList<>();
-
         try {
             Cursor cursor = db.rawQuery("SELECT * FROM (SELECT id, editdate, template_case, bgcolor FROM nonlinememo WHERE fixed = 1 AND deleted = 0 UNION ALL " +
                     "SELECT id, editdate, template_case, bgcolor FROM linememo WHERE fixed = 1 AND deleted = 0 UNION ALL " +
@@ -45,20 +44,16 @@ public class FixedMemoFragment extends Fragment {
                     "SELECT id, editdate, template_case, bgcolor FROM yearlyplan WHERE fixed = 1 AND deleted = 0 UNION ALL " +
                     "SELECT id, editdate, template_case, bgcolor FROM healthtracker WHERE fixed = 1 AND deleted = 0 UNION ALL " +
                     "SELECT id, editdate, template_case, bgcolor FROM monthtracker WHERE fixed = 1 AND deleted = 0 UNION ALL " +
-                    "SELECT id, editdate, template_case, bgcolor FROM studytracker WHERE fixed = 1 AND deleted = 0) ORDER BY editdate DESC",null);
+                    "SELECT id, editdate, template_case, bgcolor FROM studytracker WHERE fixed = 1 AND deleted = 0) ORDER BY editdate DESC", null);
             while (cursor.moveToNext()) {
                 FixedMemoData fixedMemoData = new FixedMemoData();
-
                 fixedMemoData.setMemoid(cursor.getInt(0));
                 fixedMemoData.setTemplate(cursor.getString(2));
                 fixedMemoData.setBgcolor(cursor.getString(3));
-
                 arrayList.add(fixedMemoData);
             }
-            Toast.makeText(getContext(), "고정메모 로드 성공", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), "고정메모 로드 실패", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -66,9 +61,8 @@ public class FixedMemoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fixed_memo, container, false); // 레이아웃 연결
-
         //뷰페이저에 페이저어댑터 지정
-        viewPager = (ViewPager)view.findViewById(R.id.pager);
+        viewPager = (ViewPager) view.findViewById(R.id.pager);
         viewPager.setOffscreenPageLimit(3); // 3개로 제한
         pagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), arrayList);
         viewPager.setAdapter(pagerAdapter);
@@ -92,7 +86,6 @@ public class FixedMemoFragment extends Fragment {
 
             }
         });
-
         return view;
     }
 

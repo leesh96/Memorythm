@@ -35,7 +35,7 @@ public class TotalMemoAdapter extends RecyclerView.Adapter<TotalMemoAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.list_total_memo,parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.list_total_memo, parent, false);
         ViewHolder vHolder = new ViewHolder(view);
         vHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -43,9 +43,9 @@ public class TotalMemoAdapter extends RecyclerView.Adapter<TotalMemoAdapter.View
                 TotalMemoData topMemoData = totalMemo.get(vHolder.getAdapterPosition());
                 memoTotalCheckedMap.put(topMemoData, isChecked);
                 // 체크된거 mCheckedTrash 넣기
-                if(isChecked){
+                if (isChecked) {
                     mCheckedMemoTotal.add(topMemoData);
-                }else {
+                } else {
                     mCheckedMemoTotal.remove(topMemoData);
                 }
             }
@@ -62,11 +62,10 @@ public class TotalMemoAdapter extends RecyclerView.Adapter<TotalMemoAdapter.View
         boolean isChecked = memoTotalCheckedMap.get(totalMemoData) == null ? false : memoTotalCheckedMap.get(totalMemoData);
         holder.checkBox.setChecked(isChecked);
         //삭제
-        if(isTrash) {
+        if (isTrash) {
             holder.checkBox.setVisibility(View.VISIBLE);
             holder.itemView.setClickable(false);
-        }
-        else {
+        } else {
             holder.checkBox.setVisibility(View.INVISIBLE);
             holder.itemView.setClickable(true);
         }
@@ -83,31 +82,37 @@ public class TotalMemoAdapter extends RecyclerView.Adapter<TotalMemoAdapter.View
 
     @Override
     public int getItemCount() {
-        return (null != totalMemo ? totalMemo.size():0);
+        return (null != totalMemo ? totalMemo.size() : 0);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView titleTV, dataTV;
         CheckBox checkBox;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.titleTV = (TextView)itemView.findViewById(R.id.memoTotalName);
-            this.checkBox = (CheckBox)itemView.findViewById(R.id.memoTotalCheckBox);
-            this.dataTV = (TextView)itemView.findViewById(R.id.totalDate);
+            this.titleTV = (TextView) itemView.findViewById(R.id.memoTotalName);
+            this.checkBox = (CheckBox) itemView.findViewById(R.id.memoTotalCheckBox);
+            this.dataTV = (TextView) itemView.findViewById(R.id.totalDate);
         }
     }
+
     // 아이템 삭제
-    public boolean removeItems(){
+    public boolean removeItems() {
         boolean result = totalMemo.removeAll(mCheckedMemoTotal);
-        if(result){ notifyDataSetChanged(); }
+        if (result) {
+            notifyDataSetChanged();
+        }
         return result;
     }
+
     //체크박스 숨김에 사용
-    public void setVisible(boolean trash){
+    public void setVisible(boolean trash) {
         isTrash = trash;
     }
+
     //체크박스 체크항목 전달
-    public List<TotalMemoData> setCheckBox(){
+    public List<TotalMemoData> setCheckBox() {
         return mCheckedMemoTotal;
     }
 }

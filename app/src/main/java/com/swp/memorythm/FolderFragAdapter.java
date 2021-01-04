@@ -33,15 +33,11 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
     private SQLiteDatabase db;
     private boolean trigger = false;
 
-    public FolderFragAdapter() {
-    }
-
     public FolderFragAdapter(Context mContext, ArrayList<Folder> listFolder) {
         this.mContext = mContext;
         this.dataFolder = listFolder;
         dbHelper = new DBHelper(mContext);
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -74,7 +70,6 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
 
             }
         });
-
         return viewHolder;
     }
 
@@ -88,7 +83,6 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
         //체크박스 체크 여부
         boolean isChecked = mCheckedMap.get(folder) == null ? false : mCheckedMap.get(folder);
         holder.checkBox.setChecked(isChecked);
-
         //리사이클러뷰 아이템 클릭
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(view -> {
@@ -125,7 +119,6 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
     public boolean onItemMove(int from_position, int to_position) {
 
         if (!trigger) {
-
             if (to_position == 0 || from_position == 0) {
                 trigger = true;
                 AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
@@ -138,7 +131,6 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
                     }
                 });
                 alert.show();
-
             } else {
                 Folder folder = dataFolder.get(from_position);
                 dataFolder.remove(from_position);
@@ -148,15 +140,17 @@ public class FolderFragAdapter extends RecyclerView.Adapter<FolderFragAdapter.Vi
                 db = dbHelper.getWritableDatabase();
                 for (int i = 0; i < dataFolder.size(); i++) {
                     String folder_name = dataFolder.get(i).getTitle();
-                    db.execSQL("UPDATE folder SET sequence = '" + i + "' WHERE name = '" + folder_name + "';");
+                    try {
+                        db.execSQL("UPDATE folder SET sequence = '" + i + "' WHERE name = '" + folder_name + "';");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 trigger = false;
             }
         } else {
-
             return true;
         }
-
         return true;
     }
 

@@ -32,7 +32,7 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
     private ArrayList<MemoData> mCheckedMemo = new ArrayList<>(); //체크한 항목 저장
     public boolean isTrash = false;
 
-    public MemoListAdapter(Context memoContext,ArrayList<MemoData> listMemo) {
+    public MemoListAdapter(Context memoContext, ArrayList<MemoData> listMemo) {
         this.listMemo = listMemo;
         this.memoContext = memoContext;
     }
@@ -40,18 +40,19 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(memoContext).inflate(R.layout.list_memo,parent, false);
+        View view = LayoutInflater.from(memoContext).inflate(R.layout.list_memo, parent, false);
         ViewHolder vHolder = new ViewHolder(view);
-
         vHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 MemoData memoData = listMemo.get(vHolder.getAdapterPosition());
                 memoCheckedMap.put(memoData, isChecked);
                 // 체크된거 mCheckedTrash 넣기
-                if(isChecked){ mCheckedMemo.add(memoData); }
-                else { mCheckedMemo.remove(memoData); }
-
+                if (isChecked) {
+                    mCheckedMemo.add(memoData);
+                } else {
+                    mCheckedMemo.remove(memoData);
+                }
             }
         });
         return vHolder;
@@ -60,19 +61,16 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MemoData memoData = listMemo.get(position);
-
         holder.titleTV.setText(listMemo.get(position).getMemoTitle());
         holder.DateTV.setText(listMemo.get(position).getMemoDate());
         //체크박스 체크 여부
-        boolean isChecked = memoCheckedMap.get(memoData)==null?false:memoCheckedMap.get(memoData);
+        boolean isChecked = memoCheckedMap.get(memoData) == null ? false : memoCheckedMap.get(memoData);
         holder.checkBox.setChecked(isChecked);
-
         //삭제
-        if(isTrash) {
+        if (isTrash) {
             holder.checkBox.setVisibility(View.VISIBLE);
             holder.itemView.setClickable(false);
-        }
-        else {
+        } else {
             holder.checkBox.setVisibility(View.INVISIBLE);
             //holder.itemView.setClickable(true);
             //아이템 클릭
@@ -85,14 +83,11 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
                 memoContext.startActivity(intent);
             });
         }
-
-
-
     }
 
     @Override
     public int getItemCount() {
-        return (null != listMemo ? listMemo.size():0);
+        return (null != listMemo ? listMemo.size() : 0);
     }
 
     @Override
@@ -106,6 +101,7 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
         notifyItemRemoved(position);
     }
 
+    // 왼쪽으로 스와이프 시 생기는 오른쪽 버튼
     @Override
     public void onRightClick(int position, RecyclerView.ViewHolder viewHolder) {
         // 버튼 클릭시 다이얼로그 생성
@@ -124,7 +120,7 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
             while (cursor.moveToNext()) {
                 folderlist.add(cursor.getString(0));
             }
-            cursor = db.rawQuery("SELECT folder_name FROM "+listMemo.get(position).getTemplate()+" WHERE id = "+listMemo.get(position).getMemoid(), null);
+            cursor = db.rawQuery("SELECT folder_name FROM " + listMemo.get(position).getTemplate() + " WHERE id = " + listMemo.get(position).getMemoid(), null);
             cursor.moveToFirst();
             currentFolder = cursor.getString(0);
         } catch (Exception e) {
@@ -151,9 +147,9 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
                 String oldFolder = finalCurrentFolder;
                 String changeFolder = spinner.getItemAtPosition(spinner.getSelectedItemPosition()).toString();
                 try {
-                    db.execSQL("UPDATE "+listMemo.get(position).getTemplate()+" SET folder_name = '"+changeFolder+"' WHERE id = "+listMemo.get(position).getMemoid()+";");
-                    db.execSQL("UPDATE folder SET count = count - 1 WHERE name = '"+oldFolder+"';");
-                    db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '"+changeFolder+"';");
+                    db.execSQL("UPDATE " + listMemo.get(position).getTemplate() + " SET folder_name = '" + changeFolder + "' WHERE id = " + listMemo.get(position).getMemoid() + ";");
+                    db.execSQL("UPDATE folder SET count = count - 1 WHERE name = '" + oldFolder + "';");
+                    db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '" + changeFolder + "';");
                     listMemo.remove(position);
                     notifyDataSetChanged();
                 } catch (Exception e) {
@@ -173,29 +169,38 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView titleTV, DateTV;
         CheckBox checkBox;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.titleTV = (TextView)itemView.findViewById(R.id.memoName);
-            this.DateTV = (TextView)itemView.findViewById(R.id.memoDate);
-            this.checkBox = (CheckBox)itemView.findViewById(R.id.memoCheckBox);
+            this.titleTV = (TextView) itemView.findViewById(R.id.memoName);
+            this.DateTV = (TextView) itemView.findViewById(R.id.memoDate);
+            this.checkBox = (CheckBox) itemView.findViewById(R.id.memoCheckBox);
         }
     }
+
     // 아이템 삭제
-    public boolean removeItems(){
+    public boolean removeItems() {
         boolean result = listMemo.removeAll(mCheckedMemo);
-        if(result){ notifyDataSetChanged(); }
+        if (result) {
+            notifyDataSetChanged();
+        }
         return result;
     }
+
     //체크박스 숨김에 사용
-    public void setVisible(boolean trash){
+    public void setVisible(boolean trash) {
         isTrash = trash;
     }
+
     //체크박스 체크항목 전달
-    public List<MemoData> setCheckBox(){
+    public List<MemoData> setCheckBox() {
         return mCheckedMemo;
     }
+
     // 아이템 갱신에 사용
-    public void setItems(ArrayList<MemoData> items){ listMemo = items; }
+    public void setItems(ArrayList<MemoData> items) {
+        listMemo = items;
+    }
 
     private int getIndex(Spinner spinner, String folderName) {
         for (int i = 0; i < spinner.getCount(); i++) {

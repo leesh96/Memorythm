@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,6 @@ public class FragmentDialog extends DialogFragment implements View.OnClickListen
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private ArrayList<Folder> listFolder;
-
 
     public FragmentDialog(ArrayList<Folder> list) {
         listFolder = list;
@@ -52,7 +50,6 @@ public class FragmentDialog extends DialogFragment implements View.OnClickListen
         return view;
     }
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -73,8 +70,8 @@ public class FragmentDialog extends DialogFragment implements View.OnClickListen
                                 }
                             }).show();
                         } else {
-                            for (Folder folder : listFolder){
-                                if(foldername.equals(folder.getTitle())){
+                            for (Folder folder : listFolder) {
+                                if (foldername.equals(folder.getTitle())) {
                                     AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
                                     alert.setMessage("같은 폴더가 존재합니다.").setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                         @Override

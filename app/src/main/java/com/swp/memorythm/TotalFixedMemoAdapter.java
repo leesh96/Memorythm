@@ -35,7 +35,7 @@ public class TotalFixedMemoAdapter extends RecyclerView.Adapter<TotalFixedMemoAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.list_total_memo,parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.list_total_memo, parent, false);
         ViewHolder vHolder = new TotalFixedMemoAdapter.ViewHolder(view);
         vHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -43,14 +43,13 @@ public class TotalFixedMemoAdapter extends RecyclerView.Adapter<TotalFixedMemoAd
                 TotalMemoData fixedData = fixedMemo.get(vHolder.getAdapterPosition());
                 fixedCheckedMap.put(fixedData, isChecked);
                 // 체크된거 mCheckedTrash 넣기
-                if(isChecked){
+                if (isChecked) {
                     mCheckedFixed.add(fixedData);
-                }else {
+                } else {
                     mCheckedFixed.remove(fixedData);
                 }
             }
         });
-
         return vHolder;
     }
 
@@ -63,15 +62,13 @@ public class TotalFixedMemoAdapter extends RecyclerView.Adapter<TotalFixedMemoAd
         boolean isChecked = fixedCheckedMap.get(fixedMemoData) == null ? false : fixedCheckedMap.get(fixedMemoData);
         holder.checkBox.setChecked(isChecked);
         //삭제
-        if(isTrash) {
+        if (isTrash) {
             holder.checkBox.setVisibility(View.VISIBLE);
             holder.itemView.setClickable(false);
-        }
-        else {
+        } else {
             holder.checkBox.setVisibility(View.INVISIBLE);
             holder.itemView.setClickable(true);
         }
-
         //아이템 클릭
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, MemoViewActivity.class);
@@ -84,30 +81,38 @@ public class TotalFixedMemoAdapter extends RecyclerView.Adapter<TotalFixedMemoAd
     }
 
     @Override
-    public int getItemCount() { return (null != fixedMemo ? fixedMemo.size():0); }
+    public int getItemCount() {
+        return (null != fixedMemo ? fixedMemo.size() : 0);
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView titleTV, dataTV;
         CheckBox checkBox;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.titleTV = (TextView)itemView.findViewById(R.id.memoTotalName);
-            this.checkBox = (CheckBox)itemView.findViewById(R.id.memoTotalCheckBox);
-            this.dataTV = (TextView)itemView.findViewById(R.id.totalDate);
+            this.titleTV = (TextView) itemView.findViewById(R.id.memoTotalName);
+            this.checkBox = (CheckBox) itemView.findViewById(R.id.memoTotalCheckBox);
+            this.dataTV = (TextView) itemView.findViewById(R.id.totalDate);
         }
     }
+
     // 아이템 삭제
-    public boolean removeItems(){
+    public boolean removeItems() {
         boolean result = fixedMemo.removeAll(mCheckedFixed);
-        if(result){ notifyDataSetChanged(); }
+        if (result) {
+            notifyDataSetChanged();
+        }
         return result;
     }
+
     //체크박스 숨김에 사용
-    public void setVisible(boolean trash){
+    public void setVisible(boolean trash) {
         isTrash = trash;
     }
+
     //체크박스 체크항목 전달
-    public List<TotalMemoData> setCheckBox(){
+    public List<TotalMemoData> setCheckBox() {
         return mCheckedFixed;
     }
 }

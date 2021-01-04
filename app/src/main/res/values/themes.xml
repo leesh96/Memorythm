@@ -23,11 +23,6 @@
         <item name="colorAccent">@android:color/transparent</item>
     </style>
 
-    <style name="CheckTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorAccent">@color/black</item>
-    </style>
-
     <style name="starRatingBar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/custom_ratingbar</item>
     </style>

@@ -26,7 +26,11 @@ public class Template {
         this.count = count;
     }
 
-    public String getTemplate() { return template; }
+    public String getTemplate() {
+        return template;
+    }
 
-    public void setTemplate(String template) { this.template = template; }
+    public void setTemplate(String template) {
+        this.template = template;
+    }
 }

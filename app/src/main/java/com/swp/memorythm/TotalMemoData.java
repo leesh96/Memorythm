@@ -9,13 +9,6 @@ class TotalMemoData {
     public TotalMemoData() {
     }
 
-    public TotalMemoData(int totalID, String totalTitle, String totalDate, String template) {
-        this.totalID = totalID;
-        this.totalTitle = totalTitle;
-        this.totalDate = totalDate;
-        this.template = template;
-    }
-
     public int getTotalID() {
         return totalID;
     }

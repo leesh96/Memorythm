@@ -4,17 +4,15 @@ public class Folder {
     private String title;
     private int count;
 
-    public Folder(String title) {
-        this.title = title;
-    }
-
     public Folder(String title, int count) {
         this.title = title;
         this.count = count;
     }
+
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }

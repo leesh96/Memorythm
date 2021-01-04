@@ -31,17 +31,17 @@ public class TrashFragAdapter extends RecyclerView.Adapter<TrashFragAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(trashContext).inflate(R.layout.list_trash,parent, false);
+        View view = LayoutInflater.from(trashContext).inflate(R.layout.list_trash, parent, false);
         ViewHolder vHolder = new ViewHolder(view);
         vHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 MemoData trashData = trashList.get(vHolder.getAdapterPosition());
-                mCheckedMap.put(trashData,isChecked);
+                mCheckedMap.put(trashData, isChecked);
                 // 체크된거 mCheckedTrash 넣기
-                if(isChecked){
+                if (isChecked) {
                     mCheckedTrash.add(trashData);
-                }else {
+                } else {
                     mCheckedTrash.remove(trashData);
                 }
             }
@@ -56,14 +56,13 @@ public class TrashFragAdapter extends RecyclerView.Adapter<TrashFragAdapter.View
         holder.titleTV.setText(trashList.get(position).getMemoTitle());
         holder.DateTV.setText(trashList.get(position).getMemoDate());
         //체크박스 체크 여부
-        boolean isChecked = mCheckedMap.get(trashData)==null?false:mCheckedMap.get(trashData);
+        boolean isChecked = mCheckedMap.get(trashData) == null ? false : mCheckedMap.get(trashData);
         holder.checkBox.setChecked(isChecked);
         //삭제
-        if(isTrash) {
+        if (isTrash) {
             holder.checkBox.setVisibility(View.VISIBLE);
             holder.itemView.setClickable(false);
-        }
-        else {
+        } else {
             holder.checkBox.setVisibility(View.INVISIBLE);
             holder.itemView.setClickable(true);
         }
@@ -71,7 +70,7 @@ public class TrashFragAdapter extends RecyclerView.Adapter<TrashFragAdapter.View
 
     @Override
     public int getItemCount() {
-        return (null != trashList ? trashList.size():0);
+        return (null != trashList ? trashList.size() : 0);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -81,27 +80,33 @@ public class TrashFragAdapter extends RecyclerView.Adapter<TrashFragAdapter.View
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.titleTV = (TextView)itemView.findViewById(R.id.trashName);
-            this.DateTV = (TextView)itemView.findViewById(R.id.trashDate);
-            this.checkBox = (CheckBox)itemView.findViewById(R.id.trashCheckBox);
+            this.titleTV = (TextView) itemView.findViewById(R.id.trashName);
+            this.DateTV = (TextView) itemView.findViewById(R.id.trashDate);
+            this.checkBox = (CheckBox) itemView.findViewById(R.id.trashCheckBox);
         }
     }
+
     // 아이템 삭제
-    public boolean removeItems(){
+    public boolean removeItems() {
         boolean result = trashList.removeAll(mCheckedTrash);
-        if(result){ notifyDataSetChanged(); }
+        if (result) {
+            notifyDataSetChanged();
+        }
         return result;
     }
+
     // 아이템 갱신에 사용
-    public void setItems(ArrayList<MemoData> items){
+    public void setItems(ArrayList<MemoData> items) {
         trashList = items;
     }
+
     //체크박스 숨김에 사용
-    public void setVisible(boolean trash){
+    public void setVisible(boolean trash) {
         isTrash = trash;
     }
+
     //체크한 항목 전달
-    public List<MemoData> setCheckBox(){
+    public List<MemoData> setCheckBox() {
         return mCheckedTrash;
     }
 
