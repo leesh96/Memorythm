@@ -58,6 +58,18 @@
         app:layout_constraintBottom_toBottomOf="@+id/memeListM"
         app:layout_constraintEnd_toEndOf="@+id/memeListM"
         app:layout_constraintStart_toStartOf="@+id/memeListM" />
+    <TextView
+        android:id="@+id/emptyFolderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="아무것도 없음"
+        android:textSize="30sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@+id/memeListM"
+        app:layout_constraintBottom_toBottomOf="@+id/memeListM"
+        app:layout_constraintEnd_toEndOf="@+id/memeListM"
+        app:layout_constraintStart_toStartOf="@+id/memeListM"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

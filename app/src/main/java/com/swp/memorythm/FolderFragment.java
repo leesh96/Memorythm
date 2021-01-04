@@ -93,6 +93,7 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            //폴더 추가
             case R.id.addFolderBtn:
                 // 데이터를 다이얼로그로 보내는 코드
                 Bundle args = new Bundle();
@@ -136,21 +137,23 @@ public class FolderFragment extends Fragment implements View.OnClickListener {
                             db.execSQL("UPDATE folder SET count = count + '"+ num +"' WHERE name = '메모';");
                             db.execSQL("DELETE FROM folder WHERE name = '"+ table +"';");
                         }
+                        folderFragAdapter.setVisible(false);
+                        folderFragAdapter.notifyDataSetChanged();
+                        check = false;
                         Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
                     }else {
+                        folderFragAdapter.setVisible(true);
+                        folderFragAdapter.notifyDataSetChanged();
+                        check = false;
                         Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
                     }
-                    folderFragAdapter.setVisible(false);
-                    folderFragAdapter.notifyDataSetChanged();
-                    check = false;
+
                 } else {
                     folderFragAdapter.setVisible(true);
                     folderFragAdapter.notifyDataSetChanged();
                     check = true;
                 }
                 break;
-
         }
     }
-
 }

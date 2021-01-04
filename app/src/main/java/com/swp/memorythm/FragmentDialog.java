@@ -1,6 +1,8 @@
 package com.swp.memorythm;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -56,15 +58,25 @@ public class FragmentDialog extends DialogFragment implements View.OnClickListen
                         db = dbHelper.getReadableDatabase();
 
                         String foldername = editTextFolderName.getText().toString();
-                        Cursor cursor = db.rawQuery("SELECT MAX(sequence) FROM folder",null);
-                        cursor.moveToFirst();
-                        int seq = cursor.getInt(0) + 1;
-                        db.execSQL("INSERT INTO folder('name','sequence') VALUES('" + foldername +"','"+ seq +"');");
-
-                        folderDialogResult.finish(foldername); // 입력한 폴더 이름으로 폴더 생성
+                        // null 값 검증
+                        if(foldername.equals("") | foldername == null){
+                            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                            alert.setMessage("폴더이름을 입력하세요!").setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dismiss();
+                                }
+                            }).show();
+                        }else {
+                            Cursor cursor = db.rawQuery("SELECT MAX(sequence) FROM folder",null);
+                            cursor.moveToFirst();
+                            int seq = cursor.getInt(0) + 1;
+                            db.execSQL("INSERT INTO folder('name','sequence') VALUES('" + foldername +"','"+ seq +"');");
+                            folderDialogResult.finish(foldername); // 입력한 폴더 이름으로 폴더 생성
+                            DialogFragment dialogFragment = (DialogFragment) fragment;
+                            dialogFragment.dismiss(); //화면 사라짐
+                        }
                     }
-                    DialogFragment dialogFragment = (DialogFragment) fragment;
-                    dialogFragment.dismiss(); //화면 사라짐
                 }
                 break;
             //취소 버튼

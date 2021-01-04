@@ -139,16 +139,20 @@ public class TotalFragment extends Fragment {
                         db.execSQL("UPDATE folder SET count = count - 1 WHERE name = '"+folderN+"';");
                         listFixed.remove(totalMemoData);
                     }
-
+                    totalMemoAdapter.setVisible(false);
+                    totalFixedMemoAdapter.setVisible(false);
+                    totalMemoAdapter.notifyDataSetChanged();
+                    totalFixedMemoAdapter.notifyDataSetChanged();
                     Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
                 }else {
+                    totalMemoAdapter.setVisible(true);
+                    totalFixedMemoAdapter.setVisible(true);
+                    totalMemoAdapter.notifyDataSetChanged();
+                    totalFixedMemoAdapter.notifyDataSetChanged();
+                    check = false;
                     Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
                 }
-                totalMemoAdapter.setVisible(false);
-                totalFixedMemoAdapter.setVisible(false);
-                totalMemoAdapter.notifyDataSetChanged();
-                totalFixedMemoAdapter.notifyDataSetChanged();
-                check = false;
+
             }else {
                 totalMemoAdapter.setVisible(true);
                 totalFixedMemoAdapter.setVisible(true);

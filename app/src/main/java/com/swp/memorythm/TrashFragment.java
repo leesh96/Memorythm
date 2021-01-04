@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,20 +23,25 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
     private RecyclerView trashRecyclerView;
     private TrashFragAdapter trashAdapter;
     private ImageButton btnRestore, btnEmpty;
+    private TextView empty;
     private ArrayList<MemoData> trashList;
     private Boolean check = false;
 
     private DBHelper dbHelper;
     private SQLiteDatabase db;
+    Cursor cursor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_trash, container, false);
+        // 빈 휴지통일때
+        empty = (TextView)view.findViewById(R.id.emptyTrashText);
+
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT id, title, editdate, template_case FROM nonlinememo WHERE deleted = 1 UNION ALL " +
+        cursor = db.rawQuery("SELECT id, title, editdate, template_case FROM nonlinememo WHERE deleted = 1 UNION ALL " +
                 "SELECT id, title, editdate, template_case FROM linememo WHERE deleted = 1 UNION ALL " +
                 "SELECT id, title, editdate, template_case FROM gridmemo WHERE deleted = 1 UNION ALL " +
                 "SELECT id, title, editdate, template_case FROM todolist WHERE deleted = 1 UNION ALL " +
@@ -50,6 +56,7 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
                 "SELECT id, title, editdate, template_case FROM monthtracker WHERE deleted = 1 UNION ALL " +
                 "SELECT id, title, editdate, template_case FROM studytracker WHERE deleted = 1 ",null);
 
+
         trashList = new ArrayList<>();
 
         while (cursor.moveToNext()) {
@@ -61,6 +68,9 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
             memoData.setTemplate(cursor.getString(3));
 
             trashList.add(memoData);
+        }
+        if (trashList.size() == 0){
+            empty.setVisibility(View.VISIBLE);
         }
 
         //복구 버튼
@@ -92,20 +102,25 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
                 if(check){
                     if(trashAdapter.removeItems()){
                         List<MemoData> list = trashAdapter.setCheckBox();
-
                         for (MemoData memoData : list) {
                             String table = memoData.getTemplate();
                             int tableID = memoData.getMemoid();
                             db.execSQL("DELETE FROM '"+table+"' WHERE id = '"+ tableID +"';");
+                            if (trashAdapter.getItemCount() == 0) {
+                                empty.setVisibility(View.VISIBLE);
+                            }
                         }
-                        Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
+                        trashAdapter.setVisible(false);
+                        btnRestore.setVisibility(View.VISIBLE);
+                        trashAdapter.notifyDataSetChanged();
+                        Toast.makeText(getContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
                     }else {
-                        Toast.makeText(getContext(), "삭제할 메모를 선택하세요", Toast.LENGTH_SHORT).show();
+                        trashAdapter.setVisible(true);
+                        btnRestore.setVisibility(View.INVISIBLE);
+                        trashAdapter.notifyDataSetChanged();
+                        check = false;
+                        Toast.makeText(getContext(), "삭제할 메모를 선택하세요.", Toast.LENGTH_SHORT).show();
                     }
-                    trashAdapter.setVisible(false);
-                    btnRestore.setVisibility(View.VISIBLE);
-                    trashAdapter.notifyDataSetChanged();
-                    check = false;
                 }else {
                     trashAdapter.setVisible(true);
                     btnRestore.setVisibility(View.INVISIBLE);
@@ -118,7 +133,6 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
                 if(check){
                     if(trashAdapter.removeItems()){
                         List<MemoData> list = trashAdapter.setCheckBox();
-
                         for (MemoData memoData : list) {
                             String table = memoData.getTemplate();
                             int tableID = memoData.getMemoid();
@@ -127,15 +141,20 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
                             cursor.moveToFirst();
                             String folder = cursor.getString(0);
                             db.execSQL("UPDATE folder SET count = count + 1 WHERE name = '"+folder+"';");
+                            if (trashAdapter.getItemCount() == 0) {
+                                empty.setVisibility(View.VISIBLE);
+                            }
                         }
-                        Toast.makeText(getContext(), "복구버튼 눌렀음", Toast.LENGTH_SHORT).show();
+                        trashAdapter.setVisible(false);
+                        btnEmpty.setVisibility(View.VISIBLE);
+                        Toast.makeText(getContext(), "복구되었습니다.", Toast.LENGTH_SHORT).show();
                     }else {
-                        Toast.makeText(getContext(), "복구할 메모를 선택하세요", Toast.LENGTH_SHORT).show();
+                        trashAdapter.setVisible(true);
+                        btnEmpty.setVisibility(View.INVISIBLE);
+                        trashAdapter.notifyDataSetChanged();
+                        check = false;
+                        Toast.makeText(getContext(), "복구할 메모를 선택하세요.", Toast.LENGTH_SHORT).show();
                     }
-                    trashAdapter.setVisible(false);
-                    btnEmpty.setVisibility(View.VISIBLE);
-                    trashAdapter.notifyDataSetChanged();
-                    check = false;
                 }else {
                     trashAdapter.setVisible(true);
                     btnEmpty.setVisibility(View.INVISIBLE);
@@ -143,7 +162,6 @@ public class TrashFragment extends Fragment implements View.OnClickListener {
                     check = true;
                 }
                 break;
-
         }
     }
 }

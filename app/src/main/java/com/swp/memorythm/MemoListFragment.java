@@ -4,10 +4,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,11 +22,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 public class MemoListFragment extends Fragment {
     private RecyclerView memoRecyclerView;
     private ArrayList<MemoData> listMemo;
     private MemoListAdapter memoListAdapter;
     private ImageButton btnDelete;
+    private TextView empty;
     private Boolean check = false;
 
     private DBHelper dbHelper;
@@ -36,11 +41,18 @@ public class MemoListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_memo_list, container, false);
+        //빈폴더일때
+        empty = (TextView)view.findViewById(R.id.emptyFolderText);
+
         //recyclerview
         memoRecyclerView = (RecyclerView)view.findViewById(R.id.memoListBottomRV);
         memoRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         memoListAdapter = new MemoListAdapter(getContext(),listMemo);
         memoRecyclerView.setAdapter(memoListAdapter);
+
+        if (listMemo.size() == 0){
+            empty.setVisibility(View.VISIBLE);
+        }
 
         //삭제버튼
         btnDelete = (ImageButton)view.findViewById(R.id.memoDelBtn);
@@ -48,7 +60,6 @@ public class MemoListFragment extends Fragment {
             if(check){
                 if((memoListAdapter.removeItems())){
                     List<MemoData> list = memoListAdapter.setCheckBox();
-
                     for (MemoData memoData : list) {
                         String table = memoData.getTemplate();
                         int tableID = memoData.getMemoid();
@@ -59,20 +70,24 @@ public class MemoListFragment extends Fragment {
                         db.execSQL("UPDATE folder SET count = count - 1 WHERE name = '"+folderN+"';");
                         listMemo.remove(memoData);
                     }
-
+                    // 아무것도 없을때 없음 표시
+                    if (listMemo.size() == 0){
+                        empty.setVisibility(View.VISIBLE);
+                    }
+                    memoListAdapter.setVisible(false);
+                    memoListAdapter.notifyDataSetChanged();
                     Toast.makeText(getContext(), "삭제되었습니다", Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(getContext(), "삭제할 폴더를 선택하세요", Toast.LENGTH_SHORT).show();
+                    memoListAdapter.setVisible(true);
+                    memoListAdapter.notifyDataSetChanged();
+                    check = false;
+                    Toast.makeText(getContext(), "삭제할 메모를 선택하세요", Toast.LENGTH_SHORT).show();
                 }
-                memoListAdapter.setVisible(false);
-                memoListAdapter.notifyDataSetChanged();
-                check = false;
             }else {
                 memoListAdapter.setVisible(true);
                 memoListAdapter.notifyDataSetChanged();
                 check = true;
             }
-
         });
 
         //ItemTouchHelper 생성
@@ -88,7 +103,7 @@ public class MemoListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //가운데 부분
+
         listMemo = new ArrayList<>();
         dbHelper = new DBHelper(getContext());
         db = dbHelper.getReadableDatabase();
@@ -112,6 +127,7 @@ public class MemoListFragment extends Fragment {
                                 "SELECT id, title, editdate, template_case FROM healthtracker WHERE deleted = 0 and folder_name = '"+ Folder +"' UNION ALL " +
                                 "SELECT id, title, editdate, template_case FROM monthtracker WHERE deleted = 0 and folder_name = '"+ Folder +"' UNION ALL " +
                                 "SELECT id, title, editdate, template_case FROM studytracker WHERE deleted = 0 and folder_name = '"+ Folder +"' ", null);
+
                         while (cursor.moveToNext()) {
                             MemoData memoData = new MemoData();
 
@@ -122,6 +138,7 @@ public class MemoListFragment extends Fragment {
 
                             listMemo.add(memoData);
                         }
+
                     } catch (Exception e) {
                         e.printStackTrace();
                         Toast.makeText(getContext(), "실패", Toast.LENGTH_SHORT).show();

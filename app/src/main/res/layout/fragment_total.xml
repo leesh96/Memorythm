@@ -26,51 +26,60 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/totalBg"
         app:layout_constraintTop_toTopOf="@+id/totalBg" />
-    <ImageView
+    <!--<ImageView
         android:id="@+id/totalTopList"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
+        app:layout_constrainedHeight="true"
         android:background="@drawable/bg_memolist_top"
         app:layout_constraintTop_toBottomOf="@+id/totalDelBtn"
         app:layout_constraintEnd_toEndOf="@+id/totalBg"
-        app:layout_constraintStart_toStartOf="@+id/totalBg"/>
-    <ImageView
+        app:layout_constraintStart_toStartOf="@+id/totalBg"/>-->
+    <!--<ImageView
         android:id="@+id/totalList"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
+        app:layout_constrainedHeight="true"
         android:background="@drawable/bg_memolist_b"
         app:layout_constraintBottom_toBottomOf="@+id/totalBg"
         app:layout_constraintEnd_toEndOf="@+id/totalBg"
         app:layout_constraintHorizontal_bias="0.448"
         app:layout_constraintStart_toStartOf="@+id/totalBg"
         app:layout_constraintTop_toBottomOf="@+id/totalTopList"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0" />-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/totalTopRV"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="18dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintTop_toTopOf="@+id/totalTopList"
-        app:layout_constraintBottom_toBottomOf="@+id/totalTopList"
-        app:layout_constraintEnd_toEndOf="@+id/totalTopList"
-        app:layout_constraintStart_toStartOf="@+id/totalTopList"/>
+        android:background="@drawable/bg_memolist_top"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintEnd_toEndOf="@+id/totalBg"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/totalBg"
+        app:layout_constraintTop_toBottomOf="@+id/totalDelBtn" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/totalRV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="18dp"
         android:layout_marginStart="22dp"
         android:layout_marginEnd="18dp"
         android:layout_marginBottom="10dp"
-        app:layout_constraintTop_toTopOf="@+id/totalList"
-        app:layout_constraintBottom_toBottomOf="@+id/totalList"
-        app:layout_constraintEnd_toEndOf="@+id/totalList"
-        app:layout_constraintStart_toStartOf="@+id/totalList"/>
+        android:background="@drawable/bg_memolist_b"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="@+id/totalBg"
+        app:layout_constraintEnd_toEndOf="@+id/totalBg"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/totalBg"
+        app:layout_constraintTop_toBottomOf="@+id/totalTopRV"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

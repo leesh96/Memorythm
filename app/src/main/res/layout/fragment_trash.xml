@@ -68,6 +68,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/bg_trash_box"
         app:layout_constraintStart_toStartOf="@+id/bg_trash_box"
         app:layout_constraintTop_toTopOf="@+id/bg_trash_box" />
+    <TextView
+        android:id="@+id/emptyTrashText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="빈 휴지통"
+        android:textSize="30sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/bg_trash_box"
+        app:layout_constraintBottom_toBottomOf="@+id/bg_trash_box"
+        app:layout_constraintStart_toStartOf="@+id/bg_trash_box"
+        app:layout_constraintTop_toTopOf="@+id/bg_trash_box"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
