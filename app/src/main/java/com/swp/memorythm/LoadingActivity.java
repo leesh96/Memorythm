@@ -34,38 +34,51 @@ import retrofit2.http.Query;
 
 public class LoadingActivity extends AppCompatActivity implements LocationListener {
     private Intent intent;
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
     LocationManager locationManager;
     double latitude;
     double longitude;
-    DBHelper dbHelper;
-    SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
+        //GPS 권한 요구, 확인
+        requestLocation();
+        // 날짜 받아오기, DB 오픈
+        setCurrentDate();
+        openDB();
+
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        // 로딩화면 3초 전환
+        Handler mHandler = new Handler() {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                intent = new Intent(LoadingActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
+        mHandler.sendEmptyMessageDelayed(0, 5000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
+    }
+
+    private void openDB() {
         dbHelper = new DBHelper(LoadingActivity.this);
         // 이거 써서 db 접근
         db = dbHelper.getReadableDatabase();
         // DB 읽기. DB가 없으면 onCreate가 호출, 버전이 바뀌었으면 onUpgrade 호출
         // dbHelper.getWritableDatabase() : 읽고 쓰기 위해 DB 연다. 권한이 없거나 디스크가 가득 차면 실패
         // db.close() : DB를 닫는다.
-
-        // 날짜 받아오기
-        setCurrentDate();
-
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-        //GPS 권한 요구, 확인
-        requestLocation();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        db.close();
     }
 
     private void setCurrentDate() {
@@ -101,7 +114,6 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
 
     @Override
     public void onProviderDisabled(@NonNull String provider) { //GPS 꺼져있을 때
-
         PreferenceManager.removeKey(LoadingActivity.this, "currentWeather");
         PreferenceManager.removeKey(LoadingActivity.this, "currentWeatherId");
     }
@@ -111,21 +123,9 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-        } else { //권한 있으면 3초후 메인으로 이동
+        } else { //권한 있으면
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1, this);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 1, this);
-
-            // 로딩화면 3초 전환
-            Handler mHandler = new Handler() {
-                @Override
-                public void handleMessage(@NonNull Message msg) {
-                    super.handleMessage(msg);
-                    intent = new Intent(LoadingActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            };
-            mHandler.sendEmptyMessageDelayed(0, 3000);
         }
     }
 
@@ -175,23 +175,16 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
         });
     }
 
-    //권한 없을 때 권한 허용, 거부 아무거나 선택하면 메인으로 이동
+    //권한 없을 때 권한 허용, 거부 아무거나 선택
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         if(requestCode == 0) {
-
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1, this);
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 1, this);
             }
-
-            intent = new Intent(LoadingActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
         }
     }
 }
