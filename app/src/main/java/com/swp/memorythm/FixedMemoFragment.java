@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 
 public class FixedMemoFragment extends Fragment {
     private ViewPager viewPager;
-    private ViewPagerAdapter pagerAdapter;
+    private FixedMemoPagerAdapter pagerAdapter;
     private ArrayList<FixedMemoData> arrayList;
 
     private DBHelper dbHelper;
@@ -42,8 +41,8 @@ public class FixedMemoFragment extends Fragment {
                     "SELECT id, editdate, template_case, bgcolor FROM weeklyplan WHERE fixed = 1 AND deleted = 0 UNION ALL " +
                     "SELECT id, editdate, template_case, bgcolor FROM monthlyplan WHERE fixed = 1 AND deleted = 0 UNION ALL " +
                     "SELECT id, editdate, template_case, bgcolor FROM yearlyplan WHERE fixed = 1 AND deleted = 0 UNION ALL " +
-                    "SELECT id, editdate, template_case, bgcolor FROM healthtracker WHERE fixed = 1 AND deleted = 0 UNION ALL " +
                     "SELECT id, editdate, template_case, bgcolor FROM monthtracker WHERE fixed = 1 AND deleted = 0 UNION ALL " +
+                    "SELECT id, editdate, template_case, bgcolor FROM healthtracker WHERE fixed = 1 AND deleted = 0 UNION ALL " +
                     "SELECT id, editdate, template_case, bgcolor FROM studytracker WHERE fixed = 1 AND deleted = 0) ORDER BY editdate DESC", null);
             while (cursor.moveToNext()) {
                 FixedMemoData fixedMemoData = new FixedMemoData();
@@ -64,7 +63,7 @@ public class FixedMemoFragment extends Fragment {
         //뷰페이저에 페이저어댑터 지정
         viewPager = (ViewPager) view.findViewById(R.id.pager);
         viewPager.setOffscreenPageLimit(3); // 3개로 제한
-        pagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), arrayList);
+        pagerAdapter = new FixedMemoPagerAdapter(getChildFragmentManager(), arrayList);
         viewPager.setAdapter(pagerAdapter);
         if (!arrayList.isEmpty()) {
             viewPager.setCurrentItem(0);
@@ -72,9 +71,7 @@ public class FixedMemoFragment extends Fragment {
         }
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
 
             @Override
             public void onPageSelected(int position) {
@@ -82,9 +79,7 @@ public class FixedMemoFragment extends Fragment {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
+            public void onPageScrollStateChanged(int state) { }
         });
         return view;
     }

@@ -239,7 +239,7 @@
                         android:textColor="@color/text_color"
                         android:textSize="12sp" />
                 </LinearLayout>
-                <!--healthtracker-->
+                <!-- daily-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -248,20 +248,20 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/healthTrackerImg"
+                        android:id="@+id/dailyImg"
                         android:layout_width="140dp"
                         android:layout_height="220dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/ic_health_tracker" />
+                        android:background="@drawable/ic_daily" />
 
                     <TextView
-                        android:id="@+id/healthTracker"
+                        android:id="@+id/daily"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/sdkukdetopokki_b"
-                        android:text="HEALTH TRACKER"
+                        android:text="DAILY PLAN"
                         android:textColor="@color/text_color"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -272,7 +272,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:orientation="horizontal">
-                <!-- studytracker-->
+                <!--weeklyplan-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -281,20 +281,79 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/studyTrackerImg"
+                        android:id="@+id/weeklyPlanImg"
                         android:layout_width="140dp"
                         android:layout_height="220dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/ic_study_tracker" />
+                        android:background="@drawable/ic_weekly" />
 
                     <TextView
-                        android:id="@+id/studyTracker"
+                        android:id="@+id/weeklyPlan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/sdkukdetopokki_b"
-                        android:text="STUDY TRACKER"
+                        android:text="WEEKLY PLAN"
+                        android:textColor="@color/text_color"
+                        android:textSize="12sp" />
+                </LinearLayout>
+                <!-- monthly plan-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/monthlyPlanImg"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_monthly" />
+
+                    <TextView
+                        android:id="@+id/monthlyPlan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/sdkukdetopokki_b"
+                        android:text="MONTHLY PLAN"
+                        android:textColor="@color/text_color"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--6번째-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal">
+                <!--yearly plan-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/yearlyPlanImg"
+                        android:layout_width="140dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_yearly" />
+
+                    <TextView
+                        android:id="@+id/yearlyPlan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/sdkukdetopokki_b"
+                        android:text="YEARLY PLAN"
                         android:textColor="@color/text_color"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -324,65 +383,7 @@
                         android:textColor="@color/text_color"
                         android:textSize="12sp" />
                 </LinearLayout>
-            </LinearLayout>
-            <!--6번째-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:orientation="horizontal">
-                <!-- daily-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
 
-                    <ImageButton
-                        android:id="@+id/dailyImg"
-                        android:layout_width="140dp"
-                        android:layout_height="220dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_daily" />
-
-                    <TextView
-                        android:id="@+id/daily"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="20dp"
-                        android:fontFamily="@font/sdkukdetopokki_b"
-                        android:text="DAILY PLAN"
-                        android:textColor="@color/text_color"
-                        android:textSize="12sp" />
-                </LinearLayout>
-                <!--weeklytracker-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        android:id="@+id/weeklyTrackerImg"
-                        android:layout_width="140dp"
-                        android:layout_height="220dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_weekly" />
-
-                    <TextView
-                        android:id="@+id/weeklyTracker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="20dp"
-                        android:fontFamily="@font/sdkukdetopokki_b"
-                        android:text="WEEKLY PLAN"
-                        android:textColor="@color/text_color"
-                        android:textSize="12sp" />
-                </LinearLayout>
             </LinearLayout>
             <!--7번째-->
             <LinearLayout
@@ -391,7 +392,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
-                <!-- monthly plan-->
+                <!--healthtracker-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -400,24 +401,24 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/monthlyPlanImg"
+                        android:id="@+id/healthTrackerImg"
                         android:layout_width="140dp"
                         android:layout_height="220dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/ic_monthly" />
+                        android:background="@drawable/ic_health_tracker" />
 
                     <TextView
-                        android:id="@+id/monthlyPlan"
+                        android:id="@+id/healthTracker"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/sdkukdetopokki_b"
-                        android:text="MONTHLY PLAN"
+                        android:text="HEALTH TRACKER"
                         android:textColor="@color/text_color"
                         android:textSize="12sp" />
                 </LinearLayout>
-                <!--yearly tracker-->
+                <!-- studytracker-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -426,20 +427,20 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/yearlyTrackerImg"
+                        android:id="@+id/studyTrackerImg"
                         android:layout_width="140dp"
                         android:layout_height="220dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/ic_yearly" />
+                        android:background="@drawable/ic_study_tracker" />
 
                     <TextView
-                        android:id="@+id/yearlyTracker"
+                        android:id="@+id/studyTracker"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/sdkukdetopokki_b"
-                        android:text="YEARLY PLAN"
+                        android:text="STUDY TRACKER"
                         android:textColor="@color/text_color"
                         android:textSize="12sp" />
                 </LinearLayout>

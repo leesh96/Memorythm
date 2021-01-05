@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import java.util.Random;
 
 public final class CommonUtils {
+    // 정적메소드 라이브러리 클래스
+
     @SuppressLint("ClickableViewAccessibility")
     public static void setTouchable(View view) {
         view.setOnTouchListener((view1, motionEvent) -> true);

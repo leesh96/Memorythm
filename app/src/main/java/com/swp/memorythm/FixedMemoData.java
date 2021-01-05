@@ -1,8 +1,8 @@
 package com.swp.memorythm;
 
 public class FixedMemoData {
-    private int memoid;
-    private String Template, Bgcolor;
+    public int memoid;
+    public String Template, Bgcolor;
 
     public int getMemoid() {
         return memoid;

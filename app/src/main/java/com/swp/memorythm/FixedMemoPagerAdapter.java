@@ -24,10 +24,10 @@ import com.swp.memorythm.template.YearlyPlanFragment;
 
 import java.util.ArrayList;
 
-public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+public class FixedMemoPagerAdapter extends FragmentStatePagerAdapter {
     private ArrayList<FixedMemoData> arrayList;
 
-    public ViewPagerAdapter(@NonNull FragmentManager fm, ArrayList<FixedMemoData> arrayList) {
+    public FixedMemoPagerAdapter(@NonNull FragmentManager fm, ArrayList<FixedMemoData> arrayList) {
         super(fm);
         this.arrayList = arrayList;
     }
@@ -47,6 +47,16 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 nonlineMemoFragment.setArguments(bundle);
                 nonlineMemoFragment.setFromFixedFragment(true);
                 return nonlineMemoFragment;
+            case "linememo":
+                LineMemoFragment lineMemoFragment = new LineMemoFragment();
+                lineMemoFragment.setArguments(bundle);
+                lineMemoFragment.setFromFixedFragment(true);
+                return lineMemoFragment;
+            case "gridmemo":
+                GridMemoFragment gridMemoFragment = new GridMemoFragment();
+                gridMemoFragment.setArguments(bundle);
+                gridMemoFragment.setFromFixedFragment(true);
+                return gridMemoFragment;
             case "todolist":
                 TodoFragment todoFragment = new TodoFragment();
                 todoFragment.setArguments(bundle);
@@ -67,31 +77,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 reviewFragment.setArguments(bundle);
                 reviewFragment.setFromFixedFragment(true);
                 return reviewFragment;
-            case "healthtracker":
-                HealthTrackerFragment healthTrackerFragment = new HealthTrackerFragment();
-                healthTrackerFragment.setArguments(bundle);
-                healthTrackerFragment.setFromFixedFragment(true);
-                return healthTrackerFragment;
-            case "studytracker":
-                StudyTrackerFragment studyTrackerFragment = new StudyTrackerFragment();
-                studyTrackerFragment.setArguments(bundle);
-                studyTrackerFragment.setFromFixedFragment(true);
-                return studyTrackerFragment;
-            case "monthtracker":
-                MonthTrackerFragment monthTrackerFragment = new MonthTrackerFragment();
-                monthTrackerFragment.setArguments(bundle);
-                monthTrackerFragment.setFromFixedFragment(true);
-                return monthTrackerFragment;
-            case "gridmemo":
-                GridMemoFragment gridMemoFragment = new GridMemoFragment();
-                gridMemoFragment.setArguments(bundle);
-                gridMemoFragment.setFromFixedFragment(true);
-                return gridMemoFragment;
-            case "linememo":
-                LineMemoFragment lineMemoFragment = new LineMemoFragment();
-                lineMemoFragment.setArguments(bundle);
-                lineMemoFragment.setFromFixedFragment(true);
-                return lineMemoFragment;
             case "dailyplan":
                 DailyPlanFragment dailyPlanFragment = new DailyPlanFragment();
                 dailyPlanFragment.setArguments(bundle);
@@ -112,6 +97,21 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 yearlyPlanFragment.setArguments(bundle);
                 yearlyPlanFragment.setFromFixedFragment(true);
                 return yearlyPlanFragment;
+            case "monthtracker":
+                MonthTrackerFragment monthTrackerFragment = new MonthTrackerFragment();
+                monthTrackerFragment.setArguments(bundle);
+                monthTrackerFragment.setFromFixedFragment(true);
+                return monthTrackerFragment;
+            case "healthtracker":
+                HealthTrackerFragment healthTrackerFragment = new HealthTrackerFragment();
+                healthTrackerFragment.setArguments(bundle);
+                healthTrackerFragment.setFromFixedFragment(true);
+                return healthTrackerFragment;
+            case "studytracker":
+                StudyTrackerFragment studyTrackerFragment = new StudyTrackerFragment();
+                studyTrackerFragment.setArguments(bundle);
+                studyTrackerFragment.setFromFixedFragment(true);
+                return studyTrackerFragment;
             default:
                 return null;
         }
@@ -119,7 +119,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        // 전체 페이지 수 3개로 고정
+        // 뷰 페이저 개수 반환
         return arrayList.size();
     }
 }

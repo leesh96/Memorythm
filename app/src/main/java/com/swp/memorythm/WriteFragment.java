@@ -13,7 +13,7 @@ import com.swp.memorythm.template.MemoViewActivity;
 
 public class WriteFragment extends Fragment {
 
-    private ImageButton nolineBtn, lineBtn, todoBtn, gridBtn, wishBtn, shoppingBtn, reviewBtn, healthTBtn, studyTBtn, monthlyTBtn, dailyBtn, weeklyTBtn, monthlyPBtn, yearlyBtn;
+    private ImageButton nolineBtn, lineBtn, gridBtn, todoBtn, wishBtn, shoppingBtn, reviewBtn, dailyBtn, weeklyTBtn, monthlyPBtn, yearlyBtn, monthlyTBtn, healthTBtn, studyTBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -22,18 +22,19 @@ public class WriteFragment extends Fragment {
         // 버튼 불러오기
         nolineBtn = (ImageButton) view.findViewById(R.id.nolineMemoImg);
         lineBtn = (ImageButton) view.findViewById(R.id.lineMemoImg);
-        todoBtn = (ImageButton) view.findViewById(R.id.todoListImg);
         gridBtn = (ImageButton) view.findViewById(R.id.gridMemoImg);
+        todoBtn = (ImageButton) view.findViewById(R.id.todoListImg);
         wishBtn = (ImageButton) view.findViewById(R.id.wishMemoImg);
         shoppingBtn = (ImageButton) view.findViewById(R.id.shoppingListImg);
         reviewBtn = (ImageButton) view.findViewById(R.id.reviewMemoImg);
+        dailyBtn = (ImageButton) view.findViewById(R.id.dailyImg);
+        weeklyTBtn = (ImageButton) view.findViewById(R.id.weeklyPlanImg);
+        monthlyPBtn = (ImageButton) view.findViewById(R.id.monthlyPlanImg);
+        yearlyBtn = (ImageButton) view.findViewById(R.id.yearlyPlanImg);
+        monthlyTBtn = (ImageButton) view.findViewById(R.id.monthlyTrackerImg);
         healthTBtn = (ImageButton) view.findViewById(R.id.healthTrackerImg);
         studyTBtn = (ImageButton) view.findViewById(R.id.studyTrackerImg);
-        monthlyTBtn = (ImageButton) view.findViewById(R.id.monthlyTrackerImg);
-        dailyBtn = (ImageButton) view.findViewById(R.id.dailyImg);
-        weeklyTBtn = (ImageButton) view.findViewById(R.id.weeklyTrackerImg);
-        monthlyPBtn = (ImageButton) view.findViewById(R.id.monthlyPlanImg);
-        yearlyBtn = (ImageButton) view.findViewById(R.id.yearlyTrackerImg);
+
         //버튼 클릭
         //무지메모
         nolineBtn.setOnClickListener(new View.OnClickListener() {
@@ -55,22 +56,22 @@ public class WriteFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        //todolist
-        todoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MemoViewActivity.class);
-                intent.putExtra("template", "todolist");
-                intent.putExtra("mode", "write");
-                startActivity(intent);
-            }
-        });
         //grid memo
         gridBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), MemoViewActivity.class);
                 intent.putExtra("template", "gridmemo");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
+            }
+        });
+        //todolist
+        todoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "todolist");
                 intent.putExtra("mode", "write");
                 startActivity(intent);
             }
@@ -101,36 +102,6 @@ public class WriteFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), MemoViewActivity.class);
                 intent.putExtra("template", "review");
-                intent.putExtra("mode", "write");
-                startActivity(intent);
-            }
-        });
-        //health tracker
-        healthTBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MemoViewActivity.class);
-                intent.putExtra("template", "healthtracker");
-                intent.putExtra("mode", "write");
-                startActivity(intent);
-            }
-        });
-        //study tracker
-        studyTBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MemoViewActivity.class);
-                intent.putExtra("template", "studytracker");
-                intent.putExtra("mode", "write");
-                startActivity(intent);
-            }
-        });
-        //monthtracker
-        monthlyTBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MemoViewActivity.class);
-                intent.putExtra("template", "monthtracker");
                 intent.putExtra("mode", "write");
                 startActivity(intent);
             }
@@ -175,6 +146,37 @@ public class WriteFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        //monthtracker
+        monthlyTBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "monthtracker");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
+            }
+        });
+        //health tracker
+        healthTBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "healthtracker");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
+            }
+        });
+        //study tracker
+        studyTBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MemoViewActivity.class);
+                intent.putExtra("template", "studytracker");
+                intent.putExtra("mode", "write");
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 }
