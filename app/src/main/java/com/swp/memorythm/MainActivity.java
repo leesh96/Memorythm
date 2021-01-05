@@ -1,5 +1,8 @@
 package com.swp.memorythm;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +28,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,12 +44,24 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.channels.FileChannel;
+
 import com.google.android.material.navigation.NavigationView;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -56,8 +73,11 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private ImageButton homeBtn; // 홈으로 가는 버튼
     private ListView listview = null;
-    private String uid;
+    private String uid, name, profile, email;
+    private TextView tv_name, tv_email;
+    private CircleImageView iv_profile;
     private int fixedmemocnt = 0;
+    private Bitmap bitmap;
 
     private DBHelper dbHelper;
     private SQLiteDatabase db;
@@ -73,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
+        name = intent.getStringExtra("name");
+        profile = intent.getStringExtra("profile");
+        email = intent.getStringExtra("email");
 
         dbHelper = new DBHelper(MainActivity.this);
         db = dbHelper.getReadableDatabase();
@@ -122,6 +145,50 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         //navigationview
         navigationView = (NavigationView) findViewById(R.id.navigation_layout);
+        tv_name = navigationView.getHeaderView(0).findViewById(R.id.user_name);
+        iv_profile = navigationView.getHeaderView(0).findViewById(R.id.user_pro);
+        tv_email = navigationView.getHeaderView(0).findViewById(R.id.user_email);
+
+        tv_name.setText(name);
+        tv_email.setText(email);
+
+        //스레드로 사용자 프로필 사진 가져옴
+        Thread mThread= new Thread(){
+            @Override
+            public void run() {
+
+                try{
+
+                    URL url = new URL(profile);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                    conn.setDoInput(true);
+                    conn.connect();
+
+                    InputStream is = conn.getInputStream();
+                    bitmap = BitmapFactory.decodeStream(is);
+
+                } catch (MalformedURLException ee) {
+
+                    ee.printStackTrace();
+                }catch (IOException e){
+
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        mThread.start();
+
+        try{
+
+            mThread.join();
+            //변환한 bitmap적용
+            iv_profile.setImageBitmap(bitmap);
+        }catch (InterruptedException e){
+
+            e.printStackTrace();
+        }
 
         //바텀 네비게이션 사용
         bottomNavigationView = findViewById(R.id.bottomNavi);
@@ -170,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
                         backupData("snack");
                         break;
                     case R.id.dataRestore:
+                        restoreData("snack");
                         break;
                     case R.id.logout:
                         backupData("logout");
@@ -186,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        db.close();
+        backupData("");
         super.onStop();
     }
 
@@ -199,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         PreferenceManager.removeKey(MainActivity.this, "fixedmemocnt");
-        backupData("");
+        db.close();
         super.onDestroy();
     }
 
@@ -277,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
                         case "logout":
                             dbHelper.onUpgrade(db, 1, 1); //로그아웃시 테이블 초기화
                             FirebaseAuth.getInstance().signOut(); //파이어베이스 인증해제
-                            Intent intent1 = new Intent(getApplication(), LoginActivity.class);
+                            Intent intent1 = new Intent(getApplicationContext(), LoginActivity.class);
                             startActivity(intent1);
                             finish();
                             break;
@@ -289,6 +357,51 @@ public class MainActivity extends AppCompatActivity {
             });
         } catch (Exception e) {
             Log.d("reuslt", "백업 실패");
+        }
+    }
+
+    //db파일 복원
+    public void restoreData(String flag) {
+
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
+
+        try {
+            File data = Environment.getDataDirectory(); // 경로(data/)
+
+            File currentDB = new File(data, "/data/com.swp.memorythm/databases/memorythm.db");
+            Uri uri = Uri.fromFile(currentDB); //파일로부터 uri 생성?
+            StorageReference mRef = storageReference.child("backup/" + uid); //스토리지 참조
+
+            mRef.getFile(uri).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                    // 업로드 실패알림
+                    Log.d("오류", e.getLocalizedMessage());
+                }
+            }).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+                    if(flag.equals("snack")) {
+
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        intent.putExtra("uid", uid);
+                        intent.putExtra("name", name);
+                        intent.putExtra("profile", profile);
+                        intent.putExtra("email", email);
+                        finish();
+                    }
+                    else {
+
+                        Log.d("reuslt", "복원 성공");
+                    }
+                }
+            });
+        } catch (Exception e) {
+            Log.d("reuslt", "파일 다운로드 실패");
         }
     }
 }

@@ -1,7 +1,10 @@
 package com.swp.memorythm;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -14,6 +17,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
@@ -23,8 +28,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.swp.memorythm.MainActivity;
 import com.swp.memorythm.R;
+
+import java.io.File;
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -45,6 +56,9 @@ public class LoginActivity extends AppCompatActivity {
         if (mAuth.getCurrentUser() != null) {
             Intent intent = new Intent(getApplication(), MainActivity.class);
             intent.putExtra("uid", mAuth.getCurrentUser().getUid());
+            intent.putExtra("name", mAuth.getCurrentUser().getDisplayName());
+            intent.putExtra("profile", mAuth.getCurrentUser().getPhotoUrl().toString());
+            intent.putExtra("email", mAuth.getCurrentUser().getEmail());
             startActivity(intent);
             finish();
         }
@@ -111,10 +125,53 @@ public class LoginActivity extends AppCompatActivity {
     //로그인 성공시 메인으로 넘어감
     private void updateUI(FirebaseUser user) { //update ui code here
         if (user != null) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("uid", user.getUid());
-            startActivity(intent);
-            finish();
+
+            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+            StorageReference storageReference = firebaseStorage.getReference();
+
+            try {
+                File data = Environment.getDataDirectory(); // 경로(data/)
+
+                File currentDB = new File(data, "/data/com.swp.memorythm/databases/memorythm.db");
+                Uri uri = Uri.fromFile(currentDB); //파일로부터 uri 생성?
+                StorageReference mRef = storageReference.child("backup/" + user.getUid()); //스토리지 참조
+
+                mRef.getFile(uri).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        // 업로드 실패알림
+                        Log.d("오류", e.getLocalizedMessage());
+
+                        if(Objects.equals(e.getLocalizedMessage(), "Object does not exist at location.")) {
+
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.putExtra("uid", user.getUid());
+                            intent.putExtra("name", user.getDisplayName());
+                            intent.putExtra("profile", user.getPhotoUrl().toString());
+                            intent.putExtra("email", user.getEmail());
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+                        Log.d("reuslt", "복원 성공");
+
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("uid", user.getUid());
+                        intent.putExtra("name", user.getDisplayName());
+                        intent.putExtra("profile", user.getPhotoUrl().toString());
+                        intent.putExtra("email", user.getEmail());
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+            } catch (Exception e) {
+                Log.d("reuslt", "파일 다운로드 실패");
+            }
         }
     }
 }
