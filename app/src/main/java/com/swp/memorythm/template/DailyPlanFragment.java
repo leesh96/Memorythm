@@ -84,7 +84,7 @@ public class DailyPlanFragment extends Fragment {
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
         }
-        Cursor cursor = db.rawQuery("SELECT userdate, contentAm, contentPm, weather FROM dailyplan WHERE id = "+memoid+"", null);
+        Cursor cursor = db.rawQuery("SELECT userdate, contentAm, contentPm, weather FROM dailyplan WHERE id = " + memoid + "", null);
         while (cursor.moveToNext()) {
             userDate = cursor.getString(0);
             contentAm = cursor.getString(1);
@@ -103,7 +103,7 @@ public class DailyPlanFragment extends Fragment {
         editTextContentPm = rootView.findViewById(R.id.memo_content_pm);
         radioGroup = rootView.findViewById(R.id.weather_group);
 
-        if((PreferenceManager.getInt(getActivity(), "currentWeatherId") != -1) && !PreferenceManager.getString(getActivity(), "currentWeather").equals("")) {
+        if ((PreferenceManager.getInt(getActivity(), "currentWeatherId") != -1) && !PreferenceManager.getString(getActivity(), "currentWeather").equals("")) {
 
             currentWeather = PreferenceManager.getString(getActivity(), "currentWeather");
             id = PreferenceManager.getInt(getActivity(), "currentWeatherId");
@@ -115,7 +115,7 @@ public class DailyPlanFragment extends Fragment {
                     radioGroup.check(R.id.sun);
                     break;
                 case "Clouds":
-                    if(id == 801 || id == 802) radioGroup.check(R.id.cloudy);
+                    if (id == 801 || id == 802) radioGroup.check(R.id.cloudy);
                     else radioGroup.check(R.id.cloud);
                     break;
                 case "Thunderstorm":
@@ -154,7 +154,7 @@ public class DailyPlanFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(getArguments() != null) {
+        if (getArguments() != null) {
 
             textViewDate.setText(userDate);
             editTextContentAm.setText(contentAm);
@@ -167,9 +167,9 @@ public class DailyPlanFragment extends Fragment {
                 editTextContentAm.setEnabled(false);
                 editTextContentPm.setEnabled(false);
 
-                for(int i = 0; i < radioGroup.getChildCount(); i++) {
+                for (int i = 0; i < radioGroup.getChildCount(); i++) {
 
-                    ((RadioButton)radioGroup.getChildAt(i)).setEnabled(false);
+                    ((RadioButton) radioGroup.getChildAt(i)).setEnabled(false);
                 }
             }
         }
@@ -221,10 +221,10 @@ public class DailyPlanFragment extends Fragment {
             case "view":
                 // 메모 수정
                 if (getArguments() == null) {
-                    db.execSQL("UPDATE dailyplan SET userdate = '"+userDate+"', contentAm = '"+contentAm+"', contentPm = '"+contentPm+"', weather = '"+weather+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE dailyplan SET userdate = '" + userDate + "', contentAm = '" + contentAm + "', contentPm = '" + contentPm + "', weather = '" + weather + "', title = '" + title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
                 } else {
                     memoid = getArguments().getInt("memoid");
-                    db.execSQL("UPDATE dailyplan SET userdate = '"+userDate+"', contentAm = '"+contentAm+"', contentPm = '"+contentPm+"', weather = '"+weather+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE dailyplan SET userdate = '" + userDate + "', contentAm = '" + contentAm + "', contentPm = '" + contentPm + "', weather = '" + weather + "', title = '" + title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
                 }
                 break;
         }

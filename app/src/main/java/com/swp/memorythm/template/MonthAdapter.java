@@ -2,7 +2,6 @@ package com.swp.memorythm.template;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +26,7 @@ public class MonthAdapter extends BaseAdapter {
     int curYear;
     int curMonth;
 
-    public MonthAdapter(Context context, Calendar cal){
+    public MonthAdapter(Context context, Calendar cal) {
         super();
         mContext = context;
         this.cal = cal;
@@ -35,7 +34,7 @@ public class MonthAdapter extends BaseAdapter {
         init();
     }
 
-    public MonthAdapter(Context context, Calendar cal, String[] setContent){
+    public MonthAdapter(Context context, Calendar cal, String[] setContent) {
         super();
         mContext = context;
         this.cal = cal;
@@ -43,7 +42,7 @@ public class MonthAdapter extends BaseAdapter {
         init();
     }
 
-    public void init(){
+    public void init() {
 
         calculate();//날짜 계산해서 dayList 배열 값 설정
     }
@@ -53,7 +52,7 @@ public class MonthAdapter extends BaseAdapter {
         isFixed = true;
     }
 
-    public void calculate(){
+    public void calculate() {
 
         dayList.clear();
 
@@ -61,15 +60,15 @@ public class MonthAdapter extends BaseAdapter {
 
         int startDay = cal.get(Calendar.DAY_OF_WEEK); //현재 달 1일의 요일 (1: 일요일, . . . 7: 토요일)
         int lastDay = cal.getActualMaximum(Calendar.DATE); //달의 마지막 날짜
-        Log.d("day", startDay+"");
+        Log.d("day", startDay + "");
         int cnt = 1;
 
-        for(int i=0; i<startDay-1; i++) { //1일이 일요일이 아니면 그 앞부분에 0넣음
+        for (int i = 0; i < startDay - 1; i++) { //1일이 일요일이 아니면 그 앞부분에 0넣음
 
             dayList.add(0);
         }
 
-        for(int i=startDay-1; i<startDay-1+lastDay; i++){ /* 1일의 요일에 따라 시작위치 다르고 마지막 날짜까지 값 지정*/
+        for (int i = startDay - 1; i < startDay - 1 + lastDay; i++) { /* 1일의 요일에 따라 시작위치 다르고 마지막 날짜까지 값 지정*/
 
             dayList.add(cnt);
             cnt++;
@@ -98,7 +97,7 @@ public class MonthAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         String date;
 
-        if(convertView == null) {
+        if (convertView == null) {
             // convertView가 null이면 Holder 객체를 생성하고
             // 생성한 Holder 객체에 inflating 한 뷰의 참조값을 저장
             viewHolder = new ViewHolder();
@@ -119,18 +118,17 @@ public class MonthAdapter extends BaseAdapter {
 
         int day = dayList.get(position); //몇일
 
-        if(day == 0) {
+        if (day == 0) {
 
             date = "";
-        }
-        else {
+        } else {
 
             date = Integer.toString(day);
         }
 
         viewHolder.textView.setText(date); //날짜 값이 0이면 ""으로, 아니면 날짜값으로 TextView의 Text 지정
 
-        if(setContent != null) {
+        if (setContent != null) {
 
             viewHolder.editText.setText(setContent[position]);
         }
@@ -142,17 +140,17 @@ public class MonthAdapter extends BaseAdapter {
 
         int startDay = cal_sun.get(Calendar.DAY_OF_WEEK); //현재 달 1일의 요일 (1: 일요일, . . . 7: 토요일)
 
-        if(startDay==1){ //일요일은 날짜 색 빨간색으로
+        if (startDay == 1) { //일요일은 날짜 색 빨간색으로
             viewHolder.textView.setTextColor(Color.RED);
         }
 
         GridView gridView = (GridView) parent.findViewById(R.id.container_date);
         int divide = dayList.size() / 6;
         int height = gridView.getHeight() / divide;
-        GridView.LayoutParams params = new GridView.LayoutParams( GridView.LayoutParams.MATCH_PARENT, height-2); //한칸의 크기 지정
+        GridView.LayoutParams params = new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT, height - 2); //한칸의 크기 지정
         convertView.setLayoutParams(params);
 
-        if(isFixed) viewHolder.editText.setEnabled(false);
+        if (isFixed) viewHolder.editText.setEnabled(false);
 
         return convertView; //뷰 뿌려주기
     }
@@ -167,13 +165,15 @@ public class MonthAdapter extends BaseAdapter {
         return 0;
     }
 
-    public int getCurYear(){
+    public int getCurYear() {
         return curYear;
     }
 
-    public int getCurMonth(){
+    public int getCurMonth() {
         return curMonth;
     }
 
-    public EditText[] getEditTexts() { return editTexts; }
+    public EditText[] getEditTexts() {
+        return editTexts;
+    }
 }

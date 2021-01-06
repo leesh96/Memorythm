@@ -27,7 +27,7 @@ import java.util.Random;
 public class YearlyPlanFragment extends Fragment {
     private TextView textViewDate;
     private EditText editTextJan, editTextFeb, editTextMar, editTextApr, editTextMay, editTextJun,
-                     editTextJul, editTextAug, editTextSep, editTextOct, editTextNov, editTextDec;
+            editTextJul, editTextAug, editTextSep, editTextOct, editTextNov, editTextDec;
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     public int memoid;
@@ -81,7 +81,7 @@ public class YearlyPlanFragment extends Fragment {
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
         }
-        Cursor cursor = db.rawQuery("SELECT userdate, contentYear, splitKey FROM yearlyplan WHERE id = "+memoid+"", null);
+        Cursor cursor = db.rawQuery("SELECT userdate, contentYear, splitKey FROM yearlyplan WHERE id = " + memoid + "", null);
         while (cursor.moveToNext()) {
             userDate = cursor.getString(0);
             String splitKey = cursor.getString(2);
@@ -141,11 +141,11 @@ public class YearlyPlanFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(getArguments() != null) {
+        if (getArguments() != null) {
 
             textViewDate.setText(userDate);
 
-            for(int i = 0; i < yearView.length; i++) {
+            for (int i = 0; i < yearView.length; i++) {
 
                 yearView[i].setText(setContent[i]);
             }
@@ -154,7 +154,7 @@ public class YearlyPlanFragment extends Fragment {
             if (isFromFixedFragment()) {
                 textViewDate.setEnabled(false);
 
-                for(EditText editText : yearView) {
+                for (EditText editText : yearView) {
 
                     editText.setEnabled(false);
                 }
@@ -177,11 +177,10 @@ public class YearlyPlanFragment extends Fragment {
 
         for (EditText editText : yearView) {
 
-            if(editText.getText().toString().equals("")) {
+            if (editText.getText().toString().equals("")) {
 
                 contentYear.append(" ").append(splitKey);
-            }
-            else {
+            } else {
 
                 contentYear.append(editText.getText().toString().replaceAll("'", "''")).append(splitKey);
             }
@@ -203,17 +202,17 @@ public class YearlyPlanFragment extends Fragment {
             case "view":
                 // 메모 수정
                 if (getArguments() == null) {
-                    db.execSQL("UPDATE yearlyplan SET userdate = '"+userDate+"', contentYear = '"+contentYear+"', splitKey = '"+splitKey+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE yearlyplan SET userdate = '" + userDate + "', contentYear = '" + contentYear + "', splitKey = '" + splitKey + "', title = '" + title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
                 } else {
                     memoid = getArguments().getInt("memoid");
-                    db.execSQL("UPDATE yearlyplan SET userdate = '"+userDate+"', contentYear = '"+contentYear+"', splitKey = '"+splitKey+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE yearlyplan SET userdate = '" + userDate + "', contentYear = '" + contentYear + "', splitKey = '" + splitKey + "', title = '" + title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
                 }
                 break;
         }
         return true;
     }
 
-    public String makeKey(){
+    public String makeKey() {
         StringBuilder key = new StringBuilder();
         Random random = new Random();
 

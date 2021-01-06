@@ -3,15 +3,9 @@ package com.swp.memorythm.template;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.viewpager2.widget.ViewPager2;
 
 //EditText 밑줄 그어주는 클래스
 public class LinedEditText extends AppCompatEditText {
@@ -38,7 +32,8 @@ public class LinedEditText extends AppCompatEditText {
         mPaint.setColor(0x80000000);
     }
 
-    @Override protected void onDraw(Canvas canvas) {
+    @Override
+    protected void onDraw(Canvas canvas) {
         int right = getRight();
         int paddingRight = getPaddingRight();
         int paddingTop = getPaddingTop();
@@ -46,11 +41,11 @@ public class LinedEditText extends AppCompatEditText {
         int lineHeight = getLineHeight();
         int height = getHeight();
         float textSize = getTextSize();
-        int count = (height-paddingTop-paddingBottom) / lineHeight + inc_count;
+        int count = (height - paddingTop - paddingBottom) / lineHeight + inc_count;
 
         for (int i = 0; i < count; i++) {
-            float baseline = lineHeight * (i+1) + paddingTop - textSize / 2;
-            canvas.drawLine(0, baseline, right-paddingRight, baseline, mPaint);
+            float baseline = lineHeight * (i + 1) + paddingTop - textSize / 2;
+            canvas.drawLine(0, baseline, right - paddingRight, baseline, mPaint);
         }
 
         super.onDraw(canvas);

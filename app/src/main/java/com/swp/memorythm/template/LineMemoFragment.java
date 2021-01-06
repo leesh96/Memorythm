@@ -78,7 +78,7 @@ public class LineMemoFragment extends Fragment {
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
         }
-        Cursor cursor = db.rawQuery("SELECT userdate, content FROM linememo WHERE id = "+memoid+"", null);
+        Cursor cursor = db.rawQuery("SELECT userdate, content FROM linememo WHERE id = " + memoid + "", null);
         while (cursor.moveToNext()) {
             userDate = cursor.getString(0);
             content = cursor.getString(1);
@@ -112,7 +112,7 @@ public class LineMemoFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(getArguments() != null) {
+        if (getArguments() != null) {
 
             textViewDate.setText(userDate);
             editTextContent.setText(content);
@@ -167,10 +167,10 @@ public class LineMemoFragment extends Fragment {
             case "view":
                 // 메모 수정
                 if (getArguments() == null) {
-                    db.execSQL("UPDATE linememo SET userdate = '"+userDate+"', content = '"+content+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE linememo SET userdate = '" + userDate + "', content = '" + content + "', title = '" + title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
                 } else {
                     memoid = getArguments().getInt("memoid");
-                    db.execSQL("UPDATE linememo SET userdate = '"+userDate+"', content = '"+content+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE linememo SET userdate = '" + userDate + "', content = '" + content + "', title = '" + title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
                 }
                 break;
         }

@@ -29,7 +29,7 @@ import java.util.Random;
 public class WeeklyPlanFragment extends Fragment implements TextWatcher {
     private TextView textViewDate;
     private EditText editTextMon, editTextTue, editTextWed, editTextThu, editTextFri, editTextSat, editTextSun,
-                     editTextDayMon, editTextDayTue, editTextDayWed, editTextDayThu, editTextDayFri, editTextDaySat, editTextDaySun;
+            editTextDayMon, editTextDayTue, editTextDayWed, editTextDayThu, editTextDayFri, editTextDaySat, editTextDaySun;
     private DBHelper dbHelper;
     private SQLiteDatabase db;
     private EditText[] weekView = new EditText[7], dayView = new EditText[7];
@@ -85,7 +85,7 @@ public class WeeklyPlanFragment extends Fragment implements TextWatcher {
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
         }
-        Cursor cursor = db.rawQuery("SELECT userdate, contentWeek, contentDay, splitKey FROM weeklyplan WHERE id = "+memoid+"", null);
+        Cursor cursor = db.rawQuery("SELECT userdate, contentWeek, contentDay, splitKey FROM weeklyplan WHERE id = " + memoid + "", null);
         while (cursor.moveToNext()) {
             userDate = cursor.getString(0);
             String splitKey = cursor.getString(3);
@@ -153,22 +153,22 @@ public class WeeklyPlanFragment extends Fragment implements TextWatcher {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(getArguments() != null) {
+        if (getArguments() != null) {
 
             textViewDate.setText(userDate);
             String[] setDate = userDate.split(" - ");
             myCalendar.set(Calendar.YEAR, Integer.parseInt(setDate[0]));
             myCalendar.set(Calendar.MONTH, Integer.parseInt(setDate[1]) - 1);
 
-            for(int i = 0; i < weekView.length; i++) {
+            for (int i = 0; i < weekView.length; i++) {
 
                 weekView[i].setText(setContent[i]);
 
             }
             removeListener();
-            for(int i = 0; i < dayView.length; i++) {
+            for (int i = 0; i < dayView.length; i++) {
 
-                if(setDay[i].equals(" ")) dayView[i].setText("");
+                if (setDay[i].equals(" ")) dayView[i].setText("");
                 else dayView[i].setText(setDay[i]);
             }
             addListener();
@@ -177,11 +177,11 @@ public class WeeklyPlanFragment extends Fragment implements TextWatcher {
             if (isFromFixedFragment()) {
                 textViewDate.setEnabled(false);
 
-                for(EditText editText : weekView) {
+                for (EditText editText : weekView) {
 
                     editText.setEnabled(false);
                 }
-                for(EditText editText : dayView) {
+                for (EditText editText : dayView) {
 
                     editText.setEnabled(false);
                 }
@@ -201,20 +201,16 @@ public class WeeklyPlanFragment extends Fragment implements TextWatcher {
         } else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[2]) {
 
             calculateDay(2);
-        }
-        else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[3]) {
+        } else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[3]) {
 
             calculateDay(3);
-        }
-        else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[4]) {
+        } else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[4]) {
 
             calculateDay(4);
-        }
-        else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[5]) {
+        } else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[5]) {
 
             calculateDay(5);
-        }
-        else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[6]) {
+        } else if (WeeklyPlanFragment.this.getActivity().getCurrentFocus() == dayView[6]) {
 
             calculateDay(6);
         }
@@ -232,7 +228,7 @@ public class WeeklyPlanFragment extends Fragment implements TextWatcher {
 
     public void removeListener() {
 
-        for(EditText editText : dayView) {
+        for (EditText editText : dayView) {
 
             editText.removeTextChangedListener(this);
         }
@@ -240,7 +236,7 @@ public class WeeklyPlanFragment extends Fragment implements TextWatcher {
 
     public void addListener() {
 
-        for(EditText editText : dayView) {
+        for (EditText editText : dayView) {
 
             editText.addTextChangedListener(this);
         }
@@ -262,23 +258,21 @@ public class WeeklyPlanFragment extends Fragment implements TextWatcher {
 
         for (EditText editText : weekView) {
 
-            if(editText.getText().toString().equals("")) {
+            if (editText.getText().toString().equals("")) {
 
                 contentWeek.append(" ").append(splitKey);
-            }
-            else {
+            } else {
 
                 contentWeek.append(editText.getText().toString().replaceAll("'", "''")).append(splitKey);
             }
         }
 
-        for(EditText editText : dayView) {
+        for (EditText editText : dayView) {
 
-            if(editText.getText().toString().equals("")) {
+            if (editText.getText().toString().equals("")) {
 
                 contentDay.append(" ").append(",");
-            }
-            else {
+            } else {
 
                 contentDay.append(editText.getText().toString()).append(",");
             }
@@ -300,17 +294,17 @@ public class WeeklyPlanFragment extends Fragment implements TextWatcher {
             case "view":
                 // 메모 수정
                 if (getArguments() == null) {
-                    db.execSQL("UPDATE weeklyplan SET userdate = '"+userDate+"', contentWeek = '"+contentWeek+"', contentDay = '"+contentDay+"', splitKey = '"+splitKey+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE weeklyplan SET userdate = '" + userDate + "', contentWeek = '" + contentWeek + "', contentDay = '" + contentDay + "', splitKey = '" + splitKey + "', title = '" + title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
                 } else {
                     memoid = getArguments().getInt("memoid");
-                    db.execSQL("UPDATE weeklyplan SET userdate = '"+userDate+"', contentWeek = '"+contentWeek+"', contentDay = '"+contentDay+"', splitKey = '"+splitKey+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE weeklyplan SET userdate = '" + userDate + "', contentWeek = '" + contentWeek + "', contentDay = '" + contentDay + "', splitKey = '" + splitKey + "', title = '" + title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
                 }
                 break;
         }
         return true;
     }
 
-    public String makeKey(){
+    public String makeKey() {
         StringBuilder key = new StringBuilder();
         Random random = new Random();
 
@@ -341,7 +335,7 @@ public class WeeklyPlanFragment extends Fragment implements TextWatcher {
         int std, diff, day;
         String input;
 
-        if(dayView[index].getText().toString().equals("")) {
+        if (dayView[index].getText().toString().equals("")) {
 
             addListener();
             return;
@@ -349,24 +343,22 @@ public class WeeklyPlanFragment extends Fragment implements TextWatcher {
 
         std = Integer.parseInt(dayView[index].getText().toString());
 
-        for(int i = 0; i < dayView.length; i++) {
+        for (int i = 0; i < dayView.length; i++) {
 
             diff = i - index;
             day = std + diff;
             input = Integer.toString(day);
 
-            if(i == index) continue;
-            if(day < 1) {
+            if (i == index) continue;
+            if (day < 1) {
 
                 calCalendar.set(Calendar.MONTH, myCalendar.get(Calendar.MONTH) - 1);
                 input = Integer.toString(calCalendar.getActualMaximum(Calendar.DATE) + day);
-            }
-            else if(day ==  myCalendar.getActualMaximum(Calendar.DATE)) {
+            } else if (day == myCalendar.getActualMaximum(Calendar.DATE)) {
 
                 index = i;
                 std = 0;
-            }
-            else if(day > myCalendar.getActualMaximum(Calendar.DATE)){
+            } else if (day > myCalendar.getActualMaximum(Calendar.DATE)) {
 
                 input = Integer.toString(diff);
             }

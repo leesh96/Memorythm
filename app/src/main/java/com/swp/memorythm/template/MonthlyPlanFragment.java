@@ -87,7 +87,7 @@ public class MonthlyPlanFragment extends Fragment {
         if (getArguments() != null) {
             memoid = getArguments().getInt("memoid");
         }
-        Cursor cursor = db.rawQuery("SELECT userdate, contentMonth, splitKey FROM monthlyplan WHERE id = "+memoid+"", null);
+        Cursor cursor = db.rawQuery("SELECT userdate, contentMonth, splitKey FROM monthlyplan WHERE id = " + memoid + "", null);
         while (cursor.moveToNext()) {
             userDate = cursor.getString(0);
             String splitKey = cursor.getString(2);
@@ -110,7 +110,7 @@ public class MonthlyPlanFragment extends Fragment {
         Date currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy - MM", Locale.KOREA);
 
-        if(getArguments() != null) {
+        if (getArguments() != null) {
 
             textViewDate.setText(userDate);
             monthAdapter = new MonthAdapter(getContext(), myCalendar, setContent);
@@ -121,8 +121,7 @@ public class MonthlyPlanFragment extends Fragment {
                 monthAdapter.setEnabled();
                 monthAdapter.notifyDataSetChanged();
             }
-        }
-        else {
+        } else {
 
             textViewDate.setText(simpleDateFormat.format(currentTime));
             monthAdapter = new MonthAdapter(getContext(), myCalendar);
@@ -158,11 +157,10 @@ public class MonthlyPlanFragment extends Fragment {
 
         for (EditText editText : monthView) {
 
-            if(editText.getText().toString().equals("")) {
+            if (editText.getText().toString().equals("")) {
 
                 contentMonth.append(" ").append(splitKey);
-            }
-            else {
+            } else {
 
                 contentMonth.append(editText.getText().toString().replaceAll("'", "''")).append(splitKey);
             }
@@ -184,17 +182,17 @@ public class MonthlyPlanFragment extends Fragment {
             case "view":
                 // 메모 수정
                 if (getArguments() == null) {
-                    db.execSQL("UPDATE monthlyplan SET userdate = '"+userDate+"', contentMonth = '"+contentMonth+"', splitKey = '"+splitKey+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE monthlyplan SET userdate = '" + userDate + "', contentMonth = '" + contentMonth + "', splitKey = '" + splitKey + "', title = '" + title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
                 } else {
                     memoid = getArguments().getInt("memoid");
-                    db.execSQL("UPDATE monthlyplan SET userdate = '"+userDate+"', contentMonth = '"+contentMonth+"', splitKey = '"+splitKey+"', title = '"+title+"', editdate = '"+dateFormat.format(date.getTime()) + "' WHERE id = "+memoid+";");
+                    db.execSQL("UPDATE monthlyplan SET userdate = '" + userDate + "', contentMonth = '" + contentMonth + "', splitKey = '" + splitKey + "', title = '" + title + "', editdate = '" + dateFormat.format(date.getTime()) + "' WHERE id = " + memoid + ";");
                 }
                 break;
         }
         return true;
     }
 
-    public String makeKey(){
+    public String makeKey() {
         StringBuilder key = new StringBuilder();
         Random random = new Random();
 
