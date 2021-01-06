@@ -45,13 +45,13 @@ public class LoadingActivity extends AppCompatActivity implements LocationListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
         //GPS 권한 요구, 확인
         requestLocation();
         // 날짜 받아오기, DB 오픈
         setCurrentDate();
         openDB();
-
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         // 로딩화면 3초 전환
         Handler mHandler = new Handler() {
