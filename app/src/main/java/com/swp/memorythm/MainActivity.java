@@ -1,10 +1,16 @@
 package com.swp.memorythm;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +23,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
@@ -32,6 +39,8 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,8 +50,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationListener {
     private BottomNavigationView bottomNavigationView;
     private FragmentManager fm;
     private FragmentTransaction ft;
@@ -59,20 +75,41 @@ public class MainActivity extends AppCompatActivity {
 
     private DBHelper dbHelper;
     private SQLiteDatabase db;
+    private LocationManager locationManager;
+    private double latitude, longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // drawer 버튼
+        drawerBtn = (ImageButton) findViewById(R.id.drawerButton);
+        // drawer
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //navigationview
+        navigationView = (NavigationView) findViewById(R.id.navigation_layout);
+        tv_name = navigationView.getHeaderView(0).findViewById(R.id.user_name);
+        iv_profile = navigationView.getHeaderView(0).findViewById(R.id.user_pro);
+        tv_email = navigationView.getHeaderView(0).findViewById(R.id.user_email);
+        // 바텀 네비게이션
+        bottomNavigationView = findViewById(R.id.bottomNavi);
+        // 홈버튼
+        homeBtn = (ImageButton) findViewById(R.id.homeButton);
+
+        // 인텐트 넘어오는 값
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
         name = intent.getStringExtra("name");
         profile = intent.getStringExtra("profile");
         email = intent.getStringExtra("email");
 
+        // DB 오픈
         dbHelper = new DBHelper(MainActivity.this);
         db = dbHelper.getReadableDatabase();
+
+        // 날씨
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         if (PreferenceManager.getInt(MainActivity.this, "fixedmemocnt") == -1) {
             try {
@@ -101,38 +138,26 @@ public class MainActivity extends AppCompatActivity {
             fixedmemocnt = PreferenceManager.getInt(MainActivity.this, "fixedmemocnt");
         }
 
-        // 홈버튼 누르면 고정 메모 프레그먼트 띄우기
-        homeBtn = (ImageButton) findViewById(R.id.homeButton);
-        homeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (fixedmemocnt != 0) {
-                    setFrag(0);
-                } else {
-                    setFrag(1);
-                }
-            }
-        });
-        // drawer 버튼
-        drawerBtn = (ImageButton) findViewById(R.id.drawerButton);
-        // drawer
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //navigationview
-        navigationView = (NavigationView) findViewById(R.id.navigation_layout);
-        tv_name = navigationView.getHeaderView(0).findViewById(R.id.user_name);
-        iv_profile = navigationView.getHeaderView(0).findViewById(R.id.user_pro);
-        tv_email = navigationView.getHeaderView(0).findViewById(R.id.user_email);
+        // 첫 프레그먼트 지정
+        if (fixedmemocnt != 0) {
+            setFrag(0);
+        } else {
+            setFrag(1);
+        }
 
-        tv_name.setText(name);
-        tv_email.setText(email);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+        } else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1, this);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 1, this);
+        }
 
         //스레드로 사용자 프로필 사진 가져옴
         Thread mThread= new Thread(){
             @Override
             public void run() {
-
                 try{
-
                     URL url = new URL(profile);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -143,29 +168,37 @@ public class MainActivity extends AppCompatActivity {
                     bitmap = BitmapFactory.decodeStream(is);
 
                 } catch (MalformedURLException ee) {
-
                     ee.printStackTrace();
                 }catch (IOException e){
-
                     e.printStackTrace();
                 }
             }
         };
-
         mThread.start();
-
         try{
-
             mThread.join();
             //변환한 bitmap적용
             iv_profile.setImageBitmap(bitmap);
         }catch (InterruptedException e){
-
             e.printStackTrace();
         }
 
+        // 홈버튼 누르면 고정 메모 프레그먼트 띄우기
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (fixedmemocnt != 0) {
+                    setFrag(0);
+                } else {
+                    setFrag(1);
+                }
+            }
+        });
+
+        tv_name.setText(name);
+        tv_email.setText(email);
+
         //바텀 네비게이션 사용
-        bottomNavigationView = findViewById(R.id.bottomNavi);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -190,14 +223,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 첫 프레그먼트 지정
-        if (fixedmemocnt != 0) {
-            setFrag(0);
-        } else {
-            setFrag(1);
-        }
+        // drawer 사용
+        drawerBtn.setOnClickListener(view -> {
+            drawerLayout.openDrawer(GravityCompat.START);
+        });
 
-        //drawer 사용
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -221,30 +251,50 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        drawerBtn.setOnClickListener(view -> {
-            drawerLayout.openDrawer(GravityCompat.START);
-        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    && ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+                return;
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+                return;
+            }
+        }
     }
 
     @Override
     protected void onStop() {
-        backupData("");
         super.onStop();
+        locationManager.removeUpdates(this);
+        backupData("");
+        db.close();
     }
 
     @Override
     protected void onResume() {
-        fixedmemocnt = PreferenceManager.getInt(MainActivity.this, "fixedmemocnt");
         super.onResume();
+        fixedmemocnt = PreferenceManager.getInt(MainActivity.this, "fixedmemocnt");
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1, this);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 1, this);
     }
 
+    //
     @Override
     protected void onDestroy() {
-        PreferenceManager.removeKey(MainActivity.this, "fixedmemocnt");
-        db.close();
         super.onDestroy();
+        PreferenceManager.removeKey(MainActivity.this, "fixedmemocnt");
     }
-
 
     //프레그먼트 교체
     private void setFrag(int n) {
@@ -375,6 +425,89 @@ public class MainActivity extends AppCompatActivity {
             });
         } catch (Exception e) {
             Log.d("reuslt", "파일 다운로드 실패");
+        }
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1, this);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 1, this);
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        /*현재 위치에서 위도경도 값을 받아온뒤 우리는 지속해서 위도 경도를 읽어올것이 아니니
+        날씨 api에 위도경도 값을 넘겨주고 위치 정보 모니터링을 제거한다.*/
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+        //날씨 가져오기 통신
+        getWeather(latitude, longitude);
+    }
+
+    //api 통신 인터페이스
+    private interface ApiService {
+        //베이스 Url
+        String BASEURL = "https://api.openweathermap.org/data/2.5/";
+        String APPKEY = "29e3890bbf63fa8c85d67f0a5c5f41d9";
+
+        //get 메소드를 통한 http rest api 통신
+        @GET("weather?")
+        Call<JsonObject> getHourly(@Query("lat") double lat, @Query("lon") double lon, @Query("APPID") String APPID);
+    }
+
+    //날씨 받아오기
+    private void getWeather(double latitude, double longitude) {
+        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(MainActivity.ApiService.BASEURL)
+                .build();
+        MainActivity.ApiService apiService = retrofit.create(MainActivity.ApiService.class);
+        Call<JsonObject> call = apiService.getHourly(latitude, longitude, MainActivity.ApiService.APPKEY);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    //날씨데이터를 받아옴
+                    JsonObject object = response.body();
+                    if (object != null) {
+                        //데이터가 null 이 아니라면 날씨 데이터를 파싱 currentWeather에 날씨 값
+                        JsonArray weatherArray = object.getAsJsonArray("weather");
+                        JsonObject weatherObject = (JsonObject) weatherArray.get(0);
+                        String currentWeather = weatherObject.get("main").getAsString();
+                        int currentWeatherId = weatherObject.get("id").getAsInt(); //partly cloud랑 cloud 구분할 id
+
+                        PreferenceManager.setString(MainActivity.this, "currentWeather", currentWeather);
+                        PreferenceManager.setInt(MainActivity.this, "currentWeatherId", currentWeatherId);
+                        Log.d("weather", currentWeather);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                Log.d("weather", "fail");
+            }
+        });
+    }
+
+    // 권한 요청 결과
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == 0) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1, this);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 1, this);
+            }
         }
     }
 }
