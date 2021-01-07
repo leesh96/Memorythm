@@ -158,7 +158,7 @@ public class StudyTrackerFragment extends Fragment {
         Date date = new Date();
         String userdate = textViewDate.getText().toString();
         StringBuilder studyTimeCheck = new StringBuilder();
-        for (int value : num_time) studyTimeCheck.append(value);
+        for (int value : num_time) studyTimeCheck.append(value).append("!");
         String commentAll = et_comment.getText().toString().replaceAll("'", "''");
         StringBuilder txt = new StringBuilder(); //edit text 모두 합쳐서 넣을 String
         for (EditText etComment : et_comments) txt.append(etComment.getText().toString());
@@ -203,7 +203,7 @@ public class StudyTrackerFragment extends Fragment {
             }
             textViewDate.setText(userdate);
             assert studyTimeCheck != null;
-            array = studyTimeCheck.split("");
+            array = studyTimeCheck.split("!");
             for (int i = 0; i < array.length; i++) num_time[i] = Integer.parseInt(array[i]);
             et_comment.setText(commentAll);
             array1 = commentTime.split(splitKey);

@@ -290,7 +290,7 @@ public class HealthTrackerFragment extends Fragment {
         String exerciseContent = et_exercise.getText().toString().replaceAll("'", "''");
         String comment = et_comment.getText().toString().replaceAll("'", "''");
         StringBuilder waterCups = new StringBuilder();
-        for (int value : cups) waterCups.append(value);
+        for (int value : cups) waterCups.append(value).append("!");
         int exerciseData = getExercise();
         int aerobicData = aerobic;
         db = dbHelper.getReadableDatabase();
@@ -351,7 +351,7 @@ public class HealthTrackerFragment extends Fragment {
             et_exercise.setText(exerciseContent);
             et_comment.setText(comment);
             setHealth(iv_health, exerciseData, aerobicData);
-            array = waterCups.split("");
+            array = waterCups.split("!");
             for (int i = 0; i < array.length; i++) cups[i] = Integer.parseInt(array[i]);
             setCups();
             String toDate = textViewDate.getText().toString();

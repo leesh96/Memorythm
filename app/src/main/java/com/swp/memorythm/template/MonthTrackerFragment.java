@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,7 +162,8 @@ public class MonthTrackerFragment extends Fragment {
         String goal = et_goal.getText().toString().replaceAll("'", "''");
         String comment = et_comment.getText().toString().replaceAll("'", "''");
         StringBuilder dayCheck = new StringBuilder();
-        for (int value : num_day) dayCheck.append(value);
+        for (int value : num_day) dayCheck.append(value).append("!");
+        Log.d("dayCheck",dayCheck.toString());
 
         db = dbHelper.getReadableDatabase();
         switch (Mode) {
@@ -199,7 +201,7 @@ public class MonthTrackerFragment extends Fragment {
             textViewDate.setText(userdate);
             et_goal.setText(goal);
             et_comment.setText(comment);
-            array = dayCheck.split("");
+            array = dayCheck.split("!");
             for (int i = 0; i < array.length; i++) num_day[i] = Integer.parseInt(array[i]);
             setBgColor();
             // 데이트픽커 다이얼로그에 userdate로 뜨게 하는 코드
